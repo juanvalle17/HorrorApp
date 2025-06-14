@@ -1,0 +1,57 @@
+PRUEBAS DE API - POST USERS
+
+1. CONFIGURACIÓN EN POSTMAN:
+   - Método: POST
+   - URL: http://25.37.244.201/HorrorApp/backend/post_users.php
+   - Headers: 
+     Content-Type: application/json
+
+2. EJEMPLOS DE BODY (JSON):
+
+Ejemplo 1 - Usuario básico:
+{
+    "username": "usuario1",
+    "email": "usuario1@ejemplo.com",
+    "password": "password123"
+}
+
+Ejemplo 2 - Usuario con bio y avatar:
+{
+    "username": "usuario2",
+    "email": "usuario2@ejemplo.com",
+    "password": "password123",
+    "bio": "Soy un fanático del horror",
+    "avatar_url": "https://ejemplo.com/avatar.jpg"
+}
+
+3. RESPUESTAS ESPERADAS:
+
+Éxito (201 Created):
+{
+    "message": "Usuario creado exitosamente",
+    "user_id": 1,
+    "username": "usuario1",
+    "email": "usuario1@ejemplo.com"
+}
+
+Error - Campos faltantes (400 Bad Request):
+{
+    "error": "Faltan campos requeridos"
+}
+
+Error - Email inválido (400 Bad Request):
+{
+    "error": "Formato de email inválido"
+}
+
+Error - Usuario duplicado (409 Conflict):
+{
+    "error": "El username o email ya está en uso"
+}
+
+4. NOTAS IMPORTANTES:
+- El username debe tener entre 3 y 30 caracteres
+- El email no puede exceder los 100 caracteres
+- La contraseña debe tener al menos 6 caracteres
+- El email debe tener un formato válido
+- Los campos bio y avatar_url son opcionales 
