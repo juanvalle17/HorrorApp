@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Frontend/Styles/pages/home.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <img class="logo-header" src="/Frontend/Assets/Imagenes/HorrorApp.png" alt="">
+        </div>
+    </header>
+
+    <div class="layout">
+
+        <aside class="left">
+            <nav class="nav-menu">
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-house"></use>
+                    </svg>
+                    <span class="text-nav">Inicio</span>
+                </button>
+
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-search"></use>
+                    </svg>
+                    <span class="text-nav">Explorar</span>
+                </button>
+
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-hash"></use>
+                    </svg>
+                    <span class="text-nav">Tendencias</span>
+                </button>
+
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-bookmark"></use>
+                    </svg>
+                    <span class="text-nav">Guardados</span>
+                </button>
+
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-users"></use>
+                    </svg>
+                    <span class="text-nav">Comunidades</span>
+                </button>
+
+            </nav>
+
+            <div class="container-profile">
+                <div class="profile">
+                    <img class="profile-image" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
+
+                    <div class="profile-info">
+                        <span class="profile-name">Usuario Anonimo</span>
+                        <span class="profile-username">@usuario</span>
+                    </div>
+                </div>
+                <button class="circle-button">
+                    <svg class="circle-button-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-ellipsis"></use>
+                    </svg>
+                </button>
+
+            </div>
+        </aside>
+
+        <main>
+            <!-- Posts simulados -->
+            <form class="new-post">
+                <img class="profile-post" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
+                <textarea name="" id="" rows="3" maxlength="280"
+                    placeholder="Escribe sobre algo que te haya gustado"></textarea>
+                <div class="container-actions">
+                    <div class="container-buttons">
+
+                        <button class="circle-button">
+                            <svg class="circle-button-icon">
+                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-camera"></use>
+                            </svg>
+                        </button>
+
+                        <button class="circle-button">
+                            <svg class="circle-button-icon">
+                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-encuesta"></use>
+                            </svg>
+                        </button>
+
+                        <button class="circle-button">
+                            <svg class="circle-button-icon">
+                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-emoji"></use>
+                            </svg>
+                        </button>
+
+                    </div>
+
+                    <div class="container-submit">
+                        <span class="counter">0/280</span>
+                        <button class="submit-button">Publicar</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="post">
+                <div class="user-info">
+                    <img class="user-avatar" src="/Frontend/Assets/Imagenes/Scream.jpg" alt="">
+                    <div class="user-details">
+                        <p class="username">ScreamQueen</p>
+                        <p class="post-time">hace 5 horas</p>
+                    </div>
+                </div>
+
+                <div class="post-header">
+                    <img src="/Frontend/Assets/Imagenes/IT-StephenKing.jpg" alt="Portada de IT" class="post-image">
+                    <div class="post-info">
+                        <h3 class="post-title">IT - Stephen King</h3>
+                        <div class="post-category">
+                            <svg class="post-category-icon">
+                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-book-text"></use>
+                            </svg>
+                            <span>Libro</span>
+                        </div>
+                        <div class="rating">
+                            <div class="stars" data-rating="5">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <span class="rating-text">5/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post-content">
+                    Stephen King en su máximo esplendor. Esta novela no solo es terror, es un retrato profundo de la
+                    infancia y los traumas que nos persiguen. Pennywise es aterrador, pero lo que realmente da miedo es
+                    cómo King retrata la crueldad humana. Un clásico imprescindible del género.
+                </div>
+
+                <div class="post-actions">
+                    <button class="action-button comment-btn" onclick="openCommentModal(this)">
+                        <svg class="action-icon">
+                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-message"></use>
+                        </svg>
+                        <span class="count">28</span>
+                    </button>
+                    <button class="action-button repost-btn" onclick="toggleRepost(this)">
+                        <svg class="action-icon">
+                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-repeat"></use>
+                        </svg>
+                        <span class="count">15</span>
+                    </button>
+                    <button class="action-button like-btn" onclick="toggleLike(this)">
+                        <svg class="action-icon">
+                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-heart"></use>
+                        </svg>
+                        <span class="count">73</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="post">Publicación 3</div>
+            <div class="post">Publicación 4</div>
+            <div class="post">Publicación 5</div>
+            <div class="post">Publicación 6</div>
+            <div class="post">Publicación 7</div>
+        </main>
+
+        <aside class="right">
+            <div class="container-trending">
+
+                <div class="trending-title">
+                    <svg class="trending-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-flame"></use>
+                    </svg>
+                    <h2>Tendencias</h2>
+                </div>
+
+                <div class="trending-item">
+                    <span class="trending-hashtag">#DestinoFinal</span>
+                    <span class="trending-count">1.2M Posts</span>
+                    <div class="trending-description">
+                        <svg class="trending-description-icon">
+                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-movie"></use>
+                        </svg>
+                        <span class="trending-description-text">Películas</span>
+                    </div>
+                </div>
+
+                <div class="trending-item">
+                    <span class="trending-hashtag">#AHS</span>
+                    <span class="trending-count">990,5 mil Posts</span>
+                    <div class="trending-description">
+                        <svg class="trending-description-icon">
+                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-monitor-play"></use>
+                        </svg>
+                        <span class="trending-description-text">Series</span>
+                    </div>
+                </div>
+
+                <div class="trending-item">
+                    <span class="trending-hashtag">#StephenKing</span>
+                    <span class="trending-count">93,4 mil Posts</span>
+                    <div class="trending-description">
+                        <svg class="trending-description-icon">
+                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-book-text"></use>
+                        </svg>
+                        <span class="trending-description-text">Libros</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-follow">
+
+                <div class="follow-title">
+                    <h2>A quien seguir</h2>
+                </div>
+
+                <div class="follow-item">
+
+                    <div class="follow-profile">
+                        <img class="follow-image" src="/Frontend/Assets/Imagenes/HorrorLover.jpg" alt="">
+                        <div class="follow-info">
+                            <span class="follow-name">The Horror Lover</span>
+                            <span class="follow-username">@THorror_Lover</span>
+                        </div>
+                    </div>
+
+                    <button class="follow-button">Seguir</button>
+                </div>
+
+                <div class="follow-item">
+
+                    <div class="follow-profile">
+                        <img class="follow-image" src="/Frontend/Assets/Imagenes/HorrorLover.jpg" alt="">
+                        <div class="follow-info">
+                            <span class="follow-name">The Horror Lover</span>
+                            <span class="follow-username">@THorror_Lover</span>
+                        </div>
+                    </div>
+
+                    <button class="follow-button">Seguir</button>
+                </div>
+
+            </div>
+
+
+        </aside>
+
+        <!-- Modal de Comentarios -->
+    <div class="modal-overlay" id="commentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Responder</h2>
+                <button class="close-button" onclick="closeCommentModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="original-post" id="originalPost">
+                    <!-- El contenido del post original se insertará aquí -->
+                </div>
+                
+                <div class="reply-section">
+                    <div class="reply-header">
+                        <div class="user-avatar">U</div>
+                        <span class="reply-to">Respondiendo a <span id="replyToUser"></span></span>
+                    </div>
+                    <textarea 
+                        class="reply-input" 
+                        id="replyInput" 
+                        placeholder="Escribe tu respuesta..."
+                        maxlength="280"
+                    ></textarea>
+                    <div class="reply-actions">
+                        <span class="character-count" id="charCount">0/280</span>
+                        <button class="reply-button" id="replyButton" onclick="submitReply()">
+                            Responder
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+    <script src="/Frontend/Js/home.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+@import '/Frontend/Styles/base/variables.css';
+@import '/Frontend/Styles/components/new-post.css';
+@import '/Frontend/Styles/components/buttons.css';
+@import '/Frontend/Styles/components/nav.css';
+@import '/Frontend/Styles/components/card-profile.css';
+@import '/Frontend/Styles/components/card-trending.css';
+@import '/Frontend/Styles/components/card-follow.css';
+@import '/Frontend/Styles/components/posteo.css';
+@import '/Frontend/Styles/components/modalComentar.css';
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background: var(--color-primary);
+    color: white;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    border-bottom: 1px solid var(--color-secondary);
+}
+
+.logo-header {
+    width: 2rem;
+    height: 2rem;
+}
+
+.layout {
+    max-width: 1200px;
+    /* o 1100px, ajustable */
+    margin: 0 auto;
+    display: flex;
+    margin-top: 60px;
+}
+
+aside.left {
+    width: 340px;
+    /* antes 250px */
+    height: calc(100vh - 60px);
+    position: fixed;
+    top: 60px;
+    left: 30px;
+    padding: 20px;
+    background-color: transparent;
+    /* border-right: 1px solid #374151; */
+}
+
+aside.right {
+    width: 340px;
+    height: calc(100vh - 60px);
+    position: fixed;
+    top: 60px;
+    padding: 20px;
+    background-color: transparent;
+    /* border-left: 1px solid #374151; */
+    overflow-y: auto;
+    right: 30px;
+    /* <-- Esto habilita el scroll */
+}
+
+aside.right::-webkit-scrollbar {
+    display: none;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 700px;
+    margin-left: 300px;
+    /* 300px del aside.left + 60px extra */
+    margin-right: 300px;
+    /* 300px del aside.right + 80px extra */
+    padding: 20px;
+    flex: 1;
+}
