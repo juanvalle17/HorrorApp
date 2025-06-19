@@ -1,26 +1,4 @@
-:root {
-    --color-primary: #1a1a2e;
-    --color-secondary: #16213e;
-    --color-accent: #e94560;
-    --color-text: #ffffff;
-    --color-text-muted: #a0a0a0;
-    --color-border: #2d2d44;
-    --color-hover: rgba(255, 255, 255, 0.1);
-    --verification-blue: #1d9bf0;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    background: var(--color-primary);
-    color: var(--color-text);
-    line-height: 1.6;
-}
+@import '/Frontend/Styles/base/variables.css';
 
 .profile-container {
     max-width: 100%;
@@ -35,12 +13,14 @@ body {
     border-bottom: 1px solid var(--color-border);
     position: sticky;
     top: 0;
-    background: rgba(26, 26, 46, 0.8);
+    background: var(--color-primary);
     backdrop-filter: blur(12px);
     z-index: 10;
 }
 
 .back-button {
+    display: flex;
+    align-items: center;
     background: none;
     border: none;
     color: var(--color-text);
@@ -52,7 +32,7 @@ body {
 }
 
 .back-button:hover {
-    background-color: var(--color-hover);
+    background-color: var(--color-success);
 }
 
 .back-button svg {
@@ -76,7 +56,7 @@ body {
     height: 200px;
     background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
     overflow: hidden;
-    position: relative;
+    
 }
 
 .cover-image img {
@@ -114,7 +94,7 @@ body {
 }
 
 .edit-profile-btn {
-    background: transparent;
+    background: var(--color-button-edit-profile);
     border: 1px solid var(--color-border);
     color: var(--color-text);
     padding: 8px 16px;
@@ -125,7 +105,7 @@ body {
 }
 
 .edit-profile-btn:hover {
-    background-color: var(--color-hover);
+    background-color: var(--color-button-edit-profile-hover);
 }
 
 /* Detalles del perfil */
@@ -250,6 +230,7 @@ body {
 
 /* Posts del perfil */
 .profile-posts {
+    padding: 20px;
     margin-top: 0;
 }
 

@@ -57,17 +57,17 @@
 
             </nav>
 
-            <div class="container-profile">
-                <div class="profile">
-                    <img class="profile-image" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
+            <div class="h-container-user" id="btnProfile">
+                <div class="h-user">
+                    <img class="h-user-image" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
 
-                    <div class="profile-info">
-                        <span class="profile-name">Usuario Anonimo</span>
-                        <span class="profile-username">@usuario</span>
+                    <div class="h-user-info">
+                        <span class="h-user-name">Usuario Anonimo</span>
+                        <span class="h-user-username">@usuario</span>
                     </div>
                 </div>
-                <div class="profile-button-more">
-                    <svg class="profile-button-more-icon">
+                <div class="h-user-button-more">
+                    <svg class="h-user-button-more-icon">
                         <use href="/Frontend/Assets/Icons/sprite.svg#icon-ellipsis"></use>
                     </svg>
                 </div>
@@ -75,107 +75,110 @@
             </div>
         </aside>
 
-        <main class="main">
-            <!-- Posts simulados -->
-            <form class="new-post">
-                <img class="profile-post" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
-                <textarea name="" id="" rows="3" maxlength="280"
-                    placeholder="Escribe sobre algo que te haya gustado"></textarea>
-                <div class="container-actions">
-                    <div class="container-buttons">
+        <main id="contenido" class="main">
+            <div class="main-contenido">
+                <!-- Posts simulados -->
+                <form class="new-post">
+                    <img class="profile-post" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
+                    <textarea name="" id="" rows="3" maxlength="280"
+                        placeholder="Escribe sobre algo que te haya gustado"></textarea>
+                    <div class="container-actions">
+                        <div class="container-buttons">
 
-                        <button class="circle-button">
-                            <svg class="circle-button-icon">
-                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-camera"></use>
-                            </svg>
-                        </button>
+                            <button class="circle-button">
+                                <svg class="circle-button-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-camera"></use>
+                                </svg>
+                            </button>
 
-                        <button class="circle-button">
-                            <svg class="circle-button-icon">
-                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-encuesta"></use>
-                            </svg>
-                        </button>
+                            <button class="circle-button">
+                                <svg class="circle-button-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-encuesta"></use>
+                                </svg>
+                            </button>
 
-                        <button class="circle-button">
-                            <svg class="circle-button-icon">
-                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-emoji"></use>
-                            </svg>
-                        </button>
+                            <button class="circle-button">
+                                <svg class="circle-button-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-emoji"></use>
+                                </svg>
+                            </button>
 
-                    </div>
-
-                    <div class="container-submit">
-                        <span class="counter">0/280</span>
-                        <button class="submit-button">Publicar</button>
-                    </div>
-                </div>
-            </form>
-
-            <div class="post">
-                <div class="user-info">
-                    <img class="user-avatar" src="/Frontend/Assets/Imagenes/Scream.jpg" alt="">
-                    <div class="user-details">
-                        <p class="username">ScreamQueen</p>
-                        <p class="post-time">hace 5 horas</p>
-                    </div>
-                </div>
-
-                <div class="post-header">
-                    <img src="/Frontend/Assets/Imagenes/IT-StephenKing.jpg" alt="Portada de IT" class="post-image">
-                    <div class="post-info">
-                        <h3 class="post-title">IT - Stephen King</h3>
-                        <div class="post-category">
-                            <svg class="post-category-icon">
-                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-book-text"></use>
-                            </svg>
-                            <span>Libro</span>
                         </div>
-                        <div class="rating">
-                            <div class="stars" data-rating="5">
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
+
+                        <div class="container-submit">
+                            <span class="counter">0/280</span>
+                            <button class="submit-button">Publicar</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="post">
+                    <div class="user-info">
+                        <img class="user-avatar" src="/Frontend/Assets/Imagenes/Scream.jpg" alt="">
+                        <div class="user-details">
+                            <p class="username">ScreamQueen</p>
+                            <p class="post-time">hace 5 horas</p>
+                        </div>
+                    </div>
+
+                    <div class="post-header">
+                        <img src="/Frontend/Assets/Imagenes/IT-StephenKing.jpg" alt="Portada de IT" class="post-image">
+                        <div class="post-info">
+                            <h3 class="post-title">IT - Stephen King</h3>
+                            <div class="post-category">
+                                <svg class="post-category-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-book-text"></use>
+                                </svg>
+                                <span>Libro</span>
                             </div>
-                            <span class="rating-text">5/5</span>
+                            <div class="rating">
+                                <div class="stars" data-rating="5">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                </div>
+                                <span class="rating-text">5/5</span>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="post-content">
+                        Stephen King en su máximo esplendor. Esta novela no solo es terror, es un retrato profundo de la
+                        infancia y los traumas que nos persiguen. Pennywise es aterrador, pero lo que realmente da miedo
+                        es
+                        cómo King retrata la crueldad humana. Un clásico imprescindible del género.
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="action-button comment-btn" onclick="openCommentModal(this)">
+                            <svg class="action-icon">
+                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-message"></use>
+                            </svg>
+                            <span class="count">28</span>
+                        </button>
+                        <button class="action-button repost-btn" onclick="toggleRepost(this)">
+                            <svg class="action-icon">
+                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-repeat"></use>
+                            </svg>
+                            <span class="count">15</span>
+                        </button>
+                        <button class="action-button like-btn" onclick="toggleLike(this)">
+                            <svg class="action-icon">
+                                <use href="/Frontend/Assets/Icons/sprite.svg#icon-heart"></use>
+                            </svg>
+                            <span class="count">73</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="post-content">
-                    Stephen King en su máximo esplendor. Esta novela no solo es terror, es un retrato profundo de la
-                    infancia y los traumas que nos persiguen. Pennywise es aterrador, pero lo que realmente da miedo es
-                    cómo King retrata la crueldad humana. Un clásico imprescindible del género.
-                </div>
-
-                <div class="post-actions">
-                    <button class="action-button comment-btn" onclick="openCommentModal(this)">
-                        <svg class="action-icon">
-                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-message"></use>
-                        </svg>
-                        <span class="count">28</span>
-                    </button>
-                    <button class="action-button repost-btn" onclick="toggleRepost(this)">
-                        <svg class="action-icon">
-                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-repeat"></use>
-                        </svg>
-                        <span class="count">15</span>
-                    </button>
-                    <button class="action-button like-btn" onclick="toggleLike(this)">
-                        <svg class="action-icon">
-                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-heart"></use>
-                        </svg>
-                        <span class="count">73</span>
-                    </button>
-                </div>
+                <div class="post">Publicación 3</div>
+                <div class="post">Publicación 4</div>
+                <div class="post">Publicación 5</div>
+                <div class="post">Publicación 6</div>
+                <div class="post">Publicación 7</div>
             </div>
-
-            <div class="post">Publicación 3</div>
-            <div class="post">Publicación 4</div>
-            <div class="post">Publicación 5</div>
-            <div class="post">Publicación 6</div>
-            <div class="post">Publicación 7</div>
         </main>
 
         <aside class="sidebar-right">
@@ -292,6 +295,7 @@
 
     </div>
     <script src="/Frontend/Js/home.js"></script>
+    <script src="/Frontend/Js/main.js"></script>
 </body>
 
 </html>
