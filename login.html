@@ -3,77 +3,445 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login / Registro</title>
+  <title>TerrorFeed - Enter the Darkness</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Butcherman&display=swap');
+    
+    .horror-font {
+      font-family: 'Butcherman', cursive;
+    }
+    
+    .title-font {
+      font-family: 'Nosifer', cursive;
+    }
+    
+    .blood-drip {
+      position: absolute;
+      width: 2px;
+      background: linear-gradient(to bottom, #ff0000, #8b0000);
+      animation: drip 3s infinite;
+    }
+    
+    @keyframes drip {
+      0% { height: 0; opacity: 1; }
+      50% { height: 20px; opacity: 0.8; }
+      100% { height: 40px; opacity: 0; }
+    }
+    
+    .glitch {
+      animation: glitch 2s infinite;
+    }
+    
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      10% { transform: translate(-2px, -2px); }
+      20% { transform: translate(2px, 2px); }
+      30% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      50% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      70% { transform: translate(-2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      90% { transform: translate(-2px, -2px); }
+    }
+    
+    .spider-web {
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+    
+    .input-glow:focus {
+      box-shadow: 0 0 20px rgba(139, 69, 19, 0.5);
+    }
+    
+    .btn-horror {
+      background: linear-gradient(45deg, #8b0000, #4a0000);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-horror:hover {
+      background: linear-gradient(45deg, #a00000, #600000);
+      box-shadow: 0 0 30px rgba(139, 0, 0, 0.7);
+      transform: translateY(-2px);
+    }
+    
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .error-shake {
+      animation: shake 0.5s ease-in-out;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+  </style>
 </head>
-<body class="m-0 p-0 h-screen w-screen overflow-hidden flex justify-center items-center font-sans" style="background-color: #0e001a;">
+<body class="m-0 p-0 h-screen w-screen overflow-hidden flex justify-center items-center font-sans spider-web" style="background: linear-gradient(135deg, #0a0a0a, #1a0a1a, #0e001a);">
   <canvas id="bgCanvas" class="fixed top-0 left-0 -z-10 w-full h-full"></canvas>
+  
+  <!-- Blood drips -->
+  <div class="blood-drip" style="left: 10%; top: 0; animation-delay: 0s;"></div>
+  <div class="blood-drip" style="left: 30%; top: 0; animation-delay: 1s;"></div>
+  <div class="blood-drip" style="left: 70%; top: 0; animation-delay: 2s;"></div>
+  <div class="blood-drip" style="left: 90%; top: 0; animation-delay: 0.5s;"></div>
 
-  <div id="formContainer" class="bg-[#0e001a] text-white p-6 md:p-10 rounded-xl border-2 border-violet-700 shadow-lg w-[90%] max-w-md min-h-[450px] z-10 transition-all">
-    <h2 class="text-2xl font-bold mb-6">Log In</h2>
-
-    <div id="emailField" class="hidden">
-      <label for="email" class="block font-semibold text-sm mb-1">Email</label>
-      <input type="email" id="email" placeholder="Enter your email" class="w-full mb-4 p-3 rounded-md text-white bg-[#111] border border-gray-400 focus:outline-none focus:border-violet-500" />
+  <div id="formContainer" class="bg-black/80 backdrop-blur-sm text-white p-8 md:p-12 rounded-2xl border-2 border-red-900 shadow-2xl w-[90%] max-w-md min-h-[500px] z-10 transition-all floating relative overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute top-4 right-4 text-red-600 text-2xl">
+      <i class="fas fa-spider"></i>
+    </div>
+    <div class="absolute bottom-4 left-4 text-red-600 text-xl">
+      <i class="fas fa-skull"></i>
+    </div>
+    
+    <!-- Logo/Title -->
+    <div class="text-center mb-8">
+      <h1 class="title-font text-3xl text-red-600 mb-2 glitch">TerrorFeed</h1>
+      <p class="text-gray-400 text-sm horror-font">Enter the Darkness...</p>
     </div>
 
-    <label for="username" class="block font-semibold text-sm mb-1">Username</label>
-    <input type="text" id="username" placeholder="Enter your username" class="w-full mb-4 p-3 rounded-md text-white bg-[#111] border border-gray-400 focus:outline-none focus:border-violet-500" />
+    <h2 id="formTitle" class="text-2xl font-bold mb-6 horror-font text-center">Sign In</h2>
 
-    <label for="password" class="block font-semibold text-sm mb-1">Password</label>
-    <input type="password" id="password" placeholder="Enter your password" class="w-full mb-4 p-3 rounded-md text-white bg-[#111] border border-gray-400 focus:outline-none focus:border-violet-500" />
+    <form id="authForm" class="space-y-4">
+      <!-- Email field (hidden by default) -->
+      <div id="emailField" class="hidden">
+        <label for="email" class="block font-semibold text-sm mb-2 text-red-300">
+          <i class="fas fa-envelope mr-2"></i>Email
+        </label>
+        <input 
+          type="email" 
+          id="email" 
+          placeholder="your.email@darkness.com" 
+          class="w-full p-3 rounded-lg text-white bg-gray-900/80 border border-red-800 focus:outline-none focus:border-red-500 input-glow transition-all" 
+        />
+        <div id="emailError" class="text-red-400 text-xs mt-1 hidden"></div>
+      </div>
 
-    <div class="flex justify-between items-center text-sm text-gray-300 mb-6">
-      <label class="flex items-center"><input type="checkbox" class="mr-2"> Keep me logged in</label>
-      <a href="#" class="text-violet-400 hover:underline">Forgot password?</a>
-    </div>
+      <!-- Username field -->
+      <div>
+        <label for="username" class="block font-semibold text-sm mb-2 text-red-300">
+          <i class="fas fa-user mr-2"></i>Username
+        </label>
+        <input 
+          type="text" 
+          id="username" 
+          placeholder="Enter the shadows..." 
+          class="w-full p-3 rounded-lg text-white bg-gray-900/80 border border-red-800 focus:outline-none focus:border-red-500 input-glow transition-all" 
+        />
+        <div id="usernameError" class="text-red-400 text-xs mt-1 hidden"></div>
+      </div>
 
-    <button id="submitBtn" class="w-full p-3 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-md transition-all">Next</button>
+      <!-- Password field -->
+      <div>
+        <label for="password" class="block font-semibold text-sm mb-2 text-red-300">
+          <i class="fas fa-lock mr-2"></i>Password
+        </label>
+        <div class="relative">
+          <input 
+            type="password" 
+            id="password" 
+            placeholder="Your darkest secret..." 
+            class="w-full p-3 rounded-lg text-white bg-gray-900/80 border border-red-800 focus:outline-none focus:border-red-500 input-glow transition-all pr-12" 
+          />
+          <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-400">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <div id="passwordError" class="text-red-400 text-xs mt-1 hidden"></div>
+      </div>
 
+      <!-- Confirm Password (for registration) -->
+      <div id="confirmPasswordField" class="hidden">
+        <label for="confirmPassword" class="block font-semibold text-sm mb-2 text-red-300">
+          <i class="fas fa-lock mr-2"></i>Confirm Password
+        </label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          placeholder="Confirm your darkness..." 
+          class="w-full p-3 rounded-lg text-white bg-gray-900/80 border border-red-800 focus:outline-none focus:border-red-500 input-glow transition-all" 
+        />
+        <div id="confirmPasswordError" class="text-red-400 text-xs mt-1 hidden"></div>
+      </div>
+
+      <!-- Remember me / Forgot password -->
+      <div class="flex justify-between items-center text-sm text-gray-300 mb-6">
+        <label class="flex items-center cursor-pointer hover:text-red-400 transition-colors">
+          <input type="checkbox" id="rememberMe" class="mr-2 accent-red-600"> 
+          Keep me in the darkness
+        </label>
+        <a href="#" id="forgotPassword" class="text-red-400 hover:text-red-300 hover:underline transition-colors">
+          Lost in the void?
+        </a>
+      </div>
+
+      <!-- Submit button -->
+      <button 
+        type="submit" 
+        id="submitBtn" 
+        class="w-full p-3 btn-horror text-white font-bold rounded-lg transition-all horror-font text-lg"
+      >
+        <i class="fas fa-sign-in-alt mr-2"></i>
+        Enter the Feed
+      </button>
+    </form>
+
+    <!-- Toggle mode -->
     <div class="text-center text-sm text-gray-300 mt-6">
-      <span>Become part of our community </span>
-      <a href="#" id="toggleMode" class="text-violet-400 font-bold hover:underline">Join HorrorApp</a>
+      <span id="toggleText">New to the darkness? </span>
+      <a href="#" id="toggleMode" class="text-red-400 font-bold hover:text-red-300 hover:underline transition-colors">
+        Join the Terror
+      </a>
+    </div>
+
+    <!-- Loading spinner -->
+    <div id="loadingSpinner" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600 mb-4"></div>
+        <p class="text-white horror-font">Summoning the darkness...</p>
+      </div>
     </div>
   </div>
 
   <script>
+    // DOM Elements
     const emailField = document.getElementById('emailField');
+    const confirmPasswordField = document.getElementById('confirmPasswordField');
     const submitBtn = document.getElementById('submitBtn');
     const toggleLink = document.getElementById('toggleMode');
-    const formTitle = document.querySelector('h2');
+    const formTitle = document.getElementById('formTitle');
+    const toggleText = document.getElementById('toggleText');
+    const authForm = document.getElementById('authForm');
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const formContainer = document.getElementById('formContainer');
 
     let isRegistering = false;
 
+    // Toggle between login and register
     toggleLink.addEventListener('click', (e) => {
       e.preventDefault();
       isRegistering = !isRegistering;
+      clearErrors();
 
       if (isRegistering) {
+        // Switch to register mode
         emailField.classList.remove('hidden');
-        submitBtn.textContent = 'Create Account';
-        toggleLink.textContent = 'I have an account';
-        formTitle.textContent = 'Create Account';
+        confirmPasswordField.classList.remove('hidden');
+        submitBtn.innerHTML = '<i class="fas fa-user-plus mr-2"></i>Join the Darkness';
+        toggleLink.textContent = 'Already haunting? Sign In';
+        toggleText.textContent = 'Already part of the terror? ';
+        formTitle.textContent = 'Join the Terror';
+        document.getElementById('forgotPassword').style.display = 'none';
       } else {
+        // Switch to login mode
         emailField.classList.add('hidden');
-        submitBtn.textContent = 'Next';
-        toggleLink.textContent = 'Join HorrorApp';
-        formTitle.textContent = 'Log In';
+        confirmPasswordField.classList.add('hidden');
+        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Enter the Feed';
+        toggleLink.textContent = 'Join the Terror';
+        toggleText.textContent = 'New to the darkness? ';
+        formTitle.textContent = 'Sign In';
+        document.getElementById('forgotPassword').style.display = 'inline';
       }
     });
 
-    // Canvas background color
+    // Toggle password visibility
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      togglePassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+    });
+
+    // Form validation
+    function validateForm() {
+      clearErrors();
+      let isValid = true;
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const email = document.getElementById('email').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      // Username validation
+      if (!username) {
+        showError('usernameError', 'Username is required to enter the darkness');
+        isValid = false;
+      } else if (username.length < 3) {
+        showError('usernameError', 'Username must be at least 3 characters long');
+        isValid = false;
+      }
+
+      // Password validation
+      if (!password) {
+        showError('passwordError', 'Password is required');
+        isValid = false;
+      } else if (password.length < 6) {
+        showError('passwordError', 'Password must be at least 6 characters long');
+        isValid = false;
+      }
+
+      // Email validation (only for registration)
+      if (isRegistering) {
+        if (!email) {
+          showError('emailError', 'Email is required');
+          isValid = false;
+        } else if (!isValidEmail(email)) {
+          showError('emailError', 'Please enter a valid email address');
+          isValid = false;
+        }
+
+        // Confirm password validation
+        if (!confirmPassword) {
+          showError('confirmPasswordError', 'Please confirm your password');
+          isValid = false;
+        } else if (password !== confirmPassword) {
+          showError('confirmPasswordError', 'Passwords do not match');
+          isValid = false;
+        }
+      }
+
+      return isValid;
+    }
+
+    function showError(elementId, message) {
+      const errorElement = document.getElementById(elementId);
+      errorElement.textContent = message;
+      errorElement.classList.remove('hidden');
+      
+      // Add shake animation to form
+      formContainer.classList.add('error-shake');
+      setTimeout(() => {
+        formContainer.classList.remove('error-shake');
+      }, 500);
+    }
+
+    function clearErrors() {
+      const errorElements = document.querySelectorAll('[id$="Error"]');
+      errorElements.forEach(element => {
+        element.classList.add('hidden');
+        element.textContent = '';
+      });
+    }
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Form submission
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!validateForm()) {
+        return;
+      }
+
+      // Show loading spinner
+      loadingSpinner.classList.remove('hidden');
+
+      // Simulate API call
+      try {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Success - redirect to main app
+        alert(`Welcome to TerrorFeed! ${isRegistering ? 'Account created successfully!' : 'Signed in successfully!'}`);
+        
+        // Here you would typically redirect to the main app
+        // window.location.href = '/dashboard';
+        
+      } catch (error) {
+        alert('Something went wrong in the darkness... Please try again.');
+      } finally {
+        loadingSpinner.classList.add('hidden');
+      }
+    });
+
+    // Animated background canvas
     const canvas = document.getElementById('bgCanvas');
     const ctx = canvas.getContext('2d');
+    let particles = [];
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      ctx.fillStyle = '#0e001a';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+    function createParticle() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        size: Math.random() * 2 + 1,
+        opacity: Math.random() * 0.5 + 0.1
+      };
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < 50; i++) {
+        particles.push(createParticle());
+      }
+    }
+
+    function updateParticles() {
+      particles.forEach(particle => {
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+      });
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      particles.forEach(particle => {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(139, 0, 0, ${particle.opacity})`;
+        ctx.fill();
+      });
+    }
+
+    function animate() {
+      updateParticles();
+      drawParticles();
+      requestAnimationFrame(animate);
+    }
+
+    // Initialize
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
+    initParticles();
+    animate();
+
+    // Add some spooky sound effects (optional)
+    function playHoverSound() {
+      // You can add audio files here
+      // const audio = new Audio('hover-sound.mp3');
+      // audio.play();
+    }
+
+    // Add hover effects
+    document.querySelectorAll('button, a').forEach(element => {
+      element.addEventListener('mouseenter', playHoverSound);
+    });
   </script>
 </body>
 </html>
