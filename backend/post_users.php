@@ -48,11 +48,15 @@ if (strlen($data['password']) < 6) {
     exit;
 }
 
+// 4.1) Leer bio y avatar_url si existen
+$bio = isset($data['bio']) ? $data['bio'] : null;
+$avatar_url = isset($data['avatar_url']) ? $data['avatar_url'] : null;
+
 try {
     // 5) Preparar e insertar con PDO
     $sql = "
-      INSERT INTO users (username, email, password_hash)
-      VALUES (:username, :email, :password_hash)
+      INSERT INTO users (username, email, password_hash, bio, avatar_url)
+      VALUES (:username, :email, :password_hash, :bio, :avatar_url)
     ";
     $stmt = $conn->prepare($sql);
 
@@ -60,15 +64,19 @@ try {
         ':username'       => $data['username'],
         ':email'          => $data['email'],
         ':password_hash'  => password_hash($data['password'], PASSWORD_DEFAULT),
+        ':bio'            => $bio,
+        ':avatar_url'     => $avatar_url
     ]);
 
     // 6) Respuesta exitosa
     http_response_code(201);
     echo json_encode([
-        'message'  => 'Usuario creado exitosamente',
-        'user_id'  => $conn->lastInsertId(),
-        'username' => $data['username'],
-        'email'    => $data['email']
+        'message'    => 'Usuario creado exitosamente',
+        'user_id'    => $conn->lastInsertId(),
+        'username'   => $data['username'],
+        'email'      => $data['email'],
+        'bio'        => $bio,
+        'avatar_url' => $avatar_url
     ]);
 
 } catch (\PDOException $e) {

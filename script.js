@@ -48,34 +48,65 @@ toggleLink.addEventListener('click', (e) => {
 });
 
 // Manejo del login/registro
-submitBtn.addEventListener('click', (e) => {
+submitBtn.addEventListener('click', async (e) => {
   e.preventDefault();
-  
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value.trim();
   const email = document.getElementById('email').value.trim();
 
   // Validación básica
   if (!username || !password) {
-    alert('Please fill in all required fields');
+    alert('Por favor, completa todos los campos requeridos');
     return;
   }
 
   if (isRegistering && !email) {
-    alert('Please enter your email');
+    alert('Por favor, ingresa tu email');
     return;
   }
 
-  // Simular autenticación exitosa
-  currentUser = {
-    username: username,
-    email: email || `${username}@example.com`,
-    avatar: null,
-    description: ''
-  };
+  if (isRegistering) {
+    // Guardar datos temporalmente, el registro real será al guardar el perfil
+    currentUser = {
+      username: username,
+      email: email,
+      password: password, // importante para el registro final
+      avatar: null,
+      description: ''
+    };
+    showProfileSetup();
+  } else {
+    // LOGIN
+    try {
+      // Usamos el campo 'username' para el login (puede ser username o email)
+      const loginIdentifier = document.getElementById('username').value.trim();
+      if (!loginIdentifier || !password) {
+        alert('Por favor, ingresa tu usuario/email y contraseña');
+        return;
+      }
 
-  // Transición a la pantalla de perfil
-  showProfileSetup();
+      const url = `backend/get_login.php?email=${encodeURIComponent(loginIdentifier)}&password=${encodeURIComponent(password)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (res.ok) {
+        currentUser = {
+          username: data.user.username,
+          email: data.user.email,
+          avatar: null,
+          description: ''
+        };
+        // Para login exitoso, ir directamente a la aplicación principal
+        alert(`¡Bienvenido ${currentUser.username}! Entrando a la página principal...`);
+        // Aquí puedes redirigir a la página principal de tu aplicación
+        // window.location.href = '/dashboard';
+        console.log('Login exitoso:', currentUser);
+      } else {
+        alert(data.error || 'Credenciales inválidas');
+      }
+    } catch (err) {
+      alert('Error de conexión con el backend');
+    }
+  }
 });
 
 // Mostrar pantalla de configuración de perfil
@@ -137,23 +168,62 @@ descriptionTextarea.addEventListener('input', (e) => {
 // Guardar perfil
 saveProfileBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  
   const description = descriptionTextarea.value.trim();
-  
-  // Actualizar datos del usuario
-  currentUser.description = description;
-  if (selectedAvatarFile) {
-    // En una aplicación real, aquí subirías la imagen a un servidor
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      currentUser.avatar = e.target.result;
-      showWelcomeScreen();
-    };
-    reader.readAsDataURL(selectedAvatarFile);
+
+  if (isRegistering) {
+    // Registrar usuario con todos los datos
+    if (selectedAvatarFile) {
+      const reader = new FileReader();
+      reader.onload = async (ev) => {
+        const avatarBase64 = ev.target.result;
+        await enviarPerfilRegistro(description, avatarBase64);
+      };
+      reader.readAsDataURL(selectedAvatarFile);
+    } else {
+      enviarPerfilRegistro(description, null);
+    }
   } else {
-    showWelcomeScreen();
+    // Solo login, no se envía nada extra
+    currentUser.description = description;
+    if (selectedAvatarFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        currentUser.avatar = e.target.result;
+        showWelcomeScreen();
+      };
+      reader.readAsDataURL(selectedAvatarFile);
+    } else {
+      showWelcomeScreen();
+    }
   }
 });
+
+// Función para registrar usuario con todos los datos
+async function enviarPerfilRegistro(bio, avatar_url) {
+  try {
+    const res = await fetch('backend/post_users.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: currentUser.username,
+        email: currentUser.email,
+        password: currentUser.password,
+        bio: bio,
+        avatar_url: avatar_url
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      currentUser.description = data.bio;
+      currentUser.avatar = data.avatar_url;
+      showWelcomeScreen();
+    } else {
+      alert(data.error || 'Error al guardar el perfil');
+    }
+  } catch (err) {
+    alert('Error de conexión con el backend');
+  }
+}
 
 // Saltar configuración de perfil
 skipProfile.addEventListener('click', (e) => {
