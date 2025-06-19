@@ -9,15 +9,16 @@
 </head>
 
 <body>
-    <header>
-        <div class="header-container">
-            <img class="logo-header" src="/Frontend/Assets/Imagenes/HorrorApp.png" alt="">
-        </div>
-    </header>
 
-    <div class="layout">
+    <div class="app-container">
 
-        <aside class="left">
+        <header class="header">
+            <div class="header-container">
+                <img class="logo-header" src="/Frontend/Assets/Imagenes/HorrorApp.png" alt="">
+            </div>
+        </header>
+
+        <aside class="sidebar-left">
             <nav class="nav-menu">
                 <button class="button-nav button-nav-active">
                     <svg class="button-nav-icon">
@@ -65,16 +66,16 @@
                         <span class="profile-username">@usuario</span>
                     </div>
                 </div>
-                <button class="circle-button">
-                    <svg class="circle-button-icon">
+                <div class="profile-button-more">
+                    <svg class="profile-button-more-icon">
                         <use href="/Frontend/Assets/Icons/sprite.svg#icon-ellipsis"></use>
                     </svg>
-                </button>
+                </div>
 
             </div>
         </aside>
 
-        <main>
+        <main class="main">
             <!-- Posts simulados -->
             <form class="new-post">
                 <img class="profile-post" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
@@ -177,7 +178,7 @@
             <div class="post">Publicación 7</div>
         </main>
 
-        <aside class="right">
+        <aside class="sidebar-right">
             <div class="container-trending">
 
                 <div class="trending-title">
@@ -230,10 +231,10 @@
                 <div class="follow-item">
 
                     <div class="follow-profile">
-                        <img class="follow-image" src="/Frontend/Assets/Imagenes/HorrorLover.jpg" alt="">
+                        <img class="follow-image" src="/Frontend/Assets/Imagenes/Scream.jpg" alt="">
                         <div class="follow-info">
-                            <span class="follow-name">The Horror Lover</span>
-                            <span class="follow-username">@THorror_Lover</span>
+                            <a href="#" class="follow-name">Scream Spain</a>
+                            <span class="follow-username">@Scream_Sp4in</span>
                         </div>
                     </div>
 
@@ -245,7 +246,7 @@
                     <div class="follow-profile">
                         <img class="follow-image" src="/Frontend/Assets/Imagenes/HorrorLover.jpg" alt="">
                         <div class="follow-info">
-                            <span class="follow-name">The Horror Lover</span>
+                            <a href="#" class="follow-name">The Horror Lover</a>
                             <span class="follow-username">@THorror_Lover</span>
                         </div>
                     </div>
@@ -259,38 +260,34 @@
         </aside>
 
         <!-- Modal de Comentarios -->
-    <div class="modal-overlay" id="commentModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title">Responder</h2>
-                <button class="close-button" onclick="closeCommentModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="original-post" id="originalPost">
-                    <!-- El contenido del post original se insertará aquí -->
+        <div class="modal-overlay" id="commentModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Responder</h2>
+                    <button class="close-button" onclick="closeCommentModal()">&times;</button>
                 </div>
-                
-                <div class="reply-section">
-                    <div class="reply-header">
-                        <div class="user-avatar">U</div>
-                        <span class="reply-to">Respondiendo a <span id="replyToUser"></span></span>
+                <div class="modal-body">
+                    <div class="original-post" id="originalPost">
+                        <!-- El contenido del post original se insertará aquí -->
                     </div>
-                    <textarea 
-                        class="reply-input" 
-                        id="replyInput" 
-                        placeholder="Escribe tu respuesta..."
-                        maxlength="280"
-                    ></textarea>
-                    <div class="reply-actions">
-                        <span class="character-count" id="charCount">0/280</span>
-                        <button class="reply-button" id="replyButton" onclick="submitReply()">
-                            Responder
-                        </button>
+
+                    <div class="reply-section">
+                        <div class="reply-header">
+                            <div class="user-avatar">U</div>
+                            <span class="reply-to">Respondiendo a <span id="replyToUser"></span></span>
+                        </div>
+                        <textarea class="reply-input" id="replyInput" placeholder="Escribe tu respuesta..."
+                            maxlength="280"></textarea>
+                        <div class="reply-actions">
+                            <span class="character-count" id="charCount">0/280</span>
+                            <button class="reply-button" id="replyButton" onclick="submitReply()">
+                                Responder
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
     </div>

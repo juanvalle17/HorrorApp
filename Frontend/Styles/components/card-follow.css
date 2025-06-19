@@ -62,6 +62,12 @@
     font-size: 14px;
     color: white;
     font-weight: 600;
+    text-decoration: none;
+}
+
+.follow-name:hover{
+    text-decoration: underline;
+    text-decoration-color: white /* Rojo */
 }
 
 .follow-username {

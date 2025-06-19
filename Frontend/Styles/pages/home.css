@@ -9,6 +9,13 @@
 @import '/Frontend/Styles/components/modalComentar.css';
 
 
+:root {
+    --header-height: 60px;
+    --sidebar-width: 350px;
+}
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -21,18 +28,29 @@ body {
     color: white;
 }
 
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
+.app-container {
+    display: grid;
+    grid-template-areas:
+        "header header header"
+        "sidebar-left main sidebar-right";
+    grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+    grid-template-rows: var(--header-height) 1fr;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    grid-area: header;
     background-color: var(--color-primary);
+    border-bottom: 1px solid var(--color-secondary);
     display: flex;
     align-items: center;
     padding: 0 20px;
+    position: sticky;
+    top: 0;
     z-index: 1000;
-    border-bottom: 1px solid var(--color-secondary);
 }
 
 .logo-header {
@@ -42,50 +60,95 @@ header {
 
 .layout {
     max-width: 1200px;
-    /* o 1100px, ajustable */
     margin: 0 auto;
     display: flex;
     margin-top: 60px;
 }
 
-aside.left {
-    width: 340px;
-    /* antes 250px */
-    height: calc(100vh - 60px);
-    position: fixed;
-    top: 60px;
-    left: 30px;
+/* Sidebar Left */
+.sidebar-left {
+    grid-area: sidebar-left;
     padding: 20px;
-    background-color: transparent;
-    /* border-right: 1px solid #374151; */
-}
-
-aside.right {
-    width: 340px;
-    height: calc(100vh - 60px);
-    position: fixed;
-    top: 60px;
-    padding: 20px;
-    background-color: transparent;
-    /* border-left: 1px solid #374151; */
+    border-right: 1px solid var(--color-secondary);
     overflow-y: auto;
-    right: 30px;
-    /* <-- Esto habilita el scroll */
+    height: calc(100vh - var(--header-height));
+    position: sticky;
+    top: var(--header-height);
 }
 
-aside.right::-webkit-scrollbar {
+
+
+
+
+/* Main Content */
+.main {
+    grid-area: main;
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100vh - var(--header-height));
+}
+
+.main::-webkit-scrollbar {
     display: none;
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 700px;
-    margin-left: 300px;
-    /* 300px del aside.left + 60px extra */
-    margin-right: 300px;
-    /* 300px del aside.right + 80px extra */
+/* Sidebar Right */
+.sidebar-right {
+    grid-area: sidebar-right;
     padding: 20px;
-    flex: 1;
+    border-left: 1px solid var(--color-secondary);
+    overflow-y: auto;
+    height: calc(100vh - var(--header-height));
+    position: sticky;
+    top: var(--header-height);
 }
+
+.sidebar-right::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+/* 🟡 Tablets (≤ 1024px) */
+@media (max-width: 1024px) {
+    .app-container {
+        grid-template-areas:
+            "header header header"
+            "sidebar-left main sidebar-right";
+        grid-template-columns: 280px 1fr 280px; /* Reducimos sidebars */
+    }
+
+    .sidebar-left,
+    .sidebar-right {
+        padding: 15px;
+    }
+
+    .main {
+        padding: 15px;
+    }
+}
+
+
+/* 🔵 Móviles (≤ 768px) */
+@media (max-width: 768px) {
+    .app-container {
+        grid-template-areas:
+            "header"
+            "main";
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar-left,
+    .sidebar-right {
+        display: none;
+    }
+
+    .main {
+        padding: 15px;
+    }
+
+    .header {
+        justify-content: center;
+    }
+}
+
