@@ -210,3 +210,9 @@ resizeCanvas();
 // Prevenir el comportamiento por defecto del drag and drop en toda la página
 document.addEventListener('dragover', (e) => e.preventDefault());
 document.addEventListener('drop', (e) => e.preventDefault());
+
+fetch('http://localhost/horrorapp/api/get_publicaciones_usuario.php?id_usuario=1')
+  .then(res => res.json())
+  .then(data => {
+    console.log('Publicaciones del usuario:', data);
+  });
