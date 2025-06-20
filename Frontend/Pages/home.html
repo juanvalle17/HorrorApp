@@ -76,63 +76,7 @@
         </aside>
 
         <main id="contenido" class="main">
-            <div class="main-contenido">
-                <!-- Posts simulados -->
-                <form class="new-post">
-                    <img class="profile-post" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
-                    <textarea name="" id="" rows="3" maxlength="280"
-                        placeholder="Escribe sobre algo que te haya gustado"></textarea>
-                    <div class="container-actions">
-                        <div class="container-buttons">
-
-                            <button class="circle-button">
-                                <svg class="circle-button-icon">
-                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-camera"></use>
-                                </svg>
-                            </button>
-
-                            <button class="circle-button">
-                                <svg class="circle-button-icon">
-                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-encuesta"></use>
-                                </svg>
-                            </button>
-
-                            <button class="circle-button">
-                                <svg class="circle-button-icon">
-                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-emoji"></use>
-                                </svg>
-                            </button>
-
-                        </div>
-
-                        <div class="container-submit">
-                            <span class="counter">0/280</span>
-                            <button class="submit-button">Publicar</button>
-                        </div>
-                    </div>
-                </form>
-
-               <!-- Uso del componente -->
-        <social-post
-            username="ScreamQueen"
-            avatar="/Frontend/Assets/Imagenes/Scream.jpg"
-            time="hace 5 horas"
-            title="IT - Stephen King"
-            image="/Frontend/Assets/Imagenes/IT-StephenKing.jpg"
-            category="Libro"
-            rating="5"
-            content="Stephen King en su máximo esplendor. Esta novela no solo es terror, es un retrato profundo de la infancia y los traumas que nos persiguen. Pennywise es aterrador, pero lo que realmente da miedo es cómo King retrata la crueldad humana. Un clásico imprescindible del género."
-            comments="28"
-            reposts="15"
-            likes="73">
-        </social-post>
-
-                <div class="post">Publicación 3</div>
-                <div class="post">Publicación 4</div>
-                <div class="post">Publicación 5</div>
-                <div class="post">Publicación 6</div>
-                <div class="post">Publicación 7</div>
-            </div>
+            
         </main>
 
         <aside class="sidebar-right">
@@ -245,6 +189,79 @@
                 </div>
             </div>
         </div>
+
+        <template id="home-template">
+            <div class="main-contenido">
+                <!-- Posts simulados -->
+                <form class="new-post">
+                    <img class="profile-post" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
+                    <textarea name="" id="" rows="3" maxlength="280"
+                        placeholder="Escribe sobre algo que te haya gustado"></textarea>
+                    <div class="container-actions">
+                        <div class="container-buttons">
+
+                            <button class="circle-button">
+                                <svg class="circle-button-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-camera"></use>
+                                </svg>
+                            </button>
+
+                            <button class="circle-button">
+                                <svg class="circle-button-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-encuesta"></use>
+                                </svg>
+                            </button>
+
+                            <button class="circle-button">
+                                <svg class="circle-button-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-emoji"></use>
+                                </svg>
+                            </button>
+
+                        </div>
+
+                        <div class="container-submit">
+                            <span class="counter">0/280</span>
+                            <button class="submit-button">Publicar</button>
+                        </div>
+                    </div>
+                </form>
+
+               <!-- Uso del componente -->
+        <social-post
+            username="Scream Spain"
+            avatar="/Frontend/Assets/Imagenes/Scream.jpg"
+            time="hace 5 horas"
+            title="IT - Stephen King"
+            image="/Frontend/Assets/Imagenes/IT-StephenKing.jpg"
+            category="Libro"
+            category-icon="icon-book-text"
+            rating="5"
+            content="Stephen King en su máximo esplendor. Esta novela no solo es terror, es un retrato profundo de la infancia y los traumas que nos persiguen. Pennywise es aterrador, pero lo que realmente da miedo es cómo King retrata la crueldad humana. Un clásico imprescindible del género."
+            comments="28"
+            reposts="15"
+            likes="73">
+        </social-post>
+
+        <social-post
+            username="The Horror Lover"
+            avatar="/Frontend/Assets/Imagenes/HorrorLover.jpg"
+            time="hace 5 horas"
+            title="Cuando Acecha la Maldad"
+            image="/Frontend/Assets/Imagenes/WEL.jpg"
+            category="Película"
+            category-icon="icon-movie"
+            rating="4"
+            content="POR FIN una película de terror qué sabe aprovechar su simple pero aterrador concepto, tomando riesgos en su frenético desarrollo y siendo bien cruda y cruel con todos sus personajes."
+            comments="28"
+            reposts="15"
+            likes="73">
+        </social-post>
+
+              
+            </div>
+
+        </template>
 
 
     </div>
