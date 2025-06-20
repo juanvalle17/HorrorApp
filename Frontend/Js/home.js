@@ -239,7 +239,7 @@ function initHome() {
                 formData.append('images[]', files_to_upload[i]);
             }
             try {
-                const response = await fetch('/HorrorApp/backend/post_post.php', {
+                const response = await fetch('../../backend/post_post.php', {
                     method: 'POST',
                     body: formData
                 });
