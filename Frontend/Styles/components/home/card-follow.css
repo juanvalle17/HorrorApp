@@ -1,0 +1,91 @@
+.container-follow {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-secondary);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    /* border: 1px solid #26292e; */
+}
+
+.container-follow .follow-item:last-of-type {
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+}
+
+
+
+.follow-title {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    font-size: 14px;
+    padding: 16px 20px;
+}
+
+.follow-item {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 20px 20px;
+    gap: 4px;
+    transition: background-color 0.3s ease;
+}
+
+
+.follow-item:hover {
+    background-color: var(--color-success);
+    cursor: pointer;
+}
+
+.follow-profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.follow-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.follow-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.follow-name{
+    font-size: 14px;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.follow-name:hover{
+    text-decoration: underline;
+    text-decoration-color: white /* Rojo */
+}
+
+.follow-username {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.follow-button {
+    background-color: var(--color-button-follow);
+    color: white;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.follow-button:hover {
+    background-color: var(--color-button-follow-hover);
+}

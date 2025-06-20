@@ -1,0 +1,50 @@
+/* Component: New Post */
+
+.new-post {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    background-color: var(--color-secondary);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    /* border: 1px solid #26292e; */
+}
+
+.profile-post{
+    width: 40px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.new-post textarea {
+    font-size: 16px;
+    margin-top: 8px;
+    width: 100%;
+    background-color: var(--color-textarea);
+    resize: none;
+    border: none;
+    border-radius:5px ;
+    color: white;
+    outline: none;
+    padding: 1rem;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.new-post .container-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.new-post .container-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.new-post .container-submit {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
