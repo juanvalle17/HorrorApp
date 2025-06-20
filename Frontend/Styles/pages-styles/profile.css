@@ -1,55 +1,16 @@
 @import '/Frontend/Styles/base/variables.css';
+@import '/Frontend/Styles/components/profile/header-profile.css';
+@import '/Frontend/Styles/components/profile/info-profile.css';
+@import '/Frontend/Styles/components/profile/details-profile.css';
+@import '/Frontend/Styles/components/profile/tabs-nav-profile.css';
+@import '/Frontend/Styles/components/home/posteo.css';
 
 .profile-container {
     max-width: 100%;
     margin: 0 auto;
 }
 
-/* Header del perfil */
-.profile-header {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--color-border);
-    position: sticky;
-    top: 0;
-    background: var(--color-primary);
-    backdrop-filter: blur(12px);
-    z-index: 10;
-}
 
-.back-button {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    color: var(--color-text);
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 50%;
-    margin-right: 16px;
-    transition: background-color 0.2s;
-}
-
-.back-button:hover {
-    background-color: var(--color-success);
-}
-
-.back-button svg {
-    width: 20px;
-    height: 20px;
-}
-
-.profile-header-info h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 2px;
-}
-
-.profile-header-posts {
-    color: var(--color-text-muted);
-    font-size: 0.875rem;
-}
 
 /* Imagen de portada */
 .cover-image {
@@ -65,168 +26,9 @@
     object-fit: cover;
 }
 
-/* Información del perfil */
-.profile-info {
-    padding: 0 16px;
-}
 
-.profile-avatar-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-top: -60px;
-    margin-bottom: 12px;
-}
 
-.profile-avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 4px solid var(--color-primary);
-    overflow: hidden;
-    background: var(--color-secondary);
-}
 
-.profile-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.edit-profile-btn {
-    background: var(--color-button-edit-profile);
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s;
-}
-
-.edit-profile-btn:hover {
-    background-color: var(--color-button-edit-profile-hover);
-}
-
-/* Detalles del perfil */
-.profile-details {
-    margin-bottom: 16px;
-}
-
-.profile-name-section {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-}
-
-.profile-name {
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.verification-badge {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--verification-blue);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.verification-badge svg {
-    width: 14px;
-    height: 14px;
-}
-
-.profile-username {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    margin-bottom: 12px;
-}
-
-.profile-bio {
-    margin-bottom: 12px;
-    line-height: 1.5;
-}
-
-.profile-metadata {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-.metadata-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-}
-
-.metadata-item svg {
-    width: 16px;
-    height: 16px;
-}
-
-.profile-stats {
-    display: flex;
-    gap: 20px;
-}
-
-.stat-item {
-    display: flex;
-    gap: 4px;
-    text-decoration: none;
-    color: var(--color-text);
-    transition: color 0.2s;
-}
-
-.stat-item:hover {
-    color: var(--color-text-muted);
-}
-
-.stat-number {
-    font-weight: 700;
-}
-
-.stat-label {
-    color: var(--color-text-muted);
-}
-
-/* Tabs de navegación */
-.profile-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--color-border);
-    margin-top: 16px;
-    overflow-x: auto;
-}
-
-.tab-button {
-    background: none;
-    border: none;
-    color: var(--color-text-muted);
-    padding: 16px;
-    cursor: pointer;
-    font-weight: 600;
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
-    white-space: nowrap;
-    min-width: fit-content;
-}
-
-.tab-button:hover {
-    color: var(--color-text);
-}
-
-.tab-button.active {
-    color: var(--color-text);
-    border-bottom-color: var(--color-accent);
-}
 
 /* Posts del perfil */
 .profile-posts {
@@ -234,20 +36,16 @@
     margin-top: 0;
 }
 
-.post {
-    border-bottom: 1px solid var(--color-border);
-    padding: 16px;
-    transition: background-color 0.2s;
+.p-post {
+    background-color: var(--color-secondary);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
-.post:hover {
-    background-color: rgba(255, 255, 255, 0.03);
-}
 
-.pinned-post {
-    background-color: rgba(233, 69, 96, 0.05);
-    border-left: 3px solid var(--color-accent);
-}
+
+
 
 .pinned-indicator {
     display: flex;
