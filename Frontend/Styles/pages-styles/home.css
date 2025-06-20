@@ -1,12 +1,12 @@
 @import '/Frontend/Styles/base/variables.css';
-@import '/Frontend/Styles/components/new-post.css';
-@import '/Frontend/Styles/components/buttons.css';
-@import '/Frontend/Styles/components/nav.css';
-@import '/Frontend/Styles/components/card-profile.css';
-@import '/Frontend/Styles/components/card-trending.css';
-@import '/Frontend/Styles/components/card-follow.css';
-@import '/Frontend/Styles/components/posteo.css';
-@import '/Frontend/Styles/components/modalComentar.css';
+@import '/Frontend/Styles/components/home/new-post.css';
+@import '/Frontend/Styles/components/home/buttons.css';
+@import '/Frontend/Styles/components/home/nav.css';
+@import '/Frontend/Styles/components/home/card-user.css';
+@import '/Frontend/Styles/components/home/card-trending.css';
+@import '/Frontend/Styles/components/home/card-follow.css';
+@import '/Frontend/Styles/components/home/posteo.css';
+@import '/Frontend/Styles/components/home/modalComentar.css';
 
 
 :root {
@@ -83,13 +83,16 @@ body {
 /* Main Content */
 .main {
     grid-area: main;
-    padding: 20px;
     overflow-y: auto;
     height: calc(100vh - var(--header-height));
 }
 
 .main::-webkit-scrollbar {
     display: none;
+}
+
+.main-contenido{
+    padding: 20px;
 }
 
 /* Sidebar Right */

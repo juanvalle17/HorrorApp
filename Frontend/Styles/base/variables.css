@@ -29,4 +29,7 @@
 
     --color-scrollbar:#293749;
 
+    --color-button-edit-profile: rgb(220, 2, 2);
+    --color-button-edit-profile-hover: rgb(255, 0, 0);
+
 }
