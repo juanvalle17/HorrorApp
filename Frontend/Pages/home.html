@@ -76,7 +76,59 @@
         </aside>
 
         <main id="contenido" class="main">
-            
+            <div class="main-contenido">
+                <!-- Posts simulados -->
+                <form class="new-post" id="formNewPost" enctype="multipart/form-data">
+                    <img class="profile-post" src="../Assets/Imagenes/M.jpg" alt="">
+                    <div class="post-content-container">
+                        <div id="title-container" class="title-container">
+                            <input type="text" name="title" id="postTitle" placeholder="Añade un título..." maxlength="100" required>
+                        </div>
+                        <div class="counter-container">
+                            <span id="title-counter" class="counter">0/100</span>
+                        </div>
+                        <textarea name="content" id="contentPost" rows="3" maxlength="280" placeholder="Desata tus pensamientos..." required></textarea>
+                        <div class="counter-container">
+                           <span id="content-counter" class="counter">0/280</span>
+                        </div>
+                    </div>
+                    <div id="image-preview-container" class="image-preview-container"></div>
+
+                    <div class="container-actions">
+                        <div class="container-buttons">
+                            <div class="image-upload-container">
+                                <label for="imagesPost" class="image-upload-label" title="Subir imagen">
+                                    <svg class="circle-button-icon">
+                                        <use href="../Assets/Icons/sprite.svg#icon-camera"></use>
+                                    </svg>
+                                    <span>Añadir Imagen</span>
+                                </label>
+                                <p class="image-upload-hint">Es necesario subir al menos una imagen.</p>
+                            </div>
+                            <input type="file" name="images[]" id="imagesPost" accept="image/*" multiple style="display:none" required>
+                            
+                            <div class="category-select-wrapper">
+                                <select name="category_id" id="categoryPost" required>
+                                    <option value="" disabled selected>Categoría</option>
+                                    <option value="1">Películas</option>
+                                    <option value="2">Series</option>
+                                    <option value="3">Libros</option>
+                                </select>
+                                <svg class="category-select-icon">
+                                    <use href="../Assets/Icons/sprite.svg#icon-chevron-down"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="container-submit">
+                            <button class="submit-button" type="submit">Publicar</button>
+                        </div>
+                    </div>
+                </form>
+
+               <div id="post-feed">
+                    <!-- Las publicaciones dinámicas se cargarán aquí -->
+               </div>
+            </div>
         </main>
 
         <aside class="sidebar-right">
@@ -190,95 +242,8 @@
             </div>
         </div>
 
-        <template id="home-template">
-            <div class="main-contenido">
-                <!-- Posts simulados -->
-                <form class="new-post" id="formNewPost" enctype="multipart/form-data">
-                    <img class="profile-post" src="../Assets/Imagenes/M.jpg" alt="">
-                    <div class="post-content-container">
-                        <div id="title-container" class="title-container">
-                            <input type="text" name="title" id="postTitle" placeholder="Añade un título..." maxlength="100" required>
-                        </div>
-                        <div class="counter-container">
-                            <span id="title-counter" class="counter">0/100</span>
-                        </div>
-                        <textarea name="content" id="contentPost" rows="3" maxlength="280" placeholder="Desata tus pensamientos..." required></textarea>
-                        <div class="counter-container">
-                           <span id="content-counter" class="counter">0/280</span>
-                        </div>
-                    </div>
-                    <div id="image-preview-container" class="image-preview-container"></div>
-
-                    <div class="container-actions">
-                        <div class="container-buttons">
-                            <div class="image-upload-container">
-                                <label for="imagesPost" class="image-upload-label" title="Subir imagen">
-                                    <svg class="circle-button-icon">
-                                        <use href="../Assets/Icons/sprite.svg#icon-camera"></use>
-                                    </svg>
-                                    <span>Añadir Imagen</span>
-                                </label>
-                                <p class="image-upload-hint">Es necesario subir al menos una imagen.</p>
-                            </div>
-                            <input type="file" name="images[]" id="imagesPost" accept="image/*" multiple style="display:none" required>
-                            
-                            <div class="category-select-wrapper">
-                                <select name="category_id" id="categoryPost" required>
-                                    <option value="" disabled selected>Categoría</option>
-                                    <option value="1">Películas</option>
-                                    <option value="2">Series</option>
-                                    <option value="3">Libros</option>
-                                </select>
-                                <svg class="category-select-icon">
-                                    <use href="../Assets/Icons/sprite.svg#icon-chevron-down"></use>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="container-submit">
-                            <button class="submit-button" type="submit">Publicar</button>
-                        </div>
-                    </div>
-                </form>
-
-               <!-- Uso del componente -->
-        <social-post
-            username="Scream Spain"
-            avatar="../Assets/Imagenes/Scream.jpg"
-            time="hace 5 horas"
-            title="IT - Stephen King"
-            image="../Assets/Imagenes/IT-StephenKing.jpg"
-            category="Libro"
-            category-icon="icon-book-text"
-            rating="5"
-            content="Stephen King en su máximo esplendor. Esta novela no solo es terror, es un retrato profundo de la infancia y los traumas que nos persiguen. Pennywise es aterrador, pero lo que realmente da miedo es cómo King retrata la crueldad humana. Un clásico imprescindible del género."
-            comments="28"
-            reposts="15"
-            likes="73">
-        </social-post>
-
-        <social-post
-            username="The Horror Lover"
-            avatar="../Assets/Imagenes/HorrorLover.jpg"
-            time="hace 5 horas"
-            title="Cuando Acecha la Maldad"
-            image="../Assets/Imagenes/WEL.jpg"
-            category="Película"
-            category-icon="icon-movie"
-            rating="4"
-            content="POR FIN una película de terror qué sabe aprovechar su simple pero aterrador concepto, tomando riesgos en su frenético desarrollo y siendo bien cruda y cruel con todos sus personajes."
-            comments="28"
-            reposts="15"
-            likes="73">
-        </social-post>
-
-              
-            </div>
-
-        </template>
-
-
     </div>
-    <script src="../Components/post.js"></script>
+    <script src="../Js/components.js"></script>
     <script src="../Js/home.js"></script>
     <script src="../Js/main.js"></script>
 </body>
