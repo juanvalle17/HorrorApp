@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Frontend/Styles/pages-styles/home.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <header class="header">
+            <div class="header-container">
+                <img class="logo-header" src="/Frontend/Assets/Imagenes/HorrorApp.png" alt="">
+            </div>
+        </header>
+
+        <aside class="sidebar-left">
+            <nav class="nav-menu">
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-house"></use>
+                    </svg>
+                    <span class="text-nav">Inicio</span>
+                </button>
+
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-search"></use>
+                    </svg>
+                    <span class="text-nav">Explorar</span>
+                </button>
+
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-hash"></use>
+                    </svg>
+                    <span class="text-nav">Tendencias</span>
+                </button>
+
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-bookmark"></use>
+                    </svg>
+                    <span class="text-nav">Guardados</span>
+                </button>
+
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-users"></use>
+                    </svg>
+                    <span class="text-nav">Comunidades</span>
+                </button>
+
+            </nav>
+
+            <div class="h-container-user" id="btnProfile">
+                <div class="h-user">
+                    <img class="h-user-image" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
+
+                    <div class="h-user-info">
+                        <span class="h-user-name">Usuario Anonimo</span>
+                        <span class="h-user-username">@usuario</span>
+                    </div>
+                </div>
+                <div class="h-user-button-more">
+                    <svg class="h-user-button-more-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-ellipsis"></use>
+                    </svg>
+                </div>
+
+            </div>
+        </aside>
+
+        <main id="contenido" class="main">
+            
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="container-trending">
+
+                <div class="trending-title">
+                    <svg class="trending-icon">
+                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-flame"></use>
+                    </svg>
+                    <h2>Tendencias</h2>
+                </div>
+
+                <div class="trending-item">
+                    <span class="trending-hashtag">#DestinoFinal</span>
+                    <span class="trending-count">1.2M Posts</span>
+                    <div class="trending-description">
+                        <svg class="trending-description-icon">
+                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-movie"></use>
+                        </svg>
+                        <span class="trending-description-text">Películas</span>
+                    </div>
+                </div>
+
+                <div class="trending-item">
+                    <span class="trending-hashtag">#AHS</span>
+                    <span class="trending-count">990,5 mil Posts</span>
+                    <div class="trending-description">
+                        <svg class="trending-description-icon">
+                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-monitor-play"></use>
+                        </svg>
+                        <span class="trending-description-text">Series</span>
+                    </div>
+                </div>
+
+                <div class="trending-item">
+                    <span class="trending-hashtag">#StephenKing</span>
+                    <span class="trending-count">93,4 mil Posts</span>
+                    <div class="trending-description">
+                        <svg class="trending-description-icon">
+                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-book-text"></use>
+                        </svg>
+                        <span class="trending-description-text">Libros</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-follow">
+
+                <div class="follow-title">
+                    <h2>A quien seguir</h2>
+                </div>
+
+                <div class="follow-item">
+
+                    <div class="follow-profile">
+                        <img class="follow-image" src="/Frontend/Assets/Imagenes/Scream.jpg" alt="">
+                        <div class="follow-info">
+                            <a href="#" class="follow-name">Scream Spain</a>
+                            <span class="follow-username">@Scream_Sp4in</span>
+                        </div>
+                    </div>
+
+                    <button class="follow-button">Seguir</button>
+                </div>
+
+                <div class="follow-item">
+
+                    <div class="follow-profile">
+                        <img class="follow-image" src="/Frontend/Assets/Imagenes/HorrorLover.jpg" alt="">
+                        <div class="follow-info">
+                            <a href="#" class="follow-name">The Horror Lover</a>
+                            <span class="follow-username">@THorror_Lover</span>
+                        </div>
+                    </div>
+
+                    <button class="follow-button">Seguir</button>
+                </div>
+
+            </div>
+
+
+        </aside>
+
+        <!-- Modal de Comentarios -->
+        <div class="modal-overlay" id="commentModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Responder</h2>
+                    <button class="close-button" onclick="closeCommentModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="original-post" id="originalPost">
+                        <!-- El contenido del post original se insertará aquí -->
+                    </div>
+
+                    <div class="reply-section">
+                        <div class="reply-header">
+                            <div class="user-avatar">U</div>
+                            <span class="reply-to">Respondiendo a <span id="replyToUser"></span></span>
+                        </div>
+                        <textarea class="reply-input" id="replyInput" placeholder="Escribe tu respuesta..."
+                            maxlength="280"></textarea>
+                        <div class="reply-actions">
+                            <span class="character-count" id="charCount">0/280</span>
+                            <button class="reply-button" id="replyButton" onclick="submitReply()">
+                                Responder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <template id="home-template">
+            <div class="main-contenido">
+                <!-- Posts simulados -->
+                <form class="new-post">
+                    <img class="profile-post" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
+                    <textarea name="" id="" rows="3" maxlength="280"
+                        placeholder="Escribe sobre algo que te haya gustado"></textarea>
+                    <div class="container-actions">
+                        <div class="container-buttons">
+
+                            <button class="circle-button">
+                                <svg class="circle-button-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-camera"></use>
+                                </svg>
+                            </button>
+
+                            <button class="circle-button">
+                                <svg class="circle-button-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-encuesta"></use>
+                                </svg>
+                            </button>
+
+                            <button class="circle-button">
+                                <svg class="circle-button-icon">
+                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-emoji"></use>
+                                </svg>
+                            </button>
+
+                        </div>
+
+                        <div class="container-submit">
+                            <span class="counter">0/280</span>
+                            <button class="submit-button">Publicar</button>
+                        </div>
+                    </div>
+                </form>
+
+               <!-- Uso del componente -->
+        <social-post
+            username="Scream Spain"
+            avatar="/Frontend/Assets/Imagenes/Scream.jpg"
+            time="hace 5 horas"
+            title="IT - Stephen King"
+            image="/Frontend/Assets/Imagenes/IT-StephenKing.jpg"
+            category="Libro"
+            category-icon="icon-book-text"
+            rating="5"
+            content="Stephen King en su máximo esplendor. Esta novela no solo es terror, es un retrato profundo de la infancia y los traumas que nos persiguen. Pennywise es aterrador, pero lo que realmente da miedo es cómo King retrata la crueldad humana. Un clásico imprescindible del género."
+            comments="28"
+            reposts="15"
+            likes="73">
+        </social-post>
+
+        <social-post
+            username="The Horror Lover"
+            avatar="/Frontend/Assets/Imagenes/HorrorLover.jpg"
+            time="hace 5 horas"
+            title="Cuando Acecha la Maldad"
+            image="/Frontend/Assets/Imagenes/WEL.jpg"
+            category="Película"
+            category-icon="icon-movie"
+            rating="4"
+            content="POR FIN una película de terror qué sabe aprovechar su simple pero aterrador concepto, tomando riesgos en su frenético desarrollo y siendo bien cruda y cruel con todos sus personajes."
+            comments="28"
+            reposts="15"
+            likes="73">
+        </social-post>
+
+              
+            </div>
+
+        </template>
+
+
+    </div>
+    <script src="/Frontend/Components/post.js"></script>
+    <script src="/Frontend/Js/home.js"></script>
+    <script src="/Frontend/Js/main.js"></script>
+</body>
+
+</html>

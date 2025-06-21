@@ -1,0 +1,39 @@
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--color-secondary);
+    padding: 20px;
+    /* border: 1px solid #26292e; */
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.button-nav{
+    background-color: var(--color-secondary);
+    color: white;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.button-nav:hover {
+    background-color: var(--color-success); /* Cambia el color al pasar el mouse */
+}
+
+.button-nav-icon {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    fill: none;
+}
+
+.text-nav {
+    font-weight: 600;
+}
+
