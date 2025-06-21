@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
         mainContent.innerHTML = ""; // Limpiar contenido actual
         mainContent.appendChild(homeTemplate.cloneNode(true));
         attachHomeEvents();
+        initHome(); // Llama a la inicialización de home.js
     }
 
     // Función para cargar cualquier página externa y añadir botón volver
@@ -40,7 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const profileBtn = document.getElementById("btnProfile");
         if (profileBtn) {
             profileBtn.addEventListener("click", () => {
+ feature-new-post
+                loadPage("profile.html");
+
             window.location.href = "/Frontend/Pages/profile.html";
+ backend
             });
         }
         // Aquí podés agregar más eventos para otros botones si querés

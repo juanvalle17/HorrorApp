@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Frontend/Styles/pages-styles/home.css">
+    <link rel="stylesheet" href="../Styles/pages-styles/home.css">
     <title>Document</title>
 </head>
 
@@ -14,7 +14,7 @@
 
         <header class="header">
             <div class="header-container">
-                <img class="logo-header" src="/Frontend/Assets/Imagenes/HorrorApp.png" alt="">
+                <img class="logo-header" src="../Assets/Imagenes/HorrorApp.png" alt="">
             </div>
         </header>
 
@@ -22,35 +22,35 @@
             <nav class="nav-menu">
                 <button class="button-nav button-nav-active">
                     <svg class="button-nav-icon">
-                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-house"></use>
+                        <use href="../Assets/Icons/sprite.svg#icon-house"></use>
                     </svg>
                     <span class="text-nav">Inicio</span>
                 </button>
 
                 <button class="button-nav button-nav-active">
                     <svg class="button-nav-icon">
-                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-search"></use>
+                        <use href="../Assets/Icons/sprite.svg#icon-search"></use>
                     </svg>
                     <span class="text-nav">Explorar</span>
                 </button>
 
                 <button class="button-nav button-nav-active">
                     <svg class="button-nav-icon">
-                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-hash"></use>
+                        <use href="../Assets/Icons/sprite.svg#icon-hash"></use>
                     </svg>
                     <span class="text-nav">Tendencias</span>
                 </button>
 
                 <button class="button-nav button-nav-active">
                     <svg class="button-nav-icon">
-                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-bookmark"></use>
+                        <use href="../Assets/Icons/sprite.svg#icon-bookmark"></use>
                     </svg>
                     <span class="text-nav">Guardados</span>
                 </button>
 
                 <button class="button-nav button-nav-active">
                     <svg class="button-nav-icon">
-                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-users"></use>
+                        <use href="../Assets/Icons/sprite.svg#icon-users"></use>
                     </svg>
                     <span class="text-nav">Comunidades</span>
                 </button>
@@ -59,7 +59,7 @@
 
             <div class="h-container-user" id="btnProfile">
                 <div class="h-user">
-                    <img class="h-user-image" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
+                    <img class="h-user-image" src="../Assets/Imagenes/M.jpg" alt="">
 
                     <div class="h-user-info">
                         <span class="h-user-name">Usuario Anonimo</span>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="h-user-button-more">
                     <svg class="h-user-button-more-icon">
-                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-ellipsis"></use>
+                        <use href="../Assets/Icons/sprite.svg#icon-ellipsis"></use>
                     </svg>
                 </div>
 
@@ -84,7 +84,7 @@
 
                 <div class="trending-title">
                     <svg class="trending-icon">
-                        <use href="/Frontend/Assets/Icons/sprite.svg#icon-flame"></use>
+                        <use href="../Assets/Icons/sprite.svg#icon-flame"></use>
                     </svg>
                     <h2>Tendencias</h2>
                 </div>
@@ -94,7 +94,7 @@
                     <span class="trending-count">1.2M Posts</span>
                     <div class="trending-description">
                         <svg class="trending-description-icon">
-                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-movie"></use>
+                            <use href="../Assets/Icons/sprite.svg#icon-movie"></use>
                         </svg>
                         <span class="trending-description-text">Películas</span>
                     </div>
@@ -105,7 +105,7 @@
                     <span class="trending-count">990,5 mil Posts</span>
                     <div class="trending-description">
                         <svg class="trending-description-icon">
-                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-monitor-play"></use>
+                            <use href="../Assets/Icons/sprite.svg#icon-monitor-play"></use>
                         </svg>
                         <span class="trending-description-text">Series</span>
                     </div>
@@ -116,7 +116,7 @@
                     <span class="trending-count">93,4 mil Posts</span>
                     <div class="trending-description">
                         <svg class="trending-description-icon">
-                            <use href="/Frontend/Assets/Icons/sprite.svg#icon-book-text"></use>
+                            <use href="../Assets/Icons/sprite.svg#icon-book-text"></use>
                         </svg>
                         <span class="trending-description-text">Libros</span>
                     </div>
@@ -132,7 +132,7 @@
                 <div class="follow-item">
 
                     <div class="follow-profile">
-                        <img class="follow-image" src="/Frontend/Assets/Imagenes/Scream.jpg" alt="">
+                        <img class="follow-image" src="../Assets/Imagenes/Scream.jpg" alt="">
                         <div class="follow-info">
                             <a href="#" class="follow-name">Scream Spain</a>
                             <span class="follow-username">@Scream_Sp4in</span>
@@ -145,7 +145,7 @@
                 <div class="follow-item">
 
                     <div class="follow-profile">
-                        <img class="follow-image" src="/Frontend/Assets/Imagenes/HorrorLover.jpg" alt="">
+                        <img class="follow-image" src="../Assets/Imagenes/HorrorLover.jpg" alt="">
                         <div class="follow-info">
                             <a href="#" class="follow-name">The Horror Lover</a>
                             <span class="follow-username">@THorror_Lover</span>
@@ -193,36 +193,49 @@
         <template id="home-template">
             <div class="main-contenido">
                 <!-- Posts simulados -->
-                <form class="new-post">
-                    <img class="profile-post" src="/Frontend/Assets/Imagenes/M.jpg" alt="">
-                    <textarea name="" id="" rows="3" maxlength="280"
-                        placeholder="Escribe sobre algo que te haya gustado"></textarea>
+                <form class="new-post" id="formNewPost" enctype="multipart/form-data">
+                    <img class="profile-post" src="../Assets/Imagenes/M.jpg" alt="">
+                    <div class="post-content-container">
+                        <div id="title-container" class="title-container">
+                            <input type="text" name="title" id="postTitle" placeholder="Añade un título..." maxlength="100" required>
+                        </div>
+                        <div class="counter-container">
+                            <span id="title-counter" class="counter">0/100</span>
+                        </div>
+                        <textarea name="content" id="contentPost" rows="3" maxlength="280" placeholder="Desata tus pensamientos..." required></textarea>
+                        <div class="counter-container">
+                           <span id="content-counter" class="counter">0/280</span>
+                        </div>
+                    </div>
+                    <div id="image-preview-container" class="image-preview-container"></div>
+
                     <div class="container-actions">
                         <div class="container-buttons">
-
-                            <button class="circle-button">
-                                <svg class="circle-button-icon">
-                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-camera"></use>
+                            <div class="image-upload-container">
+                                <label for="imagesPost" class="image-upload-label" title="Subir imagen">
+                                    <svg class="circle-button-icon">
+                                        <use href="../Assets/Icons/sprite.svg#icon-camera"></use>
+                                    </svg>
+                                    <span>Añadir Imagen</span>
+                                </label>
+                                <p class="image-upload-hint">Es necesario subir al menos una imagen.</p>
+                            </div>
+                            <input type="file" name="images[]" id="imagesPost" accept="image/*" multiple style="display:none" required>
+                            
+                            <div class="category-select-wrapper">
+                                <select name="category_id" id="categoryPost" required>
+                                    <option value="" disabled selected>Categoría</option>
+                                    <option value="1">Películas</option>
+                                    <option value="2">Series</option>
+                                    <option value="3">Libros</option>
+                                </select>
+                                <svg class="category-select-icon">
+                                    <use href="../Assets/Icons/sprite.svg#icon-chevron-down"></use>
                                 </svg>
-                            </button>
-
-                            <button class="circle-button">
-                                <svg class="circle-button-icon">
-                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-encuesta"></use>
-                                </svg>
-                            </button>
-
-                            <button class="circle-button">
-                                <svg class="circle-button-icon">
-                                    <use href="/Frontend/Assets/Icons/sprite.svg#icon-emoji"></use>
-                                </svg>
-                            </button>
-
+                            </div>
                         </div>
-
                         <div class="container-submit">
-                            <span class="counter">0/280</span>
-                            <button class="submit-button">Publicar</button>
+                            <button class="submit-button" type="submit">Publicar</button>
                         </div>
                     </div>
                 </form>
@@ -230,10 +243,10 @@
                <!-- Uso del componente -->
         <social-post
             username="Scream Spain"
-            avatar="/Frontend/Assets/Imagenes/Scream.jpg"
+            avatar="../Assets/Imagenes/Scream.jpg"
             time="hace 5 horas"
             title="IT - Stephen King"
-            image="/Frontend/Assets/Imagenes/IT-StephenKing.jpg"
+            image="../Assets/Imagenes/IT-StephenKing.jpg"
             category="Libro"
             category-icon="icon-book-text"
             rating="5"
@@ -245,10 +258,10 @@
 
         <social-post
             username="The Horror Lover"
-            avatar="/Frontend/Assets/Imagenes/HorrorLover.jpg"
+            avatar="../Assets/Imagenes/HorrorLover.jpg"
             time="hace 5 horas"
             title="Cuando Acecha la Maldad"
-            image="/Frontend/Assets/Imagenes/WEL.jpg"
+            image="../Assets/Imagenes/WEL.jpg"
             category="Película"
             category-icon="icon-movie"
             rating="4"
@@ -265,9 +278,9 @@
 
 
     </div>
-    <script src="/Frontend/Components/post.js"></script>
-    <script src="/Frontend/Js/home.js"></script>
-    <script src="/Frontend/Js/main.js"></script>
+    <script src="../Components/post.js"></script>
+    <script src="../Js/home.js"></script>
+    <script src="../Js/main.js"></script>
 </body>
 
 </html>
