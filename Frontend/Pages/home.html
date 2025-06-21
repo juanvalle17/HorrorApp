@@ -195,28 +195,49 @@
                 <!-- Posts simulados -->
                 <form class="new-post" id="formNewPost" enctype="multipart/form-data">
                     <img class="profile-post" src="../Assets/Imagenes/M.jpg" alt="">
-                    <textarea name="content" id="contentPost" rows="3" maxlength="280" placeholder="Escribe sobre algo que te haya gustado" required></textarea>
-                    <div class="container-actions">
-                        <div class="container-buttons">
-                            <label class="circle-button" title="Subir imagen">
-                                <svg class="circle-button-icon">
-                                    <use href="../Assets/Icons/sprite.svg#icon-camera"></use>
-                                </svg>
-                                <input type="file" name="images[]" id="imagesPost" accept="image/*" multiple style="display:none">
-                            </label>
-                            <select name="category_id" id="categoryPost" required style="margin-left:10px;">
-                                <option value="">Categoría</option>
-                                <option value="1">Películas</option>
-                                <option value="2">Series</option>
-                                <option value="3">Libros</option>
-                            </select>
+                    <div class="post-content-container">
+                        <div id="title-container" class="title-container">
+                            <input type="text" name="title" id="postTitle" placeholder="Añade un título..." maxlength="100" required>
                         </div>
-                        <div class="container-submit">
-                            <span class="counter">0/280</span>
-                            <button class="submit-button" type="submit">Publicar</button>
+                        <div class="counter-container">
+                            <span id="title-counter" class="counter">0/100</span>
+                        </div>
+                        <textarea name="content" id="contentPost" rows="3" maxlength="280" placeholder="Desata tus pensamientos..." required></textarea>
+                        <div class="counter-container">
+                           <span id="content-counter" class="counter">0/280</span>
                         </div>
                     </div>
                     <div id="image-preview-container" class="image-preview-container"></div>
+
+                    <div class="container-actions">
+                        <div class="container-buttons">
+                            <div class="image-upload-container">
+                                <label for="imagesPost" class="image-upload-label" title="Subir imagen">
+                                    <svg class="circle-button-icon">
+                                        <use href="../Assets/Icons/sprite.svg#icon-camera"></use>
+                                    </svg>
+                                    <span>Añadir Imagen</span>
+                                </label>
+                                <p class="image-upload-hint">Es necesario subir al menos una imagen.</p>
+                            </div>
+                            <input type="file" name="images[]" id="imagesPost" accept="image/*" multiple style="display:none" required>
+                            
+                            <div class="category-select-wrapper">
+                                <select name="category_id" id="categoryPost" required>
+                                    <option value="" disabled selected>Categoría</option>
+                                    <option value="1">Películas</option>
+                                    <option value="2">Series</option>
+                                    <option value="3">Libros</option>
+                                </select>
+                                <svg class="category-select-icon">
+                                    <use href="../Assets/Icons/sprite.svg#icon-chevron-down"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="container-submit">
+                            <button class="submit-button" type="submit">Publicar</button>
+                        </div>
+                    </div>
                 </form>
 
                <!-- Uso del componente -->

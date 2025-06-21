@@ -28,16 +28,86 @@
 /* Submit Button */
 
 .submit-button {
-    font-size: 16px;
     background-color: var(--color-button-submit);
     color: white;
-    padding: 10px 20px;
+    font-weight: bold;
     border: none;
-    border-radius: 8px;
+    border-radius: 20px;
+    padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .submit-button:hover {
-    background-color: var(--color-button-submit-hover); /* Cambia el color al pasar el mouse */
+    background-color: var(--color-button-submit-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 2, 2, 0.3);
+}
+
+.submit-button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.new-post {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 15px;
+    padding: 20px;
+    border: 1px solid var(--color-secondary);
+    background-color: #1a222e; /* Un poco más claro que el fondo principal */
+    border-radius: 8px;
+    margin-bottom: 20px; /* Separación con los posts de abajo */
+}
+
+/* Imagen de perfil del usuario */
+.profile-post {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    grid-row: 1 / 3;
+}
+
+#postTitle {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 5px 0;
+    transition: all 0.2s ease-in-out;
+}
+
+#postTitle::placeholder {
+    color: var(--color-text-muted);
+}
+
+#postTitle:focus {
+    outline: none;
+    color: var(--color-accent);
+}
+
+/* Área de texto para el contenido del post */
+.new-post textarea {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: var(--color-text);
+    font-size: 1.1rem;
+    padding: 10px 0;
+    resize: none;
+    line-height: 1.5;
+    font-family: inherit;
+    transition: all 0.2s ease-in-out;
+}
+
+.new-post textarea:focus {
+    outline: none;
+    border-bottom-color: transparent; /* Ocultar borde al enfocar */
+    box-shadow: 0 1px 0 0 var(--color-accent); /* Línea sutil de foco */
 }

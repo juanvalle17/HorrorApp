@@ -16,6 +16,55 @@
     height: 48px;
     border-radius: 50%;
     object-fit: cover;
+    grid-row: 1 / 3; /* Ocupa espacio de título y textarea */
+}
+
+.post-content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.title-container {
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--color-secondary);
+}
+
+#postTitle {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+#postTitle::placeholder {
+    color: var(--color-text-muted);
+}
+
+#postTitle:focus {
+    outline: none;
+}
+
+.counter-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.counter {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.counter.warning {
+    color: #f39c12; /* Naranja */
+}
+
+.counter.error {
+    color: #e74c3c; /* Rojo */
 }
 
 /* Área de texto para el contenido del post */
@@ -41,14 +90,14 @@
     grid-column: 2 / 3;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     padding-top: 10px;
 }
 
 /* Contenedor para los botones de acción (cámara, categoría) */
 .container-buttons {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 15px;
 }
 
@@ -65,11 +114,58 @@
     font-size: 0.9rem;
 }
 
+/* Botón de carga de imágenes */
+.image-upload-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--color-button-circle);
+    border: 1px dashed var(--color-secondary);
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.image-upload-label:hover {
+    background-color: var(--color-button-circle-hover);
+    border-color: var(--color-accent);
+}
+
+.image-upload-label.has-error {
+    border-color: var(--color-accent);
+    border-style: solid;
+}
+
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.image-upload-hint {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-left: 0; /* Lo reseteamos por si acaso */
+}
+
+.error-message {
+    color: var(--color-accent);
+    font-size: 0.9rem;
+    grid-column: 2;
+    margin-top: -5px; /* Sube un poco para estar más cerca del botón */
+    margin-bottom: 10px; /* Espacio antes de la preview */
+}
+
+.error-message.hidden {
+    display: none;
+}
+
 /* Contenedor para la previsualización de imágenes */
 .image-preview-container {
     grid-column: 2 / 3;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 10px;
     margin-top: 15px;
 }
@@ -77,8 +173,8 @@
 /* Cada item de la previsualización */
 .preview-item {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
 }
 
 /* Imagen de previsualización */
@@ -112,4 +208,44 @@
 
 .remove-image-btn:hover {
     background-color: rgba(220, 2, 2, 0.9);
+}
+
+/* Estilos para el selector de categoría personalizado */
+.category-select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+#categoryPost {
+    appearance: none; /* Ocultar el estilo nativo del select */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--color-button-circle);
+    color: var(--color-text);
+    border: 1px solid var(--color-secondary);
+    border-radius: 20px;
+    padding: 8px 30px 8px 15px; /* Espacio para el ícono */
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#categoryPost:hover {
+    background-color: var(--color-button-circle-hover);
+}
+
+#categoryPost:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.category-select-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    fill: var(--color-text-muted);
+    pointer-events: none; /* Para que el clic pase al select */
 }

@@ -177,13 +177,17 @@ function initHome() {
         }, index * 200);
     });
 
+    // --- Lógica de previsualización de imágenes ---
     const image_input = document.getElementById('imagesPost');
     const preview_container = document.getElementById('image-preview-container');
+    const imageUploadLabel = document.querySelector('.image-upload-label');
 
-    if(image_input) {
+    if (image_input) {
         image_input.addEventListener('change', () => {
+            if (imageUploadLabel) imageUploadLabel.classList.remove('has-error');
+            files_to_upload = []; // Resetear array para nueva selección
             const files = image_input.files;
-            for(let i=0; i<files.length; i++) {
+            for (let i = 0; i < files.length; i++) {
                 files_to_upload.push(files[i]);
             }
             update_preview();
@@ -192,7 +196,7 @@ function initHome() {
 
     function update_preview() {
         preview_container.innerHTML = '';
-        for(let i=0; i<files_to_upload.length; i++) {
+        for (let i = 0; i < files_to_upload.length; i++) {
             const file = files_to_upload[i];
             const reader = new FileReader();
 
@@ -209,6 +213,10 @@ function initHome() {
                 remove_btn.innerHTML = '&times;';
                 remove_btn.addEventListener('click', () => {
                     files_to_upload.splice(i, 1);
+                    // Actualizar el input de archivos para que refleje la eliminación
+                    const dt = new DataTransfer();
+                    files_to_upload.forEach(file => dt.items.add(file));
+                    image_input.files = dt.files;
                     update_preview();
                 });
 
@@ -225,16 +233,28 @@ function initHome() {
     if (form) {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            if (imageUploadLabel) imageUploadLabel.classList.remove('has-error');
+
             const content = document.getElementById('contentPost').value.trim();
             const category = document.getElementById('categoryPost').value;
-            const imagesInput = document.getElementById('imagesPost');
-            if (!content || !category) {
-                alert('Completa el contenido y la categoría.');
+            const title = document.getElementById('postTitle').value.trim();
+
+            if (!title || !content || !category) {
+                alert('El título, el contenido y la categoría son obligatorios.');
                 return;
             }
+
+            if (files_to_upload.length === 0) {
+                if (imageUploadLabel) imageUploadLabel.classList.add('has-error');
+                return;
+            }
+
             const formData = new FormData();
+            formData.append('title', title);
             formData.append('content', content);
             formData.append('category_id', category);
+
             for (let i = 0; i < files_to_upload.length; i++) {
                 formData.append('images[]', files_to_upload[i]);
             }
@@ -256,5 +276,36 @@ function initHome() {
                 alert('Error de red o servidor');
             }
         });
+    }
+
+    // --- Lógica de contadores ---
+    const titleInput = document.getElementById('postTitle');
+    const contentInput = document.getElementById('contentPost');
+    const titleCounter = document.getElementById('title-counter');
+    const contentCounter = document.getElementById('content-counter');
+
+    function updateCounter(input, counter, maxLength) {
+        const currentLength = input.value.length;
+        counter.textContent = `${currentLength}/${maxLength}`;
+
+        const warningThreshold = maxLength * 0.9;
+
+        counter.classList.remove('warning', 'error');
+
+        if (currentLength > maxLength) {
+            counter.classList.add('error');
+        } else if (currentLength > warningThreshold) {
+            counter.classList.add('warning');
+        }
+    }
+
+    if (titleInput && titleCounter) {
+        titleInput.addEventListener('input', () => updateCounter(titleInput, titleCounter, 100));
+        updateCounter(titleInput, titleCounter, 100); // Llamada inicial
+    }
+
+    if (contentInput && contentCounter) {
+        contentInput.addEventListener('input', () => updateCounter(contentInput, contentCounter, 280));
+        updateCounter(contentInput, contentCounter, 280); // Llamada inicial
     }
 }
