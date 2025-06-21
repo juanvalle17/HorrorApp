@@ -1,12 +1,12 @@
-@import '/Frontend/Styles/base/variables.css';
-@import '/Frontend/Styles/components/home/new-post.css';
-@import '/Frontend/Styles/components/home/buttons.css';
-@import '/Frontend/Styles/components/home/nav.css';
-@import '/Frontend/Styles/components/home/card-user.css';
-@import '/Frontend/Styles/components/home/card-trending.css';
-@import '/Frontend/Styles/components/home/card-follow.css';
-@import '/Frontend/Styles/components/home/posteo.css';
-@import '/Frontend/Styles/components/home/modalComentar.css';
+@import '../base/variables.css';
+@import '../components/home/new-post.css';
+@import '../components/home/buttons.css';
+@import '../components/home/nav.css';
+@import '../components/home/card-user.css';
+@import '../components/home/card-trending.css';
+@import '../components/home/card-follow.css';
+@import '../components/home/posteo.css';
+@import '../components/home/modalComentar.css';
 
 
 :root {

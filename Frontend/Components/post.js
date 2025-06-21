@@ -237,7 +237,7 @@ class SocialPost extends HTMLElement {
                                 <h3 class="post-title">${title}</h3>
                                 <div class="post-category">
                                     <svg class="post-category-icon">
-                                        <use href="/Frontend/Assets/Icons/sprite.svg#${categoryIcon}"></use>
+                                        <use href="../Assets/Icons/sprite.svg#${categoryIcon}"></use>
                                     </svg>
                                     <span>${category}</span>
                                 </div>
