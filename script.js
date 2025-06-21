@@ -90,15 +90,19 @@ submitBtn.addEventListener('click', async (e) => {
       const data = await res.json();
       if (res.ok) {
         currentUser = {
+          id: data.user.id,
           username: data.user.username,
           email: data.user.email,
           avatar: null,
           description: ''
         };
+        // Guardar en localStorage para persistencia
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
         // Para login exitoso, ir directamente a la aplicación principal
         alert(`¡Bienvenido ${currentUser.username}! Entrando a la página principal...`);
         // Aquí puedes redirigir a la página principal de tu aplicación
-        // window.location.href = '/dashboard';
+        window.location.href = 'Frontend/Pages/home.html';
         console.log('Login exitoso:', currentUser);
       } else {
         alert(data.error || 'Credenciales inválidas');

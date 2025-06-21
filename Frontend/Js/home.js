@@ -1,6 +1,63 @@
 function initHome() {
     let currentPostElement = null;
     let files_to_upload = [];
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    // --- Cargar posteos dinámicamente ---
+    async function loadPosts() {
+        if (!currentUser || !currentUser.id) {
+            console.error('No se encontró usuario para cargar los posts.');
+            // Aquí podrías redirigir al login si no hay usuario
+            // window.location.href = '/login.html';
+            return;
+        }
+
+        try {
+            // Suponemos que tienes un endpoint que devuelve los posts de un usuario
+            const response = await fetch(`../../backend/get_publicaciones_usuario.php?user_id=${currentUser.id}`);
+            if (!response.ok) {
+                throw new Error('La respuesta de la red no fue exitosa.');
+            }
+            const posts = await response.json();
+            renderPosts(posts);
+        } catch (error) {
+            console.error('Error al cargar los posts:', error);
+            const feed = document.getElementById('post-feed');
+            if(feed) feed.innerHTML = '<p class="text-center text-gray-500">No se pudieron cargar las publicaciones. Inténtalo de nuevo más tarde.</p>';
+        }
+    }
+
+    function renderPosts(posts) {
+        const feed = document.getElementById('post-feed');
+        if (!feed) return;
+
+        if (posts.length === 0) {
+            feed.innerHTML = '<p class="text-center text-gray-500">Parece que aún no hay publicaciones. ¡Crea la primera!</p>';
+            return;
+        }
+
+        feed.innerHTML = posts.map(post => {
+            // Asumimos una estructura de post. Adapta según tu respuesta del backend.
+            return `
+                <social-post
+                    username="${post.username}"
+                    avatar="${post.avatar_url || '/Frontend/Assets/Imagenes/M.jpg'}"
+                    time="${new Date(post.created_at).toLocaleString()}"
+                    title="${post.title}"
+                    image="${post.image_url}"
+                    category="${post.category_name}"
+                    category-icon="icon-movie" 
+                    rating="${post.rating || 0}"
+                    content="${post.content}"
+                    comments="${post.comments_count || 0}"
+                    reposts="${post.reposts_count || 0}"
+                    likes="${post.likes_count || 0}">
+                </social-post>
+            `;
+        }).join('');
+    }
+
+    // --- Fin de Cargar posteos dinámicamente ---
 
     // Función para abrir el modal de comentarios
     window.openCommentModal = function(button) {
@@ -234,6 +291,11 @@ function initHome() {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            if (!currentUser || !currentUser.id) {
+                alert('Debes iniciar sesión para poder publicar.');
+                return;
+            }
+
             if (imageUploadLabel) imageUploadLabel.classList.remove('has-error');
 
             const content = document.getElementById('contentPost').value.trim();
@@ -251,6 +313,7 @@ function initHome() {
             }
 
             const formData = new FormData();
+            formData.append('user_id', currentUser.id);
             formData.append('title', title);
             formData.append('content', content);
             formData.append('category_id', category);
@@ -263,17 +326,22 @@ function initHome() {
                     method: 'POST',
                     body: formData
                 });
-                const data = await response.json();
+
+                const result = await response.json();
+
                 if (response.ok) {
-                    alert('¡Post publicado!');
+                    alert('¡Post creado exitosamente!');
                     form.reset();
+                    preview_container.innerHTML = '';
                     files_to_upload = [];
-                    update_preview();
+                    // Opcional: Recargar los posts o agregar el nuevo al inicio
+                    loadPosts();
                 } else {
-                    alert(data.error || 'Error al publicar el post');
+                    alert(`Error: ${result.error}`);
                 }
-            } catch (err) {
-                alert('Error de red o servidor');
+            } catch (error) {
+                console.error('Error al enviar el formulario:', error);
+                alert('Hubo un error de conexión al crear el post.');
             }
         });
     }
@@ -308,4 +376,14 @@ function initHome() {
         contentInput.addEventListener('input', () => updateCounter(contentInput, contentCounter, 280));
         updateCounter(contentInput, contentCounter, 280); // Llamada inicial
     }
+
+    // --- Inicialización ---
+    document.addEventListener('DOMContentLoaded', () => {
+        initHome();
+        loadPosts(); // Cargar posts cuando el DOM esté listo
+    });
 }
+
+// Llama a la función principal para que todo se active.
+// Asegúrate de que este script se carga al final del body o en un evento DOMContentLoaded.
+initHome();
