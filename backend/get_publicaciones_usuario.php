@@ -9,7 +9,7 @@ $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ];
 
@@ -29,7 +29,7 @@ if (!isset($_GET['id_usuario'])) {
 
 $idUsuario = intval($_GET['id_usuario']);
 
-// Consulta con JOIN para traer una sola imagen por publicación
+// Consulta que une solo la primera imagen por publicación
 $sql = "
     SELECT 
         p.id,
@@ -50,9 +50,13 @@ $sql = "
     JOIN categories c ON p.category_id = c.id
     JOIN users u ON p.user_id = u.id
     LEFT JOIN (
-        SELECT post_id, image_url, caption
-        FROM post_images
-        GROUP BY post_id
+        SELECT p1.*
+        FROM post_images p1
+        INNER JOIN (
+            SELECT post_id, MIN(id) AS min_id
+            FROM post_images
+            GROUP BY post_id
+        ) p2 ON p1.id = p2.min_id
     ) pi ON pi.post_id = p.id
     WHERE p.user_id = ?
     ORDER BY p.created_at DESC
