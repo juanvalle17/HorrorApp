@@ -29,7 +29,7 @@ if (!isset($_GET['id_usuario'])) {
 
 $idUsuario = intval($_GET['id_usuario']);
 
-// Consulta con joins para traer datos completos
+// Consulta con JOIN para traer una sola imagen por publicación
 $sql = "
     SELECT 
         p.id,
@@ -41,24 +41,27 @@ $sql = "
         u.avatar_url,
         pi.image_url,
         pi.caption,
-        (SELECT COUNT(*) FROM comments WHERE post_id = p.id) AS total_comentarios
+        (
+            SELECT COUNT(*) 
+            FROM comments 
+            WHERE post_id = p.id
+        ) AS total_comentarios
     FROM posts p
     JOIN categories c ON p.category_id = c.id
     JOIN users u ON p.user_id = u.id
-    LEFT JOIN post_images pi ON pi.post_id = p.id
+    LEFT JOIN (
+        SELECT post_id, image_url, caption
+        FROM post_images
+        GROUP BY post_id
+    ) pi ON pi.post_id = p.id
     WHERE p.user_id = ?
     ORDER BY p.created_at DESC
 ";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$idUsuario]);
-
 $publicaciones = $stmt->fetchAll();
 
-// Simular estrellas y título si aún no lo tenés en tu base de datos
-foreach ($publicaciones as &$post) {
-    $post['estrellas'] = 5; // Podés personalizar esto después
-    $post['titulo'] = "IT - Stephen King"; // Simulado, o extraído de otro campo si existe
-}
+
 
 echo json_encode($publicaciones);
