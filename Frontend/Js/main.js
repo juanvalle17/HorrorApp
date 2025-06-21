@@ -41,7 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const profileBtn = document.getElementById("btnProfile");
         if (profileBtn) {
             profileBtn.addEventListener("click", () => {
+ feature-new-post
                 loadPage("profile.html");
+
+            window.location.href = "/Frontend/Pages/profile.html";
+ backend
             });
         }
         // Aquí podés agregar más eventos para otros botones si querés
