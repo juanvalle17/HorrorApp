@@ -22,7 +22,7 @@ const reviews = Array.from({ length: 14 }, (_, i) => ({
     function renderizarComentarios(pagina = 1) {
       const grid = document.getElementById("comentarios-grid");
       const paginador = document.getElementById("paginador");
-      const inicio = (pagina - 1) * porPagina;
+      const inicio = (pagina - 1) * porPagina;""
       const items = comentarios.slice(inicio, inicio + porPagina);
       grid.innerHTML = items.map(c => `
         <div class="bg-gray-800 p-5 rounded-xl shadow-md transition duration-300 transform hover:scale-[1.02] hover:shadow-xl hover:bg-gray-700">
