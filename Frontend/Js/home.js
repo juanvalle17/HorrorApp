@@ -63,37 +63,29 @@ function initHome() {
         const originalPostContainer = document.getElementById('originalPost');
         const replyToUser = document.getElementById('replyToUser');
         
-        // Clonar el post original
         const postClone = post.cloneNode(true);
         
-        // Remover las acciones del post clonado
         const actions = postClone.querySelector('.post-actions');
         if (actions) {
             actions.remove();
         }
         
-        // Limpiar el contenedor y agregar el post clonado
         originalPostContainer.innerHTML = '';
         originalPostContainer.appendChild(postClone);
         
-        // Establecer el usuario al que se responde
         const username = post.querySelector('.username').textContent;
         replyToUser.textContent = username;
         
-        // Limpiar el textarea
         document.getElementById('replyInput').value = '';
         updateCharCount();
         
-        // Mostrar el modal
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         
-        // Enfocar el textarea
         setTimeout(() => {
             document.getElementById('replyInput').focus();
         }, 300);
 
-        // Marcar el botón como activo temporalmente
         button.classList.add('pulse');
         setTimeout(() => {
             button.classList.remove('pulse');
@@ -113,19 +105,15 @@ function initHome() {
         const replyText = document.getElementById('replyInput').value.trim();
         
         if (replyText && currentPostElement) {
-            // Incrementar el contador de comentarios
             const commentButton = currentPostElement.querySelector('.comment-btn');
             const countSpan = commentButton.querySelector('.count');
             let count = parseInt(countSpan.textContent);
             countSpan.textContent = count + 1;
             
-            // Marcar el botón como comentado
             commentButton.classList.add('active', 'commented');
             
-            // Simular envío exitoso
             alert('¡Respuesta enviada exitosamente!');
             
-            // Cerrar el modal
             closeCommentModal();
         }
     }
@@ -139,7 +127,6 @@ function initHome() {
         
         charCount.textContent = `${currentLength}/280`;
         
-        // Cambiar color según la cantidad de caracteres
         if (currentLength > 250) {
             charCount.classList.add('warning');
             charCount.classList.remove('error');
@@ -150,7 +137,6 @@ function initHome() {
             charCount.classList.remove('warning', 'error');
         }
         
-        // Habilitar/deshabilitar botón
         replyButton.disabled = currentLength === 0 || currentLength > 280;
     }
 
@@ -266,7 +252,6 @@ function initHome() {
                 remove_btn.innerHTML = '&times;';
                 remove_btn.addEventListener('click', () => {
                     files_to_upload.splice(i, 1);
-                    // Actualizar el input de archivos para que refleje la eliminación
                     const dt = new DataTransfer();
                     files_to_upload.forEach(file => dt.items.add(file));
                     image_input.files = dt.files;
@@ -364,17 +349,17 @@ function initHome() {
 
     if (titleInput && titleCounter) {
         titleInput.addEventListener('input', () => updateCounter(titleInput, titleCounter, 100));
-        updateCounter(titleInput, titleCounter, 100); // Llamada inicial
+        updateCounter(titleInput, titleCounter, 100);
     }
 
     if (contentInput && contentCounter) {
         contentInput.addEventListener('input', () => updateCounter(contentInput, contentCounter, 280));
-        updateCounter(contentInput, contentCounter, 280); // Llamada inicial
+        updateCounter(contentInput, contentCounter, 280);
     }
 
     // --- Inicialización ---
-    // Se llama a loadPosts al final para asegurar que el DOM esté listo.
     loadPosts();
 }
 
-initHome();
+// Llama a la función principal cuando el DOM esté listo.
+document.addEventListener('DOMContentLoaded', initHome);

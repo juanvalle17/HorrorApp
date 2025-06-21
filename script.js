@@ -171,23 +171,62 @@ descriptionTextarea.addEventListener('input', (e) => {
 // Guardar perfil
 saveProfileBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  
   const description = descriptionTextarea.value.trim();
-  
-  // Actualizar datos del usuario
-  currentUser.description = description;
-  if (selectedAvatarFile) {
-    // En una aplicación real, aquí subirías la imagen a un servidor
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      currentUser.avatar = e.target.result;
-      showWelcomeScreen();
-    };
-    reader.readAsDataURL(selectedAvatarFile);
+
+  if (isRegistering) {
+    // Registrar usuario con todos los datos
+    if (selectedAvatarFile) {
+      const reader = new FileReader();
+      reader.onload = async (ev) => {
+        const avatarBase64 = ev.target.result;
+        await enviarPerfilRegistro(description, avatarBase64);
+      };
+      reader.readAsDataURL(selectedAvatarFile);
+    } else {
+      enviarPerfilRegistro(description, null);
+    }
   } else {
-    showWelcomeScreen();
+    // Solo login, no se envía nada extra
+    currentUser.description = description;
+    if (selectedAvatarFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        currentUser.avatar = e.target.result;
+        showWelcomeScreen();
+      };
+      reader.readAsDataURL(selectedAvatarFile);
+    } else {
+      showWelcomeScreen();
+    }
   }
 });
+
+// Función para registrar usuario con todos los datos
+async function enviarPerfilRegistro(bio, avatar_url) {
+  try {
+    const res = await fetch('backend/post_users.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: currentUser.username,
+        email: currentUser.email,
+        password: currentUser.password,
+        bio: bio,
+        avatar_url: avatar_url
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      currentUser.description = data.bio;
+      currentUser.avatar = data.avatar_url;
+      showWelcomeScreen();
+    } else {
+      alert(data.error || 'Error al guardar el perfil');
+    }
+  } catch (err) {
+    alert('Error de conexión con el backend');
+  }
+}
 
 // Saltar configuración de perfil
 skipProfile.addEventListener('click', (e) => {
