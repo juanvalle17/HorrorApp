@@ -12,17 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// user_id fijo por ahora
-$user_id = 1;
+// user_id ahora vendrá del cliente
+$user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
 
 // Validar campos obligatorios
 $content = isset($_POST['content']) ? trim($_POST['content']) : '';
 $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
 $title = isset($_POST['title']) ? trim($_POST['title']) : '';
 
-if (empty($content) || empty($title) || !$category_id) {
+if (empty($content) || empty($title) || !$category_id || !$user_id) {
     http_response_code(400);
-    echo json_encode(['error' => 'El título, el contenido y la categoría son obligatorios.']);
+    echo json_encode(['error' => 'El título, el contenido, la categoría y el ID de usuario son obligatorios.']);
     exit;
 }
 

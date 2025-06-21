@@ -48,34 +48,68 @@ toggleLink.addEventListener('click', (e) => {
 });
 
 // Manejo del login/registro
-submitBtn.addEventListener('click', (e) => {
+submitBtn.addEventListener('click', async (e) => {
   e.preventDefault();
-  
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value.trim();
   const email = document.getElementById('email').value.trim();
 
   // Validación básica
   if (!username || !password) {
-    alert('Please fill in all required fields');
+    alert('Por favor, completa todos los campos requeridos');
     return;
   }
 
   if (isRegistering && !email) {
-    alert('Please enter your email');
+    alert('Por favor, ingresa tu email');
     return;
   }
 
-  // Simular autenticación exitosa
-  currentUser = {
-    username: username,
-    email: email || `${username}@example.com`,
-    avatar: null,
-    description: ''
-  };
+  if (isRegistering) {
+    // Guardar datos temporalmente, el registro real será al guardar el perfil
+    currentUser = {
+      username: username,
+      email: email,
+      password: password, // importante para el registro final
+      avatar: null,
+      description: ''
+    };
+    showProfileSetup();
+  } else {
+    // LOGIN
+    try {
+      // Usamos el campo 'username' para el login (puede ser username o email)
+      const loginIdentifier = document.getElementById('username').value.trim();
+      if (!loginIdentifier || !password) {
+        alert('Por favor, ingresa tu usuario/email y contraseña');
+        return;
+      }
 
-  // Transición a la pantalla de perfil
-  showProfileSetup();
+      const url = `backend/get_login.php?email=${encodeURIComponent(loginIdentifier)}&password=${encodeURIComponent(password)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (res.ok) {
+        currentUser = {
+          id: data.user.id,
+          username: data.user.username,
+          email: data.user.email,
+          avatar: null, // Esto podría venir del backend también
+          description: '' // Esto podría venir del backend también
+        };
+        // Guardar en localStorage para persistencia
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        // Para login exitoso, ir directamente a la aplicación principal
+        alert(`¡Bienvenido ${currentUser.username}! Entrando a la página principal...`);
+        window.location.href = 'Frontend/Pages/home.html';
+        console.log('Login exitoso:', currentUser);
+      } else {
+        alert(data.error || 'Credenciales inválidas');
+      }
+    } catch (err) {
+      alert('Error de conexión con el backend');
+    }
+  }
 });
 
 // Mostrar pantalla de configuración de perfil
