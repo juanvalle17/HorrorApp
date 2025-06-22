@@ -8,8 +8,10 @@ if (!currentUser || !currentUser.id) {
 }
 
 const idUsuario = currentUser.id;
-const publicacionesURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_publicaciones_usuario.php?user_id=${idUsuario}`;
-const comentariosURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_comentarios_por_usuario.php?user_id=${idUsuario}`;
+const backendBaseUrl = '../../backend'; 
+
+const publicacionesURL = `${backendBaseUrl}/get_publicaciones_usuario.php?user_id=${idUsuario}`;
+const comentariosURL = `${backendBaseUrl}/get_comentarios_por_usuario.php?user_id=${idUsuario}`;
 
 const porPaginaReviews = 4;
 const porPagina = 6;
@@ -20,30 +22,18 @@ function getAvatarSrc(avatarUrl, username = 'U') {
     if (!avatarUrl) {
         return `https://via.placeholder.com/40x40/4B5563/FFFFFF?text=${username.charAt(0).toUpperCase()}`;
     }
-    if (avatarUrl.startsWith('data:image')) {
+    // Si es una URL completa (http/https) o un data-uri, la devuelve directamente.
+    if (avatarUrl.startsWith('http') || avatarUrl.startsWith('data:image')) {
         return avatarUrl;
     }
-    return `http://localhost/Parcial%20Programacion/HorrorApp/backend/${avatarUrl}`;
+    // Si no, construye la ruta relativa.
+    const imagePath = avatarUrl.startsWith('uploads/') ? avatarUrl : `uploads/${avatarUrl}`;
+    return `${backendBaseUrl}/${imagePath}`;
 }
 
 // 🔹 PUBLICACIONES (REVIEWS)
 const grid = document.getElementById("galeria");
 const paginadorReviews = document.getElementById("paginador-reviews");
-
-// 🔧 Función de prueba para verificar datos
-async function testDatabase() {
-  try {
-    console.log('🔧 Probando conexión a la base de datos...');
-    const response = await fetch('http://localhost/Parcial%20Programacion/HorrorApp/backend/debug_data.php');
-    const data = await response.json();
-    console.log('🔧 Datos de la base de datos:', data);
-  } catch (error) {
-    console.error('❌ Error al probar la base de datos:', error);
-  }
-}
-
-// Ejecutar prueba de base de datos
-testDatabase();
 
 // 🔧 Función para actualizar información del usuario en la página
 function updateUserProfileInfo() {
@@ -106,7 +96,7 @@ function renderizarReviews(data, pagina = 1) {
       <hr class="border-gray-700 mb-4" />
       <div class="flex gap-4">
         <img src="${r.image_url 
-          ? `http://localhost/Parcial%20Programacion/HorrorApp/backend/${r.image_url}` 
+          ? `${backendBaseUrl}/uploads/${r.image_url}` 
           : 'https://via.placeholder.com/120x160/000000/FFFFFF?text=Sin+Imagen'}"
           class="w-32 h-44 object-cover rounded shadow" />
         <div class="flex-1">
