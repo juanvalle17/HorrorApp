@@ -3,56 +3,128 @@ function initHome() {
     let files_to_upload = [];
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
+    // console.log('👤 Usuario logueado:', currentUser);
+
     // --- Cargar posteos dinámicamente ---
     async function loadPosts() {
+        console.log('🔍 Iniciando carga de posts...');
+        console.log('👤 Usuario actual:', currentUser);
+        
         if (!currentUser || !currentUser.id) {
-            console.error('No se encontró usuario para cargar los posts.');
+            console.error('❌ No se encontró usuario para cargar los posts.');
             // Aquí podrías redirigir al login si no hay usuario
             // window.location.href = '/login.html';
             return;
         }
 
+        // Primero probar la conexión
         try {
-            const response = await fetch(`../../backend/get_publicaciones_usuario.php?user_id=${currentUser.id}`);
+            console.log('🔧 Probando conexión al backend...');
+            const testResponse = await fetch('../../backend/test_connection.php');
+            const testData = await testResponse.json();
+            console.log('🔧 Test de conexión:', testData);
+        } catch (error) {
+            console.error('❌ Error en test de conexión:', error);
+        }
+
+        // Probar carga de posts con captions
+        try {
+            console.log('🔧 Probando carga de posts con captions...');
+            const postsTestResponse = await fetch('../../backend/test_posts.php');
+            const postsTestData = await postsTestResponse.json();
+            console.log('🔧 Test de posts con captions:', postsTestData);
+        } catch (error) {
+            console.error('❌ Error en test de posts:', error);
+        }
+
+        try {
+            const url = `../../backend/get_publicaciones_usuario.php?user_id=${currentUser.id}`;
+            console.log('🌐 Haciendo fetch a:', url);
+            
+            const response = await fetch(url);
+            console.log('📡 Respuesta del servidor:', response.status, response.statusText);
+            
             if (!response.ok) {
                 throw new Error('La respuesta de la red no fue exitosa.');
             }
+            
             const posts = await response.json();
+            console.log('📦 Posts recibidos:', posts);
+            
             renderPosts(posts);
         } catch (error) {
-            console.error('Error al cargar los posts:', error);
+            console.error('❌ Error al cargar los posts:', error);
             const feed = document.getElementById('post-feed');
             if(feed) feed.innerHTML = '<p class="text-center text-gray-500">No se pudieron cargar las publicaciones. Inténtalo de nuevo más tarde.</p>';
         }
     }
 
+    // --- Actualizar información del usuario en el sidebar ---
+    function updateUserInfo() {
+        if (!currentUser) return;
+
+        // Actualizar imagen de perfil en el sidebar
+        const userImage = document.querySelector('.h-user-image');
+        if (userImage && currentUser.avatar) {
+            userImage.src = currentUser.avatar;
+        }
+
+        // Actualizar nombre de usuario en el sidebar
+        const userName = document.querySelector('.h-user-name');
+        if (userName) {
+            userName.textContent = currentUser.username || 'Usuario Anónimo';
+        }
+
+        // Actualizar username en el sidebar
+        const userUsername = document.querySelector('.h-user-username');
+        if (userUsername) {
+            userUsername.textContent = `@${currentUser.username || 'usuario'}`;
+        }
+
+        // Actualizar imagen de perfil en el formulario de post
+        const profilePostImage = document.querySelector('.profile-post');
+        if (profilePostImage && currentUser.avatar) {
+            profilePostImage.src = currentUser.avatar;
+        }
+    }
+
     function renderPosts(posts) {
+        console.log('🎨 Renderizando posts:', posts);
+        
         const feed = document.getElementById('post-feed');
-        if (!feed) return;
+        if (!feed) {
+            console.error('❌ No se encontró el elemento post-feed');
+            return;
+        }
 
         if (posts.length === 0) {
+            console.log('📭 No hay posts para mostrar');
             feed.innerHTML = '<p class="text-center text-gray-500">Parece que aún no hay publicaciones. ¡Crea la primera!</p>';
             return;
         }
 
-        feed.innerHTML = posts.map(post => {
+        console.log('🔨 Generando HTML para', posts.length, 'posts');
+        
+        feed.innerHTML = posts.map((post, index) => {
+            console.log(`📝 Post ${index + 1}:`, post);
             return `
                 <social-post
                     username="${post.username}"
-                    avatar="${post.avatar_url || '/Frontend/Assets/Imagenes/M.jpg'}"
+                    avatar="${post.avatar_url || '../Assets/Imagenes/M.jpg'}"
                     time="${new Date(post.created_at).toLocaleString()}"
-                    title="${post.title}"
-                    image="${post.image_url}"
-                    category="${post.category_name}"
+                    title="${post.caption || 'Sin título'}"
+                    image="${post.image_url || ''}"
+                    category="${post.categoria}"
                     category-icon="icon-movie" 
-                    rating="${post.rating || 0}"
                     content="${post.content}"
-                    comments="${post.comments_count || 0}"
-                    reposts="${post.reposts_count || 0}"
-                    likes="${post.likes_count || 0}">
+                    comments="${post.total_comentarios || 0}"
+                    reposts="0"
+                    likes="0">
                 </social-post>
             `;
         }).join('');
+        
+        console.log('✅ Posts renderizados correctamente');
     }
 
     // Función para abrir el modal de comentarios
@@ -272,7 +344,10 @@ function initHome() {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            if (!currentUser || !currentUser.id) {
+            // Leer el usuario desde localStorage JUSTO antes de publicar para asegurar que tenemos los datos
+            const userFromStorage = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (!userFromStorage || !userFromStorage.id) {
                 alert('Debes iniciar sesión para poder publicar.');
                 return;
             }
@@ -294,7 +369,7 @@ function initHome() {
             }
 
             const formData = new FormData();
-            formData.append('user_id', currentUser.id);
+            formData.append('user_id', userFromStorage.id); // Usar el ID del usuario del storage
             formData.append('title', title);
             formData.append('content', content);
             formData.append('category_id', category);
@@ -357,7 +432,70 @@ function initHome() {
         updateCounter(contentInput, contentCounter, 280);
     }
 
+    // --- Event listener para el botón de perfil ---
+    const btnProfile = document.getElementById('btnProfile');
+    if (btnProfile) {
+        btnProfile.addEventListener('click', () => {
+            // Efecto visual de clic
+            btnProfile.style.transform = 'scale(0.95)';
+            btnProfile.style.transition = 'transform 0.1s ease';
+            
+            // Restaurar después de 100ms y redirigir
+            setTimeout(() => {
+                btnProfile.style.transform = 'scale(1)';
+                // Redirigir a la página de perfil
+                window.location.href = 'profile.html';
+            }, 100);
+        });
+    }
+
+    // --- Función de logout ---
+    function logout() {
+        // Limpiar localStorage
+        localStorage.removeItem('currentUser');
+        
+        // Redirigir al login
+        window.location.href = '../../login.html';
+    }
+
+    // --- Event listener para el botón de más opciones (logout) ---
+    const btnMoreOptions = document.querySelector('.h-user-button-more');
+    if (btnMoreOptions) {
+        btnMoreOptions.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar que se active el click del perfil
+            
+            // Crear menú desplegable
+            const dropdown = document.createElement('div');
+            dropdown.className = 'absolute top-full right-0 mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50';
+            dropdown.innerHTML = `
+                <div class="py-2">
+                    <button class="w-full px-4 py-2 text-left text-white hover:bg-gray-700 text-sm" onclick="logout()">
+                        Cerrar sesión
+                    </button>
+                </div>
+            `;
+            
+            // Posicionar el dropdown
+            btnMoreOptions.style.position = 'relative';
+            btnMoreOptions.appendChild(dropdown);
+            
+            // Cerrar dropdown al hacer clic fuera
+            setTimeout(() => {
+                document.addEventListener('click', function closeDropdown(e) {
+                    if (!btnMoreOptions.contains(e.target)) {
+                        dropdown.remove();
+                        document.removeEventListener('click', closeDropdown);
+                    }
+                });
+            }, 0);
+        });
+    }
+
+    // Hacer logout disponible globalmente
+    window.logout = logout;
+
     // --- Inicialización ---
+    updateUserInfo();
     loadPosts();
 }
 

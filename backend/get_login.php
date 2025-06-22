@@ -33,7 +33,7 @@ if (strpos($login_identifier, '@') !== false && !filter_var($login_identifier, F
 
 try {
     // 4) Buscar usuario por email o username
-    $sql = "SELECT id, username, email, password_hash FROM users WHERE email = :login OR username = :login";
+    $sql = "SELECT id, username, email, password_hash, bio, avatar_url FROM users WHERE email = :login OR username = :login";
     $stmt = $conn->prepare($sql);
     $stmt->execute([':login' => $login_identifier]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -45,6 +45,13 @@ try {
         exit;
     }
 
+    // Preparar la URL del avatar
+    $avatar_final_url = $user['avatar_url'];
+    if ($avatar_final_url && !preg_match('/^data:image/', $avatar_final_url)) {
+        $base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname(dirname($_SERVER['SCRIPT_NAME']));
+        $avatar_final_url = $base_url . "/backend/" . $avatar_final_url;
+    }
+
     // 6) Respuesta exitosa
     http_response_code(200);
     echo json_encode([
@@ -52,7 +59,9 @@ try {
         'user' => [
             'id' => $user['id'],
             'username' => $user['username'],
-            'email' => $user['email']
+            'email' => $user['email'],
+            'bio' => $user['bio'],
+            'avatar_url' => $avatar_final_url
         ]
     ]);
 
