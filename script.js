@@ -93,8 +93,8 @@ submitBtn.addEventListener('click', async (e) => {
           id: data.user.id,
           username: data.user.username,
           email: data.user.email,
-          avatar: null, // Esto podría venir del backend también
-          description: '' // Esto podría venir del backend también
+          avatar: data.user.avatar_url,
+          description: data.user.bio
         };
         // Guardar en localStorage para persistencia
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -246,24 +246,26 @@ function showWelcomeScreen() {
     welcomeDescription.textContent = currentUser.description || 'Welcome to our community!';
     
     if (currentUser.avatar) {
+      // El backend ahora SIEMPRE devuelve una URL completa (o base64 para usuarios antiguos)
       finalAvatarImg.src = currentUser.avatar;
     } else {
-      // Usar avatar por defecto
-      finalAvatarImg.src = 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IiM2YjcyODAiPjxwYXRoIGQ9Ik0xMiAxMmMyLjIxIDAgNC0xLjc5IDQtNHMtMS43OS00LTQtNC00IDEuNzktNCA0IDEuNzkgNCA0IDR6bTAgMmMtMi42NyAwLTggMS4zNC04IDR2MmgxNnYtMmMwLTIuNjYtNS4zMy00LTgtNHoiLz48L3N2Zz4=';
+      // Opcional: mostrar un placeholder si no hay avatar
+      finalAvatarImg.style.display = 'none'; // Oculta la imagen
+      // O podrías tener un div con texto que se muestre en su lugar
+      document.querySelector('.final-avatar-placeholder').style.display = 'block';
     }
-    
+
     welcomeContainer.classList.remove('hidden');
     welcomeContainer.classList.add('slide-in');
   }, 300);
 }
 
-// Continuar a la aplicación
+// Ir a la página principal
 continueBtn.addEventListener('click', () => {
-  // Aquí redirigirías a la aplicación principal
-  alert(`Welcome ${currentUser.username}! Redirecting to the main app...`);
-  
-  // Ejemplo: window.location.href = '/dashboard';
-  console.log('User profile:', currentUser);
+  // Guardar en localStorage para persistencia
+  localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  alert(`¡Bienvenido ${currentUser.username}! Entrando a la página principal...`);
+  window.location.href = 'Frontend/Pages/home.html';
 });
 
 // Canvas background (mantenido del código original)
@@ -283,9 +285,3 @@ resizeCanvas();
 // Prevenir el comportamiento por defecto del drag and drop en toda la página
 document.addEventListener('dragover', (e) => e.preventDefault());
 document.addEventListener('drop', (e) => e.preventDefault());
-
-fetch('http://localhost/horrorapp/api/get_publicaciones_usuario.php?id_usuario=1')
-  .then(res => res.json())
-  .then(data => {
-    console.log('Publicaciones del usuario:', data);
-  });

@@ -1,6 +1,15 @@
-const idUsuario = 1;
-const publicacionesURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_publicaciones_usuario.php?id_usuario=${idUsuario}`;
-const comentariosURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_comentarios_por_usuario.php?id_usuario=${idUsuario}`;
+// Obtener el usuario actual desde localStorage
+const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+// Verificar si hay un usuario logueado
+if (!currentUser || !currentUser.id) {
+    console.error('❌ No hay usuario logueado. Redirigiendo al login...');
+    window.location.href = '../../login.html';
+}
+
+const idUsuario = currentUser.id;
+const publicacionesURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_publicaciones_usuario.php?user_id=${idUsuario}`;
+const comentariosURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_comentarios_por_usuario.php?user_id=${idUsuario}`;
 
 const porPaginaReviews = 4;
 const porPagina = 6;
@@ -38,9 +47,8 @@ function renderizarReviews(data, pagina = 1) {
       <div class="flex gap-4">
         <img src="../../${r.image_url ?? 'uploads/placeholder.jpg'}" class="w-32 h-44 object-cover rounded shadow" />
         <div class="flex-1">
-          <h3 class="font-semibold text-lg">${r.titulo ?? 'Sin título'}</h3>
+          <h3 class="font-semibold text-lg">${r.caption || 'Sin título'}</h3>
           <span class="bg-red-600 text-white text-xs px-2 py-0.5 rounded-full mt-1 mb-2">${formatearCategoria(r.categoria)}</span>
-          <p class="text-yellow-400">${"★".repeat(r.estrellas ?? 5)} <span class="text-white text-sm">${r.estrellas ?? 5}/5</span></p>
           <p class="text-gray-300 text-sm mt-2">${r.content}</p>
         </div>
       </div>

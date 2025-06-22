@@ -1,14 +1,81 @@
-const idUsuario = 1;
-const publicacionesURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_publicaciones_usuario.php?id_usuario=${idUsuario}`;
-const comentariosURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_comentarios_por_usuario.php?id_usuario=${idUsuario}`;
+// Obtener el usuario actual desde localStorage
+const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+// Verificar si hay un usuario logueado
+if (!currentUser || !currentUser.id) {
+    console.error('❌ No hay usuario logueado. Redirigiendo al login...');
+    window.location.href = '../../login.html';
+}
+
+const idUsuario = currentUser.id;
+const publicacionesURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_publicaciones_usuario.php?user_id=${idUsuario}`;
+const comentariosURL = `http://localhost/Parcial%20Programacion/HorrorApp/backend/get_comentarios_por_usuario.php?user_id=${idUsuario}`;
 
 const porPaginaReviews = 4;
 const porPagina = 6;
 let comentarios = [];
 
+// Helper para obtener la URL correcta del avatar
+function getAvatarSrc(avatarUrl, username = 'U') {
+    if (!avatarUrl) {
+        return `https://via.placeholder.com/40x40/4B5563/FFFFFF?text=${username.charAt(0).toUpperCase()}`;
+    }
+    if (avatarUrl.startsWith('data:image')) {
+        return avatarUrl;
+    }
+    return `http://localhost/Parcial%20Programacion/HorrorApp/backend/${avatarUrl}`;
+}
+
 // 🔹 PUBLICACIONES (REVIEWS)
 const grid = document.getElementById("galeria");
 const paginadorReviews = document.getElementById("paginador-reviews");
+
+// 🔧 Función de prueba para verificar datos
+async function testDatabase() {
+  try {
+    console.log('🔧 Probando conexión a la base de datos...');
+    const response = await fetch('http://localhost/Parcial%20Programacion/HorrorApp/backend/debug_data.php');
+    const data = await response.json();
+    console.log('🔧 Datos de la base de datos:', data);
+  } catch (error) {
+    console.error('❌ Error al probar la base de datos:', error);
+  }
+}
+
+// Ejecutar prueba de base de datos
+testDatabase();
+
+// 🔧 Función para actualizar información del usuario en la página
+function updateUserProfileInfo() {
+    if (!currentUser) return;
+    
+    // Actualizar nombre del usuario en el header
+    const userNameElement = document.querySelector('h1');
+    if (userNameElement) {
+        userNameElement.textContent = currentUser.username || 'Usuario Anónimo';
+    }
+    
+    // Actualizar descripción del usuario
+    const userDescriptionElement = document.querySelector('p.text-base.text-gray-400');
+    if (userDescriptionElement) {
+        userDescriptionElement.textContent = currentUser.description || 'Amante del terror y lo sobrenatural';
+    }
+    
+    // Actualizar avatar del usuario
+    const userAvatarElement = document.querySelector('img.w-24.h-24');
+    if (userAvatarElement) {
+        userAvatarElement.src = getAvatarSrc(currentUser.avatar, currentUser.username);
+    }
+    
+    // Actualizar avatar en el formulario de comentarios
+    const commentAvatarElement = document.querySelector('img.w-10.h-10');
+    if (commentAvatarElement) {
+        commentAvatarElement.src = getAvatarSrc(currentUser.avatar, currentUser.username);
+    }
+}
+
+// Actualizar información del usuario al cargar la página
+updateUserProfileInfo();
 
 fetch(publicacionesURL)
   .then(res => res.json())
@@ -29,9 +96,7 @@ function renderizarReviews(data, pagina = 1) {
   grid.innerHTML = items.map(r => `
     <div class="bg-gray-800 p-5 rounded-xl shadow-md hover:scale-105 transition-transform">
       <div class="flex items-center gap-4 mb-2">
-        <img src="${r.avatar_url 
-          ? `http://localhost/Parcial%20Programacion/HorrorApp/backend/${r.avatar_url}` 
-          : 'https://via.placeholder.com/40x40/4B5563/FFFFFF?text=' + r.username.charAt(0)}"
+        <img src="${getAvatarSrc(r.avatar_url, r.username)}"
           class="w-10 h-10 rounded-full object-cover" />
         <div>
           <p class="font-semibold">${r.username}</p>
@@ -45,9 +110,8 @@ function renderizarReviews(data, pagina = 1) {
           : 'https://via.placeholder.com/120x160/000000/FFFFFF?text=Sin+Imagen'}"
           class="w-32 h-44 object-cover rounded shadow" />
         <div class="flex-1">
-          <h3 class="font-semibold text-lg">${generarTitulo(r.categoria)}</h3>
+          <h3 class="font-semibold text-lg">${r.caption || 'Sin título'}</h3>
           <span class="bg-red-600 text-white text-xs px-2 py-0.5 rounded-full mt-1 mb-2">${formatearCategoria(r.categoria)}</span>
-          <p class="text-yellow-400">⭐ Reseña</p>
           <p class="text-gray-300 text-sm mt-2">${r.content}</p>
         </div>
       </div>
@@ -126,14 +190,4 @@ function tiempoTranscurrido(fecha) {
 
 function formatearCategoria(c) {
   return c.charAt(0).toUpperCase() + c.slice(1);
-}
-
-function generarTitulo(categoria) {
-  const titulos = {
-    'películas': 'Reseña de Película',
-    'libros': 'Reseña de Libro',
-    'juegos': 'Reseña de Juego',
-    'series': 'Reseña de Serie'
-  };
-  return titulos[categoria] || 'Reseña de Terror';
 }

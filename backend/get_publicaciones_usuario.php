@@ -1,5 +1,11 @@
 <?php
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Headers: Content-Type');
+
+// Log de depuración
+error_log("get_publicaciones_usuario.php - Parámetros recibidos: " . print_r($_GET, true));
 
 $host = 'localhost';
 $db = 'horrorapp';
@@ -23,7 +29,10 @@ try {
 
 $user_id = intval($_GET['user_id']);
 
+error_log("get_publicaciones_usuario.php - user_id: " . $user_id);
+
 if ($user_id <= 0) {
+    error_log("get_publicaciones_usuario.php - user_id inválido: " . $user_id);
     http_response_code(400);
     echo json_encode(['error' => 'El user_id no es válido.']);
     exit;
@@ -63,9 +72,12 @@ try {
     $stmt->execute([$user_id]);
     $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    error_log("get_publicaciones_usuario.php - Publicaciones encontradas: " . count($publicaciones));
+
     echo json_encode($publicaciones);
 
 } catch (PDOException $e) {
+    error_log("get_publicaciones_usuario.php - Error en la consulta: " . $e->getMessage());
     http_response_code(500);
     echo json_encode([
         'error' => 'Error en la base de datos',

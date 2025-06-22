@@ -50,7 +50,38 @@ if (strlen($data['password']) < 6) {
 
 // 4.1) Leer bio y avatar_url si existen
 $bio = isset($data['bio']) ? $data['bio'] : null;
-$avatar_url = isset($data['avatar_url']) ? $data['avatar_url'] : null;
+$avatar_data = isset($data['avatar_url']) ? $data['avatar_url'] : null;
+$avatar_url_to_db = null;
+
+if ($avatar_data) {
+    // Es una data URL, ej: data:image/jpeg;base64,/9j/4AAQSk...
+    // 1. Separar el tipo de la data
+    if (preg_match('/^data:image\/(\w+);base64,/', $avatar_data, $type)) {
+        // $type[1] tendrá la extensión (jpeg, png, etc.)
+        $image_data = substr($avatar_data, strpos($avatar_data, ',') + 1);
+        $image_data = base64_decode($image_data);
+        
+        if ($image_data === false) {
+            http_response_code(400);
+            echo json_encode(['error' => 'La imagen en base64 es inválida.']);
+            exit;
+        }
+
+        // 2. Generar nombre de archivo único
+        $extension = strtolower($type[1]);
+        $filename = 'avatar_' . uniqid() . '.' . $extension;
+        $upload_path = 'uploads/' . $filename;
+
+        // 3. Guardar el archivo
+        if (file_put_contents($upload_path, $image_data)) {
+            $avatar_url_to_db = $upload_path;
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudo guardar la imagen de perfil.']);
+            exit;
+        }
+    }
+}
 
 try {
     // 5) Preparar e insertar con PDO
@@ -65,8 +96,18 @@ try {
         ':email'          => $data['email'],
         ':password_hash'  => password_hash($data['password'], PASSWORD_DEFAULT),
         ':bio'            => $bio,
-        ':avatar_url'     => $avatar_url
+        ':avatar_url'     => $avatar_url_to_db
     ]);
+
+    // Construir URL completa para la respuesta
+    $final_avatar_response_url = $avatar_url_to_db;
+    if ($avatar_url_to_db && !preg_match('/^data:image/', $avatar_url_to_db)) {
+        // Asumiendo que SCRIPT_NAME es /HorrorApp/backend/post_users.php
+        // dirname($_SERVER['SCRIPT_NAME']) es /HorrorApp/backend
+        // dirname(dirname(...)) es /HorrorApp
+        $base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname(dirname($_SERVER['SCRIPT_NAME']));
+        $final_avatar_response_url = $base_url . "/backend/" . $avatar_url_to_db;
+    }
 
     // 6) Respuesta exitosa
     http_response_code(201);
@@ -76,7 +117,7 @@ try {
         'username'   => $data['username'],
         'email'      => $data['email'],
         'bio'        => $bio,
-        'avatar_url' => $avatar_url
+        'avatar_url' => $final_avatar_response_url
     ]);
 
 } catch (\PDOException $e) {
