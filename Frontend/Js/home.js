@@ -3,14 +3,7 @@ function initHome() {
     let files_to_upload = [];
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    // Verificar si hay un usuario logueado
-    if (!currentUser || !currentUser.id) {
-        console.error('❌ No hay usuario logueado. Redirigiendo al login...');
-        window.location.href = '../../login.html';
-        return;
-    }
-
-    console.log('👤 Usuario logueado:', currentUser);
+    // console.log('👤 Usuario logueado:', currentUser);
 
     // --- Cargar posteos dinámicamente ---
     async function loadPosts() {
@@ -351,7 +344,10 @@ function initHome() {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            if (!currentUser || !currentUser.id) {
+            // Leer el usuario desde localStorage JUSTO antes de publicar para asegurar que tenemos los datos
+            const userFromStorage = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (!userFromStorage || !userFromStorage.id) {
                 alert('Debes iniciar sesión para poder publicar.');
                 return;
             }
@@ -373,7 +369,7 @@ function initHome() {
             }
 
             const formData = new FormData();
-            formData.append('user_id', currentUser.id);
+            formData.append('user_id', userFromStorage.id); // Usar el ID del usuario del storage
             formData.append('title', title);
             formData.append('content', content);
             formData.append('category_id', category);

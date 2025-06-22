@@ -215,15 +215,32 @@ async function enviarPerfilRegistro(bio, avatar_url) {
         avatar_url: avatar_url
       })
     });
+    console.log('REGISTRO: Enviando datos al backend...');
     const data = await res.json();
+    console.log('REGISTRO: Respuesta del backend recibida:', data);
+
     if (res.ok) {
-      currentUser.description = data.bio;
-      currentUser.avatar = data.avatar_url;
+      console.log('REGISTRO: La respuesta del backend es OK (2xx).');
+      // Actualizar el objeto currentUser con los datos finales del backend, INCLUYENDO EL ID
+      currentUser = {
+        id: data.user_id,
+        username: data.username,
+        email: data.email,
+        description: data.bio,
+        avatar: data.avatar_url
+      };
+      console.log('REGISTRO: Objeto a guardar en localStorage:', currentUser);
+      // Guardar el nuevo usuario en localStorage para que el home lo reconozca
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      console.log('REGISTRO: Usuario guardado en localStorage.');
+      
       showWelcomeScreen();
     } else {
+      console.error('REGISTRO: La respuesta del backend NO fue OK.', res.status, res.statusText);
       alert(data.error || 'Error al guardar el perfil');
     }
   } catch (err) {
+    console.error('REGISTRO: Error en el fetch.', err);
     alert('Error de conexión con el backend');
   }
 }
@@ -231,33 +248,35 @@ async function enviarPerfilRegistro(bio, avatar_url) {
 // Saltar configuración de perfil
 skipProfile.addEventListener('click', (e) => {
   e.preventDefault();
-  showWelcomeScreen();
+  // Al saltar, también debemos registrar al usuario, pero con datos vacíos para bio y avatar.
+  enviarPerfilRegistro(null, null);
 });
 
 // Mostrar pantalla de bienvenida
 function showWelcomeScreen() {
-  profileContainer.classList.add('slide-out');
-  
-  setTimeout(() => {
-    profileContainer.classList.add('hidden');
-    
-    // Configurar datos de bienvenida
-    welcomeUsername.textContent = currentUser.username;
-    welcomeDescription.textContent = currentUser.description || 'Welcome to our community!';
-    
-    if (currentUser.avatar) {
-      // El backend ahora SIEMPRE devuelve una URL completa (o base64 para usuarios antiguos)
-      finalAvatarImg.src = currentUser.avatar;
-    } else {
-      // Opcional: mostrar un placeholder si no hay avatar
-      finalAvatarImg.style.display = 'none'; // Oculta la imagen
-      // O podrías tener un div con texto que se muestre en su lugar
-      document.querySelector('.final-avatar-placeholder').style.display = 'block';
-    }
-
-    welcomeContainer.classList.remove('hidden');
-    welcomeContainer.classList.add('slide-in');
-  }, 300);
+  try {
+    profileContainer.classList.add('slide-out');
+    setTimeout(() => {
+      profileContainer.classList.add('hidden');
+      // Mostrar la pantalla de bienvenida
+      welcomeContainer.classList.remove('hidden');
+      welcomeContainer.classList.add('slide-in');
+      // Llenar los datos del usuario
+      if (currentUser) {
+        welcomeUsername.textContent = currentUser.username || '';
+        welcomeDescription.textContent = currentUser.description || 'Welcome to our community!';
+        if (currentUser.avatar) {
+          finalAvatarImg.src = currentUser.avatar;
+        } else {
+          finalAvatarImg.src = 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IiM2YjcyODAiPjxwYXRoIGQ9Ik0xMiAxMmMyLjIxIDAgNC0xLjc5IDQtNHMtMS43OS00LTQtNC00IDEuNzktNCA0IDEuNzkgNCA0IDR6bTAgMmMtMi42NyAwLTggMS4zNC04IDR2MmgxNnYtMmMwLTIuNjYtNS4zMy00LTgtNHoiLz48L3N2Zz4=';
+        }
+      } else {
+        console.error('No hay datos de usuario para mostrar en la bienvenida');
+      }
+    }, 300);
+  } catch (err) {
+    console.error('Error en showWelcomeScreen:', err);
+  }
 }
 
 // Ir a la página principal
