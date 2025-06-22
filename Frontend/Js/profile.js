@@ -117,10 +117,19 @@ function renderizarReviews(data, pagina = 1) {
         </div>
       </div>
       <hr class="border-gray-700 mt-4 mb-2" />
-      <div class="flex justify-between text-gray-400 text-sm">
-        <div class="flex items-center gap-2">💬 ${r.total_comentarios}</div>
-        <div class="flex items-center gap-2">🔁 ${Math.floor(Math.random() * 20)}</div>
-        <div class="flex items-center gap-2">❤️ ${Math.floor(Math.random() * 100)}</div>
+      <div class="flex items-center gap-8 text-gray-400 text-sm">
+          <button class="flex items-center gap-2 hover:text-white transition-colors duration-200">
+              <svg class="w-5 h-5">
+                  <use href="../Assets/Icons/sprite.svg#icon-message"></use>
+              </svg>
+              <span class="font-semibold">${r.total_comentarios}</span>
+          </button>
+          <button class="flex items-center gap-2 hover:text-red-500 transition-colors duration-200">
+              <svg class="w-5 h-5">
+                  <use href="../Assets/Icons/sprite.svg#icon-heart"></use>
+              </svg>
+              <span class="font-semibold">${Math.floor(Math.random() * 100)}</span>
+          </button>
       </div>
     </div>
   `).join("");
