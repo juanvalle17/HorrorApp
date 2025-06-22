@@ -31,6 +31,19 @@ function getAvatarSrc(avatarUrl, username = 'U') {
     return `${backendBaseUrl}/${imagePath}`;
 }
 
+// Helper para obtener la URL correcta de la imagen del post
+function getPostImageSrc(imageUrl) {
+    if (!imageUrl) {
+        return 'https://via.placeholder.com/120x160/000000/FFFFFF?text=Sin+Imagen';
+    }
+    if (imageUrl.startsWith('http') || imageUrl.startsWith('data:image')) {
+        return imageUrl;
+    }
+    // Asegurarse de que el path a 'uploads' no se duplique
+    const imagePath = imageUrl.startsWith('uploads/') ? imageUrl : `uploads/${imageUrl}`;
+    return `${backendBaseUrl}/${imagePath}`;
+}
+
 // 🔹 PUBLICACIONES (REVIEWS)
 const grid = document.getElementById("galeria");
 const paginadorReviews = document.getElementById("paginador-reviews");
@@ -95,9 +108,7 @@ function renderizarReviews(data, pagina = 1) {
       </div>
       <hr class="border-gray-700 mb-4" />
       <div class="flex gap-4">
-        <img src="${r.image_url 
-          ? `${backendBaseUrl}/uploads/${r.image_url}` 
-          : 'https://via.placeholder.com/120x160/000000/FFFFFF?text=Sin+Imagen'}"
+        <img src="${getPostImageSrc(r.image_url)}"
           class="w-32 h-44 object-cover rounded shadow" />
         <div class="flex-1">
           <h3 class="font-semibold text-lg">${r.caption || 'Sin título'}</h3>
