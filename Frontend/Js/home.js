@@ -38,7 +38,7 @@ function initHome() {
         }
 
         try {
-            const url = `../../backend/get_publicaciones_usuario.php?user_id=${currentUser.id}`;
+            const url = `../../backend/get_posts.php`;
             console.log('🌐 Haciendo fetch a:', url);
             
             const response = await fetch(url);
@@ -59,14 +59,39 @@ function initHome() {
         }
     }
 
+    // --- Helpers para construir rutas de imágenes ---
+    const backendBaseUrl = '../../backend';
+
+    function getAvatarSrc(avatarUrl) {
+        if (!avatarUrl || avatarUrl.endsWith('null')) {
+            return '../Assets/Imagenes/M.jpg'; 
+        }
+        if (avatarUrl.startsWith('http') || avatarUrl.startsWith('data:image')) {
+            return avatarUrl;
+        }
+        const imagePath = avatarUrl.startsWith('uploads/') ? avatarUrl : `uploads/${avatarUrl}`;
+        return `${backendBaseUrl}/${imagePath}`;
+    }
+
+    function getPostImageSrc(imageUrl) {
+        if (!imageUrl || imageUrl.endsWith('null')) {
+            return ''; // Retorna vacío si no hay imagen
+        }
+        if (imageUrl.startsWith('http') || imageUrl.startsWith('data:image')) {
+            return imageUrl;
+        }
+        const imagePath = imageUrl.startsWith('uploads/') ? imageUrl : `uploads/${imageUrl}`;
+        return `${backendBaseUrl}/${imagePath}`;
+    }
+
     // --- Actualizar información del usuario en el sidebar ---
     function updateUserInfo() {
         if (!currentUser) return;
 
         // Actualizar imagen de perfil en el sidebar
         const userImage = document.querySelector('.h-user-image');
-        if (userImage && currentUser.avatar) {
-            userImage.src = currentUser.avatar;
+        if (userImage) {
+            userImage.src = getAvatarSrc(currentUser.avatar);
         }
 
         // Actualizar nombre de usuario en el sidebar
@@ -83,8 +108,8 @@ function initHome() {
 
         // Actualizar imagen de perfil en el formulario de post
         const profilePostImage = document.querySelector('.profile-post');
-        if (profilePostImage && currentUser.avatar) {
-            profilePostImage.src = currentUser.avatar;
+        if (profilePostImage) {
+            profilePostImage.src = getAvatarSrc(currentUser.avatar);
         }
     }
 
@@ -107,13 +132,16 @@ function initHome() {
         
         feed.innerHTML = posts.map((post, index) => {
             console.log(`📝 Post ${index + 1}:`, post);
+            const avatarFinal = getAvatarSrc(post.avatar_url);
+            const imagenFinal = getPostImageSrc(post.image_url);
+
             return `
                 <social-post
                     username="${post.username}"
-                    avatar="${post.avatar_url || '../Assets/Imagenes/M.jpg'}"
+                    avatar="${avatarFinal}"
                     time="${new Date(post.created_at).toLocaleString()}"
                     title="${post.caption || 'Sin título'}"
-                    image="${post.image_url || ''}"
+                    image="${imagenFinal}"
                     category="${post.categoria}"
                     category-icon="icon-movie" 
                     content="${post.content}"

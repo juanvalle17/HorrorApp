@@ -96,7 +96,16 @@ function renderizarReviews(data, pagina = 1) {
   const inicio = (pagina - 1) * porPaginaReviews;
   const items = data.slice(inicio, inicio + porPaginaReviews);
 
-  grid.innerHTML = items.map(r => `
+  grid.innerHTML = items.map(r => {
+    const postImage = getPostImageSrc(r.image_url);
+    const imageElement = postImage
+      ? `<img src="${postImage}"
+             class="w-32 h-44 object-cover rounded shadow" 
+             alt="${r.caption || 'Post image'}"
+             onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'w-32 h-44 rounded shadow bg-gray-700 flex items-center justify-center text-gray-500 text-sm text-center\\'>Imagen no encontrada</div>';"/>`
+      : `<div class="w-32 h-44 rounded shadow bg-gray-700 flex items-center justify-center text-gray-500 text-sm text-center">Sin Imagen</div>`;
+
+    return `
     <div class="bg-gray-800 p-5 rounded-xl shadow-md hover:scale-105 transition-transform">
       <div class="flex items-center gap-4 mb-2">
         <img src="${getAvatarSrc(r.avatar_url, r.username)}"
@@ -108,8 +117,7 @@ function renderizarReviews(data, pagina = 1) {
       </div>
       <hr class="border-gray-700 mb-4" />
       <div class="flex gap-4">
-        <img src="${getPostImageSrc(r.image_url)}"
-          class="w-32 h-44 object-cover rounded shadow" />
+        ${imageElement}
         <div class="flex-1">
           <h3 class="font-semibold text-lg">${r.caption || 'Sin título'}</h3>
           <span class="bg-red-600 text-white text-xs px-2 py-0.5 rounded-full mt-1 mb-2">${formatearCategoria(r.categoria)}</span>
@@ -132,7 +140,7 @@ function renderizarReviews(data, pagina = 1) {
           </button>
       </div>
     </div>
-  `).join("");
+  `}).join("");
 }
 
 // 🔹 COMENTARIOS

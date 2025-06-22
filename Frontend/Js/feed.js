@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch('http://localhost/horrorapp/api/get_posts.php')
+    fetch('../../backend/get_posts.php')
         .then(res => {
             if (!res.ok) throw new Error("No se pudieron cargar los posts");
             return res.json();

@@ -1,33 +1,40 @@
 <?php
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *'); 
 
-$mysqli = new mysqli("localhost", "root", "", "horrorapp");
-if ($mysqli->connect_error) {
+require 'conn.php'; 
+
+try {
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn->exec("SET NAMES 'utf8mb4'");
+
+    $query = "
+        SELECT 
+            p.id,
+            p.content,
+            p.created_at,
+            u.username,
+            u.avatar_url,
+            pi.image_url,
+            pi.caption,
+            c.name AS categoria
+        FROM posts p
+        JOIN users u ON p.user_id = u.id
+        LEFT JOIN post_images pi ON p.id = pi.post_id
+        LEFT JOIN categories c ON p.category_id = c.id
+        ORDER BY p.created_at DESC
+        LIMIT 50;
+    ";
+
+    $stmt = $conn->query($query);
+    $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode($posts);
+
+} catch(PDOException $e) {
     http_response_code(500);
-    echo json_encode(["error" => "Error de conexión"]);
-    exit;
+    echo json_encode(['error' => 'Error en la consulta: ' . $e->getMessage()]);
+} finally {
+
+    $conn = null;
 }
-
-$query = "
-SELECT 
-    posts.id, posts.content, posts.created_at,
-    users.username, users.avatar_url,
-    categories.name AS category
-FROM posts
-JOIN users ON posts.user_id = users.id
-JOIN categories ON posts.category_id = categories.id
-ORDER BY posts.created_at DESC
-";
-
-$result = $mysqli->query($query);
-
-$posts = [];
-while ($post = $result->fetch_assoc()) {
-    // Traer imágenes
-    $post_id = $post['id'];
-    $img_query = $mysqli->query("SELECT image_url, caption FROM post_images WHERE post_id = $post_id");
-    $post['images'] = $img_query->fetch_all(MYSQLI_ASSOC);
-    $posts[] = $post;
-}
-
-echo json_encode($posts);
