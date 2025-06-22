@@ -85,7 +85,7 @@ submitBtn.addEventListener('click', async (e) => {
         return;
       }
 
-      const url = `backend/get_login.php?email=${encodeURIComponent(loginIdentifier)}&password=${encodeURIComponent(password)}`;
+      const url = `http://localhost/HorrorApp/backend/get_login.php?email=${encodeURIComponent(loginIdentifier)}&password=${encodeURIComponent(password)}`;
       const res = await fetch(url);
       const data = await res.json();
       if (res.ok) {
@@ -204,7 +204,7 @@ saveProfileBtn.addEventListener('click', (e) => {
 // Función para registrar usuario con todos los datos
 async function enviarPerfilRegistro(bio, avatar_url) {
   try {
-    const res = await fetch('backend/post_users.php', {
+    const res = await fetch('http://localhost/HorrorApp/backend/post_users.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
