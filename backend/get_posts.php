@@ -17,7 +17,10 @@ try {
             u.avatar_url,
             pi.image_url,
             pi.caption,
-            c.name AS categoria
+            c.name AS categoria,
+            (
+                SELECT COUNT(*) FROM post_likes WHERE post_id = p.id
+            ) AS total_likes
         FROM posts p
         JOIN users u ON p.user_id = u.id
         LEFT JOIN post_images pi ON p.id = pi.post_id

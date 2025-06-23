@@ -33,8 +33,17 @@ class SocialPost extends HTMLElement {
         const categoryIcon = this.getAttribute('category-icon') || 'icon-book-text'; // icono por defecto
         const content = this.getAttribute('content') || '';
         const comments = this.getAttribute('comments') || '0';
-        const reposts = this.getAttribute('reposts') || '0';
         const likes = this.getAttribute('likes') || '0';
+        const postId = this.getAttribute('postid') || this.getAttribute('id') || '';
+        // Estado de like por usuario y post
+        let liked = false;
+        try {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser && postId) {
+                const likeKey = `like_${currentUser.id}_${postId}`;
+                liked = localStorage.getItem(likeKey) === 'true';
+            }
+        } catch {}
 
         this.shadowRoot.innerHTML = `
                     <style>
@@ -233,7 +242,7 @@ class SocialPost extends HTMLElement {
                         </div>
 
                         <div class="post-actions">
-                            <button class="action-button like-btn" data-action="like">
+                            <button class="action-button like-btn${liked ? ' active liked' : ''}" data-action="like">
                                 <svg class="action-icon">
                                     <use href="../Assets/Icons/sprite.svg#icon-heart"></use>
                                 </svg>
@@ -245,58 +254,42 @@ class SocialPost extends HTMLElement {
                                 </svg>
                                 <span class="count">${comments}</span>
                             </button>
-                            <button class="action-button repost-btn" data-action="repost">
-                                <svg class="action-icon">
-                                    <use href="../Assets/Icons/sprite.svg#icon-repeat"></use>
-                                </svg>
-                                <span class="count">${reposts}</span>
-                            </button>
                         </div>
                     </div>
                 `;
     }
 
     setupEventListeners() {
-        const actionButtons = this.shadowRoot.querySelectorAll('.action-button');
-        
-        actionButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const action = button.dataset.action;
-                const countSpan = button.querySelector('.count');
-                let count = parseInt(countSpan.textContent);
-
-                if (action === 'like') {
-                    if (button.classList.contains('active')) {
-                        button.classList.remove('active', 'liked');
-                        count--;
+        const likeBtn = this.shadowRoot.querySelector('.like-btn');
+        const countSpan = likeBtn.querySelector('.count');
+        const postId = this.getAttribute('postid') || this.getAttribute('id') || '';
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (likeBtn) {
+            likeBtn.addEventListener('click', () => {
+                if (!currentUser || !postId) return;
+                fetch('../../backend/like_post.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `user_id=${currentUser.id}&post_id=${postId}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const safeLikes = Math.max(0, data.total_likes);
+                    countSpan.textContent = safeLikes;
+                    if (data.liked) {
+                        likeBtn.classList.add('active', 'liked');
                     } else {
-                        button.classList.add('active', 'liked');
-                        count++;
+                        likeBtn.classList.remove('active', 'liked');
                     }
-                } else if (action === 'repost') {
-                    if (button.classList.contains('active')) {
-                        button.classList.remove('active', 'reposted');
-                        count--;
-                    } else {
-                        button.classList.add('active', 'reposted');
-                        count++;
-                    }
-                } else if (action === 'comment') {
-                    // Abrir modal de comentarios
-                    openCommentModal(this);
-                }
-
-                if (action !== 'comment') {
-                    countSpan.textContent = count;
-                }
-
-                // Disparar evento personalizado
-                this.dispatchEvent(new CustomEvent('post-action', {
-                    detail: { action, count, element: this },
-                    bubbles: true
-                }));
+                });
             });
-        });
+        }
+        const commentBtn = this.shadowRoot.querySelector('.comment-btn');
+        if (commentBtn) {
+            commentBtn.addEventListener('click', () => {
+                openCommentModal(this);
+            });
+        }
     }
 }
 

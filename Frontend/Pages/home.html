@@ -20,7 +20,7 @@
 
         <aside class="sidebar-left">
             <nav class="nav-menu">
-                <button class="button-nav button-nav-active">
+                <button class="button-nav button-nav-active" onclick="document.getElementById('contenido').scrollTo({top: 0, behavior: 'smooth'});">
                     <svg class="button-nav-icon">
                         <use href="../Assets/Icons/sprite.svg#icon-house"></use>
                     </svg>
@@ -39,20 +39,6 @@
                         <use href="../Assets/Icons/sprite.svg#icon-hash"></use>
                     </svg>
                     <span class="text-nav">Tendencias</span>
-                </button>
-
-                <button class="button-nav button-nav-active">
-                    <svg class="button-nav-icon">
-                        <use href="../Assets/Icons/sprite.svg#icon-bookmark"></use>
-                    </svg>
-                    <span class="text-nav">Guardados</span>
-                </button>
-
-                <button class="button-nav button-nav-active">
-                    <svg class="button-nav-icon">
-                        <use href="../Assets/Icons/sprite.svg#icon-users"></use>
-                    </svg>
-                    <span class="text-nav">Comunidades</span>
                 </button>
 
             </nav>
@@ -177,33 +163,22 @@
             <div class="container-follow">
 
                 <div class="follow-title">
-                    <h2>A quien seguir</h2>
+                    <h2>Usuarios destacados</h2>
                 </div>
 
                 <div class="follow-item">
 
                     <div class="follow-profile">
-                        <img class="follow-image" src="../Assets/Imagenes/Scream.jpg" alt="">
-                        <div class="follow-info">
-                            <a href="#" class="follow-name">Scream Spain</a>
-                            <span class="follow-username">@Scream_Sp4in</span>
-                        </div>
+                        
                     </div>
 
-                    <button class="follow-button">Seguir</button>
+
                 </div>
 
                 <div class="follow-item">
 
-                    <div class="follow-profile">
-                        <img class="follow-image" src="../Assets/Imagenes/HorrorLover.jpg" alt="">
-                        <div class="follow-info">
-                            <a href="#" class="follow-name">The Horror Lover</a>
-                            <span class="follow-username">@THorror_Lover</span>
-                        </div>
-                    </div>
 
-                    <button class="follow-button">Seguir</button>
+
                 </div>
 
             </div>
@@ -245,7 +220,6 @@
     <script src="../Js/user-utils.js"></script>
     <script src="../Js/components.js"></script>
     <script src="../Js/home.js"></script>
-    <script src="../Js/feed.js"></script>
 
 </body>
 
