@@ -85,7 +85,7 @@ submitBtn.addEventListener('click', async (e) => {
         return;
       }
 
-      const url = `backend/get_login.php?email=${encodeURIComponent(loginIdentifier)}&password=${encodeURIComponent(password)}`;
+      const url = `../../backend/get_login.php?email=${encodeURIComponent(loginIdentifier)}&password=${encodeURIComponent(password)}`;
       const res = await fetch(url);
       const data = await res.json();
       if (res.ok) {
@@ -101,7 +101,7 @@ submitBtn.addEventListener('click', async (e) => {
 
         // Para login exitoso, ir directamente a la aplicación principal
         alert(`¡Bienvenido ${currentUser.username}! Entrando a la página principal...`);
-        window.location.href = 'Frontend/Pages/home.html';
+        window.location.href = 'home.html';
         console.log('Login exitoso:', currentUser);
       } else {
         alert(data.error || 'Credenciales inválidas');
@@ -204,7 +204,7 @@ saveProfileBtn.addEventListener('click', (e) => {
 // Función para registrar usuario con todos los datos
 async function enviarPerfilRegistro(bio, avatar_url) {
   try {
-    const res = await fetch('backend/post_users.php', {
+    const res = await fetch('../../backend/post_users.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -284,7 +284,7 @@ continueBtn.addEventListener('click', () => {
   // Guardar en localStorage para persistencia
   localStorage.setItem('currentUser', JSON.stringify(currentUser));
   alert(`¡Bienvenido ${currentUser.username}! Entrando a la página principal...`);
-  window.location.href = 'Frontend/Pages/home.html';
+  window.location.href = 'home.html';
 });
 
 // Canvas background (mantenido del código original)

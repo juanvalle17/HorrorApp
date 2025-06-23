@@ -113,6 +113,21 @@ class SocialPost extends HTMLElement {
                             border: 2px solid #2c3e50;
                         }
 
+                        .image-placeholder {
+                            width: 80px;
+                            height: 120px;
+                            border-radius: 8px;
+                            background-color: #2c3e50;
+                            color: #95a5a6;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.8em;
+                            text-align: center;
+                            border: 2px solid #2c3e50;
+                            flex-shrink: 0;
+                        }
+
                         .post-info {
                             flex: 1;
                         }
@@ -232,12 +247,12 @@ class SocialPost extends HTMLElement {
                         </div>
 
                         <div class="post-header">
-                            <img src="${image}" alt="${title}" class="post-image">
+                            ${image ? `<img src="${image}" alt="${title}" class="post-image">` : `<div class="image-placeholder">Sin Imagen</div>`}
                             <div class="post-info">
                                 <h3 class="post-title">${title}</h3>
                                 <div class="post-category">
                                     <svg class="post-category-icon">
-                                        <use href="../Assets/Icons/sprite.svg#${categoryIcon}"></use>
+                                        <use href="../../Assets/Icons/sprite.svg#${categoryIcon}"></use>
                                     </svg>
                                     <span>${category}</span>
                                 </div>
@@ -279,11 +294,7 @@ class SocialPost extends HTMLElement {
     }
 
     generateStars(rating) {
-        let stars = '';
-        for (let i = 1; i <= 5; i++) {
-            stars += `<span class="star ${i > rating ? 'empty' : ''}">★</span>`;
-        }
-        return stars;
+        return Array.from({ length: 5 }, (_, i) => `<span class="star ${i < rating ? '' : 'empty'}">★</span>`).join('');
     }
 
     setupEventListeners() {
@@ -325,6 +336,26 @@ class SocialPost extends HTMLElement {
                     detail: { action, count, element: this },
                     bubbles: true
                 }));
+            });
+        });
+
+        // Manejador para imágenes rotas
+        const img = this.shadowRoot.querySelector('.post-image');
+        if (img) {
+            img.addEventListener('error', (event) => {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'image-placeholder';
+                placeholder.textContent = 'Sin Imagen';
+                event.target.replaceWith(placeholder);
+            });
+        }
+
+        // Calificación por estrellas
+        const stars = this.shadowRoot.querySelectorAll('.star');
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                const rating = index + 1;
+                this.setAttribute('rating', rating);
             });
         });
     }
