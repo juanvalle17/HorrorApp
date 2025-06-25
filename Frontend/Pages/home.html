@@ -27,7 +27,7 @@
                     <span class="text-nav">Inicio</span>
                 </button>
 
-                <button class="button-nav button-nav-active">
+                <button class="button-nav button-nav-active" id="exploreBtn">
                     <svg class="button-nav-icon">
                         <use href="../Assets/Icons/sprite.svg#icon-search"></use>
                     </svg>
@@ -205,6 +205,19 @@
     <script src="../Js/user-utils.js"></script>
     <script src="../Js/components.js"></script>
     <script src="../Js/home.js"></script>
+
+    <div id="explore-search-container" style="display:none; position:absolute; left:0; z-index:100; min-width:320px; background:#181c23; box-shadow:0 4px 16px #000a; border-radius:10px; padding:0.7rem 1rem; margin-top:0.5rem;">
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input id="explore-search-input" type="text" placeholder="Buscar posts..." style="flex:1; padding: 0.4rem 0.7rem; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;" />
+            <select id="explore-category-select" style="padding: 0.4rem 0.7rem; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;">
+                <option value="todas">Todas</option>
+                <option value="películas">Películas</option>
+                <option value="series">Series</option>
+                <option value="libros">Libros</option>
+            </select>
+            <button id="explore-search-btn" style="padding: 0.4rem 1rem; border-radius: 6px; background: #e74c3c; color: #fff; border: none; font-size: 1rem;">Buscar</button>
+        </div>
+    </div>
 
 </body>
 

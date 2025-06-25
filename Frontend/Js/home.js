@@ -595,6 +595,63 @@ function initHome() {
         }
     }
 
+    // --- Funcionalidad de Explorar Mejorada y Compacta con búsqueda en tiempo real ---
+    const exploreBtn = document.getElementById('exploreBtn');
+    const exploreSearchContainer = document.getElementById('explore-search-container');
+    const exploreSearchInput = document.getElementById('explore-search-input');
+    const exploreCategorySelect = document.getElementById('explore-category-select');
+    const exploreSearchBtn = document.getElementById('explore-search-btn');
+    let debounceTimeout = null;
+    if (exploreBtn && exploreSearchContainer && exploreSearchInput && exploreCategorySelect && exploreSearchBtn) {
+        function doSearch() {
+            const query = exploreSearchInput.value.trim();
+            const category = exploreCategorySelect.value;
+            // Si la categoría es 'todas' y no hay query, mostrar todos los posts
+            if ((query.length === 0) && (category === 'todas')) {
+                loadPosts();
+                return;
+            }
+            fetch(`../../backend/search_posts.php?query=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`)
+                .then(res => res.json())
+                .then(posts => {
+                    if (posts.length === 0) {
+                        document.getElementById('post-feed').innerHTML = '<p class="text-center text-gray-500">No se encontraron resultados para tu búsqueda.</p>';
+                    } else {
+                        renderPosts(posts);
+                    }
+                });
+        }
+        exploreBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Posicionar el panel justo debajo del botón
+            const rect = exploreBtn.getBoundingClientRect();
+            exploreSearchContainer.style.left = rect.left + 'px';
+            exploreSearchContainer.style.top = (rect.bottom + window.scrollY) + 'px';
+            exploreSearchContainer.style.display = exploreSearchContainer.style.display === 'none' ? 'block' : 'none';
+            if (exploreSearchContainer.style.display === 'block') {
+                exploreSearchInput.focus();
+            }
+        });
+        exploreSearchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                doSearch();
+            }
+        });
+        exploreSearchBtn.addEventListener('click', doSearch);
+        exploreCategorySelect.addEventListener('change', doSearch);
+        // Búsqueda en tiempo real con debounce
+        exploreSearchInput.addEventListener('input', function() {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(doSearch, 300);
+        });
+        // Cerrar el panel al hacer clic fuera
+        document.addEventListener('click', function closeExplorePanel(e) {
+            if (exploreSearchContainer.style.display === 'block' && !exploreSearchContainer.contains(e.target) && e.target !== exploreBtn) {
+                exploreSearchContainer.style.display = 'none';
+            }
+        });
+    }
+
     // --- Inicialización ---
     updateUserInfo();
     loadPosts();
