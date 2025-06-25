@@ -114,6 +114,7 @@ function initHome() {
     }
 
     function renderPosts(posts) {
+        console.log('POSTS RECIBIDOS PARA RENDERIZAR:', posts);
         console.log('🎨 Renderizando posts:', posts);
         
         const feed = document.getElementById('post-feed');
@@ -137,6 +138,7 @@ function initHome() {
 
             return `
                 <social-post
+                    postid="${post.id}"
                     username="${post.username}"
                     avatar="${avatarFinal}"
                     time="${new Date(post.created_at).toLocaleString()}"
@@ -146,11 +148,44 @@ function initHome() {
                     category-icon="icon-movie" 
                     content="${post.content}"
                     comments="${post.total_comentarios || 0}"
-                    reposts="0"
-                    likes="0">
+                    likes="${post.total_likes || 0}">
                 </social-post>
             `;
         }).join('');
+        
+        // Actualizar likes reales y estado de like
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const postsElements = feed.querySelectorAll('social-post');
+        postsElements.forEach(postEl => {
+            const postId = postEl.getAttribute('postid');
+            fetch(`../../backend/get_likes.php?post_id=${postId}&user_id=${currentUser ? currentUser.id : ''}`)
+                .then(res => res.json())
+                .then(data => {
+                    postEl.setAttribute('likes', data.total_likes);
+                    if (data.liked) {
+                        postEl.shadowRoot.querySelector('.like-btn').classList.add('active', 'liked');
+                    } else {
+                        postEl.shadowRoot.querySelector('.like-btn').classList.remove('active', 'liked');
+                    }
+                });
+            // Evento para like
+            postEl.shadowRoot.querySelector('.like-btn').addEventListener('click', () => {
+                fetch('../../backend/like_post.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `user_id=${currentUser.id}&post_id=${postId}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    postEl.setAttribute('likes', data.total_likes);
+                    if (data.liked) {
+                        postEl.shadowRoot.querySelector('.like-btn').classList.add('active', 'liked');
+                    } else {
+                        postEl.shadowRoot.querySelector('.like-btn').classList.remove('active', 'liked');
+                    }
+                });
+            });
+        });
         
         console.log('✅ Posts renderizados correctamente');
     }

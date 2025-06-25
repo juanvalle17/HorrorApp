@@ -106,7 +106,7 @@ function renderizarReviews(data, pagina = 1) {
       : `<div class="w-32 h-44 rounded shadow bg-gray-700 flex items-center justify-center text-gray-500 text-sm text-center">Sin Imagen</div>`;
 
     return `
-    <div class="bg-gray-800 p-5 rounded-xl shadow-md hover:scale-105 transition-transform">
+    <div class="bg-gray-800 p-5 rounded-xl shadow-md hover:scale-105 transition-transform" data-postid="${r.id}">
       <div class="flex items-center gap-4 mb-2">
         <img src="${getAvatarSrc(r.avatar_url, r.username)}"
           class="w-10 h-10 rounded-full object-cover" />
@@ -126,21 +126,55 @@ function renderizarReviews(data, pagina = 1) {
       </div>
       <hr class="border-gray-700 mt-4 mb-2" />
       <div class="flex items-center gap-8 text-gray-400 text-sm">
-          <button class="flex items-center gap-2 hover:text-white transition-colors duration-200">
+          <button class="flex items-center gap-2 hover:text-white transition-colors duration-200 comment-btn">
               <svg class="w-5 h-5">
                   <use href="../Assets/Icons/sprite.svg#icon-message"></use>
               </svg>
               <span class="font-semibold">${r.total_comentarios}</span>
           </button>
-          <button class="flex items-center gap-2 hover:text-red-500 transition-colors duration-200">
+          <button class="flex items-center gap-2 hover:text-red-500 transition-colors duration-200 like-btn">
               <svg class="w-5 h-5">
                   <use href="../Assets/Icons/sprite.svg#icon-heart"></use>
               </svg>
-              <span class="font-semibold">${Math.floor(Math.random() * 100)}</span>
+              <span class="font-semibold like-count">${r.total_likes || 0}</span>
           </button>
       </div>
     </div>
   `}).join("");
+
+  // Actualizar likes reales y estado de like
+  const postDivs = grid.querySelectorAll('[data-postid]');
+  postDivs.forEach(postDiv => {
+    const postId = postDiv.getAttribute('data-postid');
+    const likeBtn = postDiv.querySelector('.like-btn');
+    const likeCount = postDiv.querySelector('.like-count');
+    fetch(`../../backend/get_likes.php?post_id=${postId}&user_id=${currentUser ? currentUser.id : ''}`)
+      .then(res => res.json())
+      .then(data => {
+        likeCount.textContent = data.total_likes;
+        if (data.liked) {
+          likeBtn.classList.add('text-red-500');
+        } else {
+          likeBtn.classList.remove('text-red-500');
+        }
+      });
+    likeBtn.addEventListener('click', () => {
+      fetch('../../backend/like_post.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `user_id=${currentUser.id}&post_id=${postId}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        likeCount.textContent = data.total_likes;
+        if (data.liked) {
+          likeBtn.classList.add('text-red-500');
+        } else {
+          likeBtn.classList.remove('text-red-500');
+        }
+      });
+    });
+  });
 }
 
 // 🔹 COMENTARIOS

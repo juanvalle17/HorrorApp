@@ -54,7 +54,12 @@ $sql = "
             SELECT COUNT(*) 
             FROM comments 
             WHERE post_id = p.id
-        ) AS total_comentarios
+        ) AS total_comentarios,
+        (
+            SELECT COUNT(*) 
+            FROM post_likes 
+            WHERE post_id = p.id
+        ) AS total_likes
     FROM posts p
     JOIN categories c ON p.category_id = c.id
     JOIN users u ON p.user_id = u.id
