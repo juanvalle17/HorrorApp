@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 require 'conn.php';
 
-file_put_contents('like_debug.log', date('c') . ' - POST: ' . json_encode($_POST) . PHP_EOL, FILE_APPEND);
 
 $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
 $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;

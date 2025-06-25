@@ -557,9 +557,43 @@ function initHome() {
     // Hacer logout disponible globalmente
     window.logout = logout;
 
+    // --- NUEVO: Cargar líderes de posts en usuarios destacados ---
+    async function loadLeaders() {
+        try {
+            const response = await fetch('../../backend/get_lideres.php');
+            const leaders = await response.json();
+            const followContainer = document.querySelector('.container-follow');
+            if (!followContainer) return;
+
+            // Elimina líderes previos si existen
+            const oldLeaders = followContainer.querySelector('.leaders-list');
+            if (oldLeaders) oldLeaders.remove();
+
+            // Crear contenedor de líderes
+            const leadersDiv = document.createElement('div');
+            leadersDiv.className = 'leaders-list';
+            leadersDiv.style.marginTop = '1rem';
+            leadersDiv.innerHTML = `
+                ${leaders.map((u, i) => `
+                    <div class="leader-item follow-item" style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.7rem;">
+                        <span style="font-size:1.2rem;font-weight:bold;width:1.5rem;display:inline-block;text-align:center;">${i+1}</span>
+                        <img src="../../backend/${u.avatar_url ?? 'uploads/default-avatar.png'}" alt="avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #7c3aed;">
+                        <span style="font-weight:500;">${u.username}</span>
+                        <span style="color:#d1d5db;font-size:0.95em;margin-left:auto;">${u.total_posts} posts</span>
+                    </div>
+                `).join('')}
+            `;
+            followContainer.appendChild(leadersDiv);
+        } catch (e) {
+            // Si hay error, no muestra nada
+            console.error('Error cargando líderes:', e);
+        }
+    }
+
     // --- Inicialización ---
     updateUserInfo();
     loadPosts();
+    loadLeaders(); // <-- Llamar aquí para cargar los líderes al iniciar la home
 }
 
 // Llama a la función principal cuando el DOM esté listo.
