@@ -1,0 +1,45 @@
+/* Header del perfil */
+.profile-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    background: var(--color-primary);
+    backdrop-filter: blur(12px);
+    z-index: 10;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    margin-right: 16px;
+    transition: background-color 0.2s;
+}
+
+.back-button:hover {
+    background-color: var(--color-success);
+}
+
+.back-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.profile-header-info h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.profile-header-posts {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+}

@@ -1,0 +1,157 @@
+@import '../base/variables.css';
+@import '../components/home/new-post.css';
+@import '../components/home/buttons.css';
+@import '../components/home/nav.css';
+@import '../components/home/card-user.css';
+@import '../components/home/card-trending.css';
+@import '../components/home/card-follow.css';
+@import '../components/home/posteo.css';
+@import '../components/home/modalComentar.css';
+
+
+:root {
+    --header-height: 60px;
+    --sidebar-width: 350px;
+}
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background: var(--color-primary);
+    color: white;
+}
+
+.app-container {
+    display: grid;
+    grid-template-areas:
+        "header header header"
+        "sidebar-left main sidebar-right";
+    grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+    grid-template-rows: var(--header-height) 1fr;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    grid-area: header;
+    background-color: var(--color-primary);
+    border-bottom: 1px solid var(--color-secondary);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-header {
+    width: 2rem;
+    height: 2rem;
+}
+
+.layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    margin-top: 60px;
+}
+
+/* Sidebar Left */
+.sidebar-left {
+    grid-area: sidebar-left;
+    padding: 20px;
+    border-right: 1px solid var(--color-secondary);
+    overflow-y: auto;
+    height: calc(100vh - var(--header-height));
+    position: sticky;
+    top: var(--header-height);
+}
+
+
+
+
+
+/* Main Content */
+.main {
+    grid-area: main;
+    overflow-y: auto;
+    height: calc(100vh - var(--header-height));
+}
+
+.main::-webkit-scrollbar {
+    display: none;
+}
+
+.main-contenido{
+    padding: 20px;
+}
+
+/* Sidebar Right */
+.sidebar-right {
+    grid-area: sidebar-right;
+    padding: 20px;
+    border-left: 1px solid var(--color-secondary);
+    overflow-y: auto;
+    height: calc(100vh - var(--header-height));
+    position: sticky;
+    top: var(--header-height);
+}
+
+.sidebar-right::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+/* 🟡 Tablets (≤ 1024px) */
+@media (max-width: 1024px) {
+    .app-container {
+        grid-template-areas:
+            "header header header"
+            "sidebar-left main sidebar-right";
+        grid-template-columns: 280px 1fr 280px; /* Reducimos sidebars */
+    }
+
+    .sidebar-left,
+    .sidebar-right {
+        padding: 15px;
+    }
+
+    .main {
+        padding: 15px;
+    }
+}
+
+
+/* 🔵 Móviles (≤ 768px) */
+@media (max-width: 768px) {
+    .app-container {
+        grid-template-areas:
+            "header"
+            "main";
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar-left,
+    .sidebar-right {
+        display: none;
+    }
+
+    .main {
+        padding: 15px;
+    }
+
+    .header {
+        justify-content: center;
+    }
+}
+

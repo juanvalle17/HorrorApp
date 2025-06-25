@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Styles/pages-styles/home.css">
+    <title>Home</title>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <header class="header">
+            <div class="header-container">
+                <img class="logo-header" src="../Assets/Imagenes/HorrorApp.png" alt="">
+            </div>
+        </header>
+
+        <aside class="sidebar-left">
+            <nav class="nav-menu">
+                <button class="button-nav button-nav-active" onclick="document.getElementById('contenido').scrollTo({top: 0, behavior: 'smooth'});">
+                    <svg class="button-nav-icon">
+                        <use href="../Assets/Icons/sprite.svg#icon-house"></use>
+                    </svg>
+                    <span class="text-nav">Inicio</span>
+                </button>
+
+                <button class="button-nav button-nav-active" id="exploreBtn">
+                    <svg class="button-nav-icon">
+                        <use href="../Assets/Icons/sprite.svg#icon-search"></use>
+                    </svg>
+                    <span class="text-nav">Explorar</span>
+                </button>
+
+                <button class="button-nav button-nav-active">
+                    <svg class="button-nav-icon">
+                        <use href="../Assets/Icons/sprite.svg#icon-hash"></use>
+                    </svg>
+                    <span class="text-nav">Tendencias</span>
+                </button>
+
+            </nav>
+
+            <div class="h-container-user" id="btnProfile">
+                <div class="h-user">
+                    <img class="h-user-image" src="../Assets/Imagenes/M.jpg" alt="">
+
+                    <div class="h-user-info">
+                        <span class="h-user-name">Usuario Anonimo</span>
+                        <span class="h-user-username">@usuario</span>
+                    </div>
+                </div>
+                <div class="h-user-button-more">
+                    <svg class="h-user-button-more-icon">
+                        <use href="../Assets/Icons/sprite.svg#icon-ellipsis"></use>
+                    </svg>
+                </div>
+
+            </div>
+        </aside>
+
+        <main id="contenido" class="main">
+            <div class="main-contenido">
+                <form class="new-post" id="formNewPost" enctype="multipart/form-data">
+                    <img class="profile-post" src="../Assets/Imagenes/M.jpg" alt="">
+                    <div class="post-content-container">
+                        <div id="title-container" class="title-container">
+                            <input type="text" name="title" id="postTitle" placeholder="Añade un título..." maxlength="100" required>
+                        </div>
+                        <div class="counter-container">
+                            <span id="title-counter" class="counter">0/100</span>
+                        </div>
+                        <textarea name="content" id="contentPost" rows="3" maxlength="280" placeholder="Desata tus pensamientos..." required></textarea>
+                        <div class="counter-container">
+                           <span id="content-counter" class="counter">0/280</span>
+                        </div>
+                    </div>
+                    <div id="image-preview-container" class="image-preview-container"></div>
+
+                    <div class="container-actions">
+                        <div class="container-buttons">
+                            <div class="image-upload-container">
+                                <label for="imagesPost" class="image-upload-label" title="Subir imagen">
+                                    <svg class="circle-button-icon">
+                                        <use href="../Assets/Icons/sprite.svg#icon-camera"></use>
+                                    </svg>
+                                    <span>Añadir Imagen</span>
+                                </label>
+                                <p class="image-upload-hint">Es necesario subir al menos una imagen.</p>
+                            </div>
+                            <input type="file" name="images[]" id="imagesPost" accept="image/*" multiple style="display:none" required>
+                            
+                            <div class="category-select-wrapper">
+                                <select name="category_id" id="categoryPost" required>
+                                    <option value="" disabled selected>Categoría</option>
+                                    <option value="1">Películas</option>
+                                    <option value="2">Series</option>
+                                    <option value="3">Libros</option>
+                                </select>
+                                <svg class="category-select-icon">
+                                    <use href="../Assets/Icons/sprite.svg#icon-chevron-down"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="container-submit">
+                            <button class="submit-button" type="submit">Publicar</button>
+                        </div>
+                    </div>
+                </form>
+
+               <div id="post-feed">
+                    <!-- Las publicaciones dinámicas se cargarán aquí -->
+               </div>
+            </div>
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="container-trending">
+
+                <div class="trending-title">
+                    <svg class="trending-icon">
+                        <use href="../Assets/Icons/sprite.svg#icon-flame"></use>
+                    </svg>
+                    <h2>Tendencias</h2>
+                </div>
+
+                <div id="trending-posts"></div>
+
+                
+            </div>
+
+            <div class="container-follow">
+
+                <div class="follow-title">
+                    <h2>Usuarios destacados</h2>
+                </div>
+
+                
+
+
+        </aside>
+
+        <!-- Modal de Comentarios -->
+        <div class="modal-overlay" id="commentModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Responder</h2>
+                    <button class="close-button" onclick="closeCommentModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="original-post" id="originalPost">
+                        <!-- El contenido del post original se insertará aquí -->
+                    </div>
+
+                    <div class="reply-section">
+                        <div class="reply-header">
+                            <div class="user-avatar">U</div>
+                            <span class="reply-to">Respondiendo a <span id="replyToUser"></span></span>
+                        </div>
+                        <textarea class="reply-input" id="replyInput" placeholder="Escribe tu respuesta..."
+                            maxlength="280"></textarea>
+                        <div class="reply-actions">
+                            <span class="character-count" id="charCount">0/280</span>
+                            <button class="reply-button" id="replyButton" onclick="submitReply()">
+                                Responder
+                            </button>
+                        </div>
+                    </div>
+                    <div id="commentsList" style="margin-top:1.5rem;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="../Js/user-utils.js"></script>
+    <script src="../Js/components.js"></script>
+    <script src="../Js/home.js"></script>
+
+    <div id="explore-search-container" style="display:none; position:absolute; left:0; z-index:100; min-width:320px; background:#181c23; box-shadow:0 4px 16px #000a; border-radius:10px; padding:0.7rem 1rem; margin-top:0.5rem;">
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input id="explore-search-input" type="text" placeholder="Buscar posts..." style="flex:1; padding: 0.4rem 0.7rem; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;" />
+            <select id="explore-category-select" style="padding: 0.4rem 0.7rem; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;">
+                <option value="todas">Todas</option>
+                <option value="películas">Películas</option>
+                <option value="series">Series</option>
+                <option value="libros">Libros</option>
+            </select>
+            <button id="explore-search-btn" style="padding: 0.4rem 1rem; border-radius: 6px; background: #e74c3c; color: #fff; border: none; font-size: 1rem;">Buscar</button>
+        </div>
+    </div>
+
+</body>
+
+</html>

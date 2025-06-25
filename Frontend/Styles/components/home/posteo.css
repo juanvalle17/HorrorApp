@@ -1,0 +1,171 @@
+.post {
+    background-color: var(--color-secondary);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+
+
+.post-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.post-image {
+    width: 80px;
+    height: 120px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--color-primary);
+}
+
+.post-info {
+    flex: 1;
+}
+
+.post-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    color: var(--color-text);
+}
+
+.post-category {
+    background-color: var(--color-accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.6em;
+    display: inline-block;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.post-category-icon {
+    width: 10px;
+    height: 10px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.stars {
+    display: flex;
+    gap: 2px;
+}
+
+.star {
+    color: #ffd700;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.star.empty {
+    color: var(--color-text-muted);
+}
+
+.rating-text {
+    color: var(--color-text-muted);
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
+.post-content {
+    margin: 15px 0;
+    line-height: 1.6;
+    color: var(--color-text);
+}
+
+.post-actions {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--color-primary);
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+}
+
+.action-button:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+}
+
+.action-button.active {
+    color: var(--color-accent);
+}
+
+.action-button.active.liked {
+    color: #e74c3c;
+}
+
+.action-button.active.reposted {
+    color: #27ae60;
+}
+
+.action-button.active.commented {
+    color: #3498db;
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.action-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-primary);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.user-details {
+    flex: 1;
+}
+
+.username {
+    font-weight: bold;
+    margin: 0;
+}
+
+.post-time {
+    color: var(--color-text-muted);
+    font-size: 0.8em;
+    margin: 0;
+}

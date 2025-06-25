@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil - Horror App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+  <!-- Botón volver al home -->
+  <a href="home.html" class="fixed top-4 left-4 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg shadow transition-colors flex items-center gap-2 z-50">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+    <span>Home</span>
+  </a>
+
+  <!-- Perfil + Navegación -->
+  <div class="bg-gray-900 pt-10 pb-6 flex flex-col items-center gap-2">
+    <img src="../../backend/uploads/ALIEN_Romulus.jpg" class="w-24 h-24 rounded-full border-4 border-gray-800 shadow-lg" alt="Avatar" />
+    <h1 class="text-3xl font-bold tracking-wide text-white drop-shadow-md">Usuario Anónimo</h1>
+    <p class="text-base text-gray-400 italic">Amante del terror y lo sobrenatural</p>
+    <button id="editProfileBtn" style="display:none; margin-top:1rem; background:#7c3aed; color:white; border:none; border-radius:8px; padding:0.5rem 1.2rem; font-weight:500; cursor:pointer; transition:background 0.2s;">Editar perfil</button>
+    <div id="editProfileFormContainer" style="display:none; width:100%; max-width:340px; margin-top:1.2rem;"></div>
+  </div>
+
+  <!-- Reviews -->
+  <section class="px-4 py-8 max-w-6xl mx-auto">
+    <h2 class="text-xl font-bold mb-6 border-b border-gray-700 pb-2">Reviews</h2>
+    <div id="galeria" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    <div id="paginador-reviews" class="flex justify-center gap-3 mt-6 border-t border-gray-700 pt-4"></div>
+  </section>
+
+  <!-- Comentarios -->
+  <section class="px-4 py-8 max-w-6xl mx-auto">
+    <h2 class="text-xl font-bold mb-6 border-b border-gray-700 pb-2">Comentarios</h2>
+    <div id="comentarios-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div id="paginador" class="flex justify-center gap-3 mt-6 border-t border-gray-700 pt-4"></div>
+  </section>
+
+  <script src="../Js/user-utils.js"></script>
+  <script src="../Js/profile.js"></script>
+  
+</body>
+</html>
