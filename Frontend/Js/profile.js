@@ -8,10 +8,14 @@ if (!currentUser || !currentUser.id) {
 }
 
 const idUsuario = currentUser.id;
-const backendBaseUrl = '../../backend'; 
 
-const publicacionesURL = `${backendBaseUrl}/get_publicaciones_usuario.php?user_id=${idUsuario}`;
-const comentariosURL = `${backendBaseUrl}/get_comentarios_por_usuario.php?user_id=${idUsuario}`;
+// Determinar a quién mostrar: usuario logueado o usuario seleccionado
+let profileUserId = localStorage.getItem('profileViewId') || (currentUser && currentUser.id);
+profileUserId = parseInt(profileUserId, 10);
+
+const backendBaseUrl = '../../backend';
+const publicacionesURL = `${backendBaseUrl}/get_publicaciones_usuario.php?user_id=${profileUserId}`;
+const comentariosURL = `${backendBaseUrl}/get_comentarios_por_usuario.php?user_id=${profileUserId}`;
 
 const porPaginaReviews = 4;
 const porPagina = 6;
@@ -80,6 +84,21 @@ function updateUserProfileInfo() {
 // Actualizar información del usuario al cargar la página
 updateUserProfileInfo();
 
+// Cargar datos del usuario a mostrar
+fetch(`${backendBaseUrl}/get_profile.php?user_id=${profileUserId}`)
+  .then(res => res.json())
+  .then(profileUser => {
+    // Actualizar nombre, bio y avatar
+    const userNameElement = document.querySelector('h1');
+    if (userNameElement) userNameElement.textContent = profileUser.username || 'Usuario Anónimo';
+    const userDescriptionElement = document.querySelector('p.text-base.text-gray-400');
+    if (userDescriptionElement) userDescriptionElement.textContent = profileUser.bio || 'Amante del terror y lo sobrenatural';
+    const userAvatarElement = document.querySelector('img.w-24.h-24');
+    if (userAvatarElement) userAvatarElement.src = getAvatarSrc(profileUser.avatar_url, profileUser.username);
+    const commentAvatarElement = document.querySelector('img.w-10.h-10');
+    if (commentAvatarElement) commentAvatarElement.src = getAvatarSrc(profileUser.avatar_url, profileUser.username);
+  });
+
 fetch(publicacionesURL)
   .then(res => res.json())
   .then(publicaciones => {
@@ -126,17 +145,17 @@ function renderizarReviews(data, pagina = 1) {
       </div>
       <hr class="border-gray-700 mt-4 mb-2" />
       <div class="flex items-center gap-8 text-gray-400 text-sm">
-          <button class="flex items-center gap-2 hover:text-white transition-colors duration-200 comment-btn">
-              <svg class="w-5 h-5">
-                  <use href="../Assets/Icons/sprite.svg#icon-message"></use>
-              </svg>
-              <span class="font-semibold">${r.total_comentarios}</span>
-          </button>
           <button class="flex items-center gap-2 hover:text-red-500 transition-colors duration-200 like-btn">
               <svg class="w-5 h-5">
                   <use href="../Assets/Icons/sprite.svg#icon-heart"></use>
               </svg>
               <span class="font-semibold like-count">${r.total_likes || 0}</span>
+          </button>
+          <button class="flex items-center gap-2 hover:text-white transition-colors duration-200 comment-btn">
+              <svg class="w-5 h-5">
+                  <use href="../Assets/Icons/sprite.svg#icon-message"></use>
+              </svg>
+              <span class="font-semibold">${r.total_comentarios}</span>
           </button>
       </div>
     </div>
@@ -199,14 +218,27 @@ function renderizarComentarios(pagina = 1) {
   gridComentarios.innerHTML = items.map(c => `
     <div class="bg-gray-800 p-5 rounded-xl shadow-md hover:scale-105 transition-transform">
       <div class="flex items-center mb-3">
-        <div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center font-bold mr-3">
-          ${c.autor[0]}
-        </div>
-        <p class="font-semibold">${c.autor}</p>
+        <img src="../../backend/${c.avatar_url ?? 'uploads/default-avatar.png'}" class="w-10 h-10 rounded-full object-cover mr-3" />
+        <p class="font-semibold">${c.autor || currentUser.username}</p>
+        <span class="ml-4 text-xs text-gray-400">${c.created_at ? tiempoTranscurrido(c.created_at) : ''}</span>
       </div>
-      <p class="text-gray-300 text-sm">${c.texto}</p>
+      <p class="text-gray-300 text-sm mb-2">${c.texto || c.content}</p>
+      ${c.post_id && c.post_title ? `<span class=\"text-violet-400 text-xs\">Comentó en el post: <b>${c.post_title}</b></span>` : ''}
     </div>
   `).join("");
+
+  // Enganchar evento para abrir el modal al volver a home
+  setTimeout(() => {
+    const links = document.querySelectorAll('.ver-post-link');
+    links.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Guardar en localStorage el id del post a abrir
+        localStorage.setItem('openCommentPostId', this.dataset.postid);
+        window.location.href = this.getAttribute('href');
+      });
+    });
+  }, 0);
 
   const total = Math.ceil(comentarios.length / porPagina);
   paginadorComentarios.innerHTML = Array.from({ length: total }, (_, i) => `

@@ -70,19 +70,37 @@
 /* Área de texto para el contenido del post */
 .new-post textarea {
     width: 100%;
-    background-color: transparent;
-    border: none;
+    background: rgba(40, 30, 70, 0.25);
+    border: 2px solid var(--color-secondary);
+    border-radius: 12px;
     color: var(--color-text);
     font-size: 1.1rem;
-    padding: 10px 0;
+    padding: 14px 16px;
     resize: none;
     line-height: 1.5;
     font-family: inherit;
+    box-shadow: 0 2px 12px 0 rgba(124,60,237,0.07);
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.new-post textarea::placeholder {
+    color: #b7b7d7;
+    font-style: italic;
+    opacity: 1;
+    letter-spacing: 0.5px;
 }
 
 .new-post textarea:focus {
     outline: none;
-    border-bottom: 2px solid var(--color-accent);
+    border-color: var(--color-accent);
+    background: rgba(124,60,237,0.08);
+    box-shadow: 0 4px 24px 0 rgba(124,60,237,0.13);
+}
+
+.new-post textarea:hover {
+    border-color: var(--color-accent);
+    background: rgba(124,60,237,0.05);
+    box-shadow: 0 2px 16px 0 rgba(124,60,237,0.10);
 }
 
 /* Contenedor para acciones (botones y contador) */

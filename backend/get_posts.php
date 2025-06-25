@@ -20,7 +20,10 @@ try {
             c.name AS categoria,
             (
                 SELECT COUNT(*) FROM post_likes WHERE post_id = p.id
-            ) AS total_likes
+            ) AS total_likes,
+            (
+                SELECT COUNT(*) FROM comments WHERE post_id = p.id
+            ) AS total_comentarios
         FROM posts p
         JOIN users u ON p.user_id = u.id
         LEFT JOIN post_images pi ON p.id = pi.post_id

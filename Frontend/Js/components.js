@@ -250,7 +250,7 @@ class SocialPost extends HTMLElement {
                             </button>
                             <button class="action-button comment-btn" data-action="comment">
                                 <svg class="action-icon">
-                                    <use href="../Assets/Icons/sprite.svg#icon-message-circle"></use>
+                                    <use href="../Assets/Icons/sprite.svg#icon-message"></use>
                                 </svg>
                                 <span class="count">${comments}</span>
                             </button>

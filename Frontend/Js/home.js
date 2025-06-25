@@ -191,40 +191,74 @@ function initHome() {
     }
 
     // Función para abrir el modal de comentarios
-    window.openCommentModal = function(button) {
-        const post = button.closest('.post');
+    window.openCommentModal = async function(button) {
+        // Buscar el componente social-post más cercano
+        const post = button.closest('social-post');
         currentPostElement = post;
         const modal = document.getElementById('commentModal');
         const originalPostContainer = document.getElementById('originalPost');
         const replyToUser = document.getElementById('replyToUser');
-        
-        const postClone = post.cloneNode(true);
-        
-        const actions = postClone.querySelector('.post-actions');
-        if (actions) {
-            actions.remove();
-        }
-        
+        const commentsList = document.getElementById('commentsList');
+
+        // Crear una copia visual del post
+        const postData = {
+            username: post.getAttribute('username'),
+            avatar: post.getAttribute('avatar'),
+            time: post.getAttribute('time'),
+            title: post.getAttribute('title'),
+            image: post.getAttribute('image'),
+            category: post.getAttribute('category'),
+            content: post.getAttribute('content')
+        };
+        const tempPost = document.createElement('social-post');
+        Object.entries(postData).forEach(([key, value]) => {
+            if (value) tempPost.setAttribute(key, value);
+        });
         originalPostContainer.innerHTML = '';
-        originalPostContainer.appendChild(postClone);
-        
-        const username = post.querySelector('.username').textContent;
-        replyToUser.textContent = username;
-        
+        originalPostContainer.appendChild(tempPost);
+        setTimeout(() => {
+            const modalPost = originalPostContainer.querySelector('social-post');
+            if (modalPost && modalPost.shadowRoot) {
+                const actions = modalPost.shadowRoot.querySelector('.post-actions');
+                if (actions) actions.style.display = 'none';
+            }
+        }, 50);
+        replyToUser.textContent = postData.username;
         document.getElementById('replyInput').value = '';
         updateCharCount();
-        
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-        
         setTimeout(() => {
             document.getElementById('replyInput').focus();
         }, 300);
-
         button.classList.add('pulse');
         setTimeout(() => {
             button.classList.remove('pulse');
         }, 300);
+
+        // --- Cargar comentarios del post ---
+        if (commentsList) {
+            commentsList.innerHTML = '<div style="text-align:center;color:#aaa;">Cargando comentarios...</div>';
+            const postId = post.getAttribute('postid') || post.getAttribute('id');
+            try {
+                const res = await fetch(`../../backend/get_comentarios_post.php?post_id=${postId}`);
+                const comentarios = await res.json();
+                if (Array.isArray(comentarios) && comentarios.length > 0) {
+                    commentsList.innerHTML = comentarios.map(c => `
+                        <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.7rem;">
+                            <img src="../../backend/${c.avatar_url ?? 'uploads/default-avatar.png'}" alt="avatar" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid #7c3aed;">
+                            <span style="font-weight:500;">${c.username}</span>
+                            <span style="color:#d1d5db;font-size:0.95em;">${c.content}</span>
+                            <span style="color:#aaa;font-size:0.8em;margin-left:auto;">${new Date(c.created_at).toLocaleString()}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    commentsList.innerHTML = '<div style="text-align:center;color:#aaa;">Aún no hay comentarios.</div>';
+                }
+            } catch (e) {
+                commentsList.innerHTML = '<div style="text-align:center;color:#e74c3c;">Error al cargar comentarios.</div>';
+            }
+        }
     }
 
     // Función para cerrar el modal de comentarios
@@ -236,20 +270,39 @@ function initHome() {
     }
 
     // Función para enviar la respuesta
-    window.submitReply = function() {
+    window.submitReply = async function() {
         const replyText = document.getElementById('replyInput').value.trim();
-        
         if (replyText && currentPostElement) {
-            const commentButton = currentPostElement.querySelector('.comment-btn');
-            const countSpan = commentButton.querySelector('.count');
-            let count = parseInt(countSpan.textContent);
-            countSpan.textContent = count + 1;
-            
-            commentButton.classList.add('active', 'commented');
-            
-            alert('¡Respuesta enviada exitosamente!');
-            
-            closeCommentModal();
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const postId = currentPostElement.getAttribute('postid') || currentPostElement.getAttribute('data-postid');
+            if (!currentUser || !postId) {
+                alert('Debes iniciar sesión para comentar.');
+                return;
+            }
+            try {
+                const response = await fetch('../../backend/post_comentario.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `user_id=${currentUser.id}&post_id=${postId}&content=${encodeURIComponent(replyText)}`
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    // Actualizar contador de comentarios
+                    const commentButton = currentPostElement.querySelector('.comment-btn') || (currentPostElement.shadowRoot && currentPostElement.shadowRoot.querySelector('.comment-btn'));
+                    const countSpan = commentButton ? commentButton.querySelector('.count') : null;
+                    if (countSpan) {
+                        let count = parseInt(countSpan.textContent);
+                        countSpan.textContent = count + 1;
+                    }
+                    if (commentButton) commentButton.classList.add('active', 'commented');
+                    alert('¡Comentario enviado exitosamente!');
+                    closeCommentModal();
+                } else {
+                    alert(data.error || 'Error al enviar el comentario');
+                }
+            } catch (e) {
+                alert('Error de conexión al enviar el comentario');
+            }
         }
     }
 
@@ -499,10 +552,12 @@ function initHome() {
     const btnProfile = document.getElementById('btnProfile');
     if (btnProfile) {
         btnProfile.addEventListener('click', () => {
+            // Limpiar cualquier perfil seleccionado
+            localStorage.removeItem('profileViewId');
+            localStorage.removeItem('profileViewUsername');
             // Efecto visual de clic
             btnProfile.style.transform = 'scale(0.95)';
             btnProfile.style.transition = 'transform 0.1s ease';
-            
             // Restaurar después de 100ms y redirigir
             setTimeout(() => {
                 btnProfile.style.transform = 'scale(1)';
@@ -529,13 +584,39 @@ function initHome() {
             if (oldDropdown) oldDropdown.remove();
             // Crear menú desplegable
             const dropdown = document.createElement('div');
-            dropdown.className = 'dropdown-logout absolute top-full right-0 mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50';
+            dropdown.className = 'dropdown-logout';
+            dropdown.style.position = 'absolute';
+            dropdown.style.top = 'calc(100% + 8px)';
+            dropdown.style.right = '0';
+            dropdown.style.background = '#181c23';
+            dropdown.style.border = '1px solid #23263a';
+            dropdown.style.borderRadius = '12px';
+            dropdown.style.boxShadow = '0 4px 24px 0 rgba(30,30,60,0.18)';
+            dropdown.style.minWidth = '150px';
+            dropdown.style.padding = '0.5rem 0.5rem 0.5rem 0.5rem';
+            dropdown.style.zIndex = '9999';
             dropdown.innerHTML = `
-                <div class="py-2">
-                    <button class="w-full px-4 py-2 text-left text-white hover:bg-gray-700 text-sm" id="logoutBtnSidebar">
-                        Cerrar sesión
-                    </button>
-                </div>
+                <button id="logoutBtnSidebar" style="
+                    display: flex;
+                    align-items: center;
+                    gap: 0.7rem;
+                    width: 100%;
+                    background: none;
+                    border: none;
+                    color: #e57373;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    border-radius: 8px;
+                    padding: 0.6rem 0.7rem;
+                    cursor: pointer;
+                    transition: background 0.18s, color 0.18s;
+                "
+                onmouseover="this.style.background='#23263a';this.style.color='#fff'"
+                onmouseout="this.style.background='none';this.style.color='#e57373'"
+                >
+                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" /></svg>
+                    <span style="flex:1;text-align:left;">Cerrar sesión</span>
+                </button>
             `;
             btnMoreOptions.style.position = 'relative';
             btnMoreOptions.appendChild(dropdown);
@@ -580,15 +661,23 @@ function initHome() {
             leadersDiv.style.marginTop = '1rem';
             leadersDiv.innerHTML = `
                 ${leaders.map((u, i) => `
-                    <div class="leader-item follow-item" style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.7rem;">
+                    <div class="leader-item follow-item" style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.7rem;cursor:pointer;" data-userid="${u.id}" data-username="${u.username}">
                         <span style="font-size:1.2rem;font-weight:bold;width:1.5rem;display:inline-block;text-align:center;">${i+1}</span>
-                        <img src="../../backend/${u.avatar_url ?? 'uploads/default-avatar.png'}" alt="avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #7c3aed;">
-                        <span style="font-weight:500;">${u.username}</span>
+                        <img src="../../backend/${u.avatar_url ?? 'uploads/default-avatar.png'}" alt="avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #7c3aed;cursor:pointer;">
+                        <span style="font-weight:500;cursor:pointer;">${u.username}</span>
                         <span style="color:#d1d5db;font-size:0.95em;margin-left:auto;">${u.total_posts} posts</span>
                     </div>
                 `).join('')}
             `;
             followContainer.appendChild(leadersDiv);
+            // Evento para redirigir al perfil seleccionado
+            leadersDiv.querySelectorAll('.leader-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    localStorage.setItem('profileViewId', this.dataset.userid);
+                    localStorage.setItem('profileViewUsername', this.dataset.username);
+                    window.location.href = 'profile.html';
+                });
+            });
         } catch (e) {
             // Si hay error, no muestra nada
             console.error('Error cargando líderes:', e);
@@ -701,3 +790,18 @@ function initHome() {
 
 // Llama a la función principal cuando el DOM esté listo.
 document.addEventListener('DOMContentLoaded', initHome);
+
+// --- Abrir modal de comentarios automáticamente si viene de perfil ---
+document.addEventListener('DOMContentLoaded', () => {
+    const postIdToOpen = localStorage.getItem('openCommentPostId');
+    if (postIdToOpen) {
+        // Esperar a que los posts estén renderizados
+        setTimeout(() => {
+            const postEl = document.querySelector(`social-post[postid='${postIdToOpen}']`);
+            if (postEl) {
+                openCommentModal(postEl);
+            }
+            localStorage.removeItem('openCommentPostId');
+        }, 700); // Espera para asegurar que los posts ya están en el DOM
+    }
+});

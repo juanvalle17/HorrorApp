@@ -38,7 +38,16 @@ $sql = "
         c.id,
         c.content as texto,
         c.created_at,
-        u.username as autor
+        u.username as autor,
+        u.avatar_url,
+        c.post_id,
+        (
+            SELECT pi.caption
+            FROM post_images pi
+            WHERE pi.post_id = c.post_id
+            ORDER BY pi.id ASC
+            LIMIT 1
+        ) as post_title
     FROM comments c
     JOIN users u ON c.user_id = u.id
     WHERE c.user_id = ?
