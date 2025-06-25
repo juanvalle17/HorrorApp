@@ -512,13 +512,11 @@ function initHome() {
         });
     }
 
-    // --- Función de logout ---
+    // --- Función de logout mejorada ---
     function logout() {
-        // Limpiar localStorage
-        localStorage.removeItem('currentUser');
-        
-        // Redirigir al login
-        window.location.href = '../../login.html';
+        if (confirm('¿Seguro que quieres cerrar sesión?')) {
+            UserManager.logout(); // Esto limpia el localStorage y redirige al login
+        }
     }
 
     // --- Event listener para el botón de más opciones (logout) ---
@@ -526,22 +524,21 @@ function initHome() {
     if (btnMoreOptions) {
         btnMoreOptions.addEventListener('click', (e) => {
             e.stopPropagation(); // Evitar que se active el click del perfil
-            
+            // Eliminar cualquier dropdown anterior
+            const oldDropdown = btnMoreOptions.querySelector('.dropdown-logout');
+            if (oldDropdown) oldDropdown.remove();
             // Crear menú desplegable
             const dropdown = document.createElement('div');
-            dropdown.className = 'absolute top-full right-0 mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50';
+            dropdown.className = 'dropdown-logout absolute top-full right-0 mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50';
             dropdown.innerHTML = `
                 <div class="py-2">
-                    <button class="w-full px-4 py-2 text-left text-white hover:bg-gray-700 text-sm" onclick="logout()">
+                    <button class="w-full px-4 py-2 text-left text-white hover:bg-gray-700 text-sm" id="logoutBtnSidebar">
                         Cerrar sesión
                     </button>
                 </div>
             `;
-            
-            // Posicionar el dropdown
             btnMoreOptions.style.position = 'relative';
             btnMoreOptions.appendChild(dropdown);
-            
             // Cerrar dropdown al hacer clic fuera
             setTimeout(() => {
                 document.addEventListener('click', function closeDropdown(e) {
@@ -551,6 +548,14 @@ function initHome() {
                     }
                 });
             }, 0);
+            // Event listener para logout
+            const logoutBtn = dropdown.querySelector('#logoutBtnSidebar');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    dropdown.remove();
+                    logout();
+                });
+            }
         });
     }
 

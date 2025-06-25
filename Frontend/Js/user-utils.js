@@ -12,13 +12,13 @@ class UserManager {
 
     static logout() {
         localStorage.removeItem('currentUser');
-        window.location.href = '../../login.html';
+        window.location.href = '/HorrorApp/Frontend/Pages/login.html';
     }
 
     static requireAuth() {
         if (!this.isLoggedIn()) {
             console.error('❌ No hay usuario logueado. Redirigiendo al login...');
-            window.location.href = '../../login.html';
+            window.location.href = '/HorrorApp/Frontend/Pages/login.html';
             return false;
         }
         return true;
