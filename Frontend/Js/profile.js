@@ -9,6 +9,9 @@ if (!currentUser || !currentUser.id) {
 
 const idUsuario = currentUser.id;
 
+// Limpiar siempre el profileViewId al entrar al perfil
+localStorage.removeItem('profileViewId');
+
 // Determinar a quién mostrar: usuario logueado o usuario seleccionado
 let profileUserId = localStorage.getItem('profileViewId') || (currentUser && currentUser.id);
 profileUserId = parseInt(profileUserId, 10);
@@ -274,4 +277,106 @@ function tiempoTranscurrido(fecha) {
 
 function formatearCategoria(c) {
   return c.charAt(0).toUpperCase() + c.slice(1);
+}
+
+// Mostrar botón de editar solo si es tu propio perfil
+if (profileUserId === currentUser.id) {
+  const editBtn = document.getElementById('editProfileBtn');
+  if (editBtn) editBtn.style.display = 'block';
+}
+
+// Lógica de edición de perfil
+const editBtn = document.getElementById('editProfileBtn');
+const editFormContainer = document.getElementById('editProfileFormContainer');
+if (editBtn && editFormContainer) {
+  editBtn.addEventListener('click', () => {
+    // Mostrar formulario
+    editFormContainer.innerHTML = `
+      <form id="profileEditForm" style="display:flex;flex-direction:column;gap:1rem;background:#23263a;padding:1.2rem 1rem;border-radius:12px;box-shadow:0 2px 12px #0003;">
+        <label style="font-weight:500;color:#fff;">Nueva foto de perfil
+          <input type="file" id="editAvatarInput" accept="image/*" style="display:block;margin-top:0.5rem;color:#fff;" />
+        </label>
+        <div id="editAvatarPreviewContainer" style="display:flex;align-items:center;gap:1rem;"></div>
+        <label style="font-weight:500;color:#fff;">Biografía
+          <textarea id="editBioInput" maxlength="200" style="width:100%;margin-top:0.5rem;padding:0.5rem;border-radius:8px;border:1px solid #444;background:#181c23;color:#fff;resize:none;min-height:60px;"></textarea>
+        </label>
+        <button type="submit" style="background:#7c3aed;color:white;border:none;border-radius:8px;padding:0.6rem 1.2rem;font-weight:500;cursor:pointer;">Guardar cambios</button>
+        <button type="button" id="cancelEditProfile" style="background:#23263a;color:#aaa;border:none;border-radius:8px;padding:0.6rem 1.2rem;font-weight:500;cursor:pointer;">Cancelar</button>
+      </form>
+    `;
+    editFormContainer.style.display = 'block';
+    editBtn.style.display = 'none';
+
+    // Prellenar bio actual
+    fetch(`${backendBaseUrl}/get_profile.php?user_id=${currentUser.id}`)
+      .then(res => res.json())
+      .then(profileUser => {
+        document.getElementById('editBioInput').value = profileUser.bio || '';
+        // Previsualizar avatar actual
+        const preview = document.getElementById('editAvatarPreviewContainer');
+        preview.innerHTML = `<img src="${getAvatarSrc(profileUser.avatar_url, profileUser.username)}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #7c3aed;" />`;
+      });
+
+    // Previsualización de nueva imagen
+    document.getElementById('editAvatarInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          document.getElementById('editAvatarPreviewContainer').innerHTML = `<img src="${ev.target.result}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #7c3aed;" />`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Cancelar edición
+    document.getElementById('cancelEditProfile').onclick = () => {
+      editFormContainer.style.display = 'none';
+      editBtn.style.display = 'block';
+    };
+
+    // Guardar cambios (ahora implementado)
+    document.getElementById('profileEditForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const bio = document.getElementById('editBioInput').value.trim();
+      const avatarInput = document.getElementById('editAvatarInput');
+      const formData = new FormData();
+      formData.append('user_id', currentUser.id);
+      formData.append('bio', bio);
+      if (avatarInput.files[0]) {
+        formData.append('avatar', avatarInput.files[0]);
+      }
+      try {
+        const res = await fetch(`${backendBaseUrl}/update_profile.php`, {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          // Actualizar la vista y localStorage
+          const userNameElement = document.querySelector('h1');
+          if (userNameElement) userNameElement.textContent = currentUser.username || 'Usuario Anónimo';
+          const userDescriptionElement = document.querySelector('p.text-base.text-gray-400');
+          if (userDescriptionElement) userDescriptionElement.textContent = bio || 'Amante del terror y lo sobrenatural';
+          const userAvatarElement = document.querySelector('img.w-24.h-24');
+          if (userAvatarElement && data.avatar_url) userAvatarElement.src = getAvatarSrc(data.avatar_url, currentUser.username);
+          // Actualizar localStorage
+          let updatedUser = { ...currentUser, bio };
+          if (data.avatar_url) {
+            updatedUser.avatar_url = data.avatar_url;
+            updatedUser.avatar = data.avatar_url;
+          }
+          localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+          // Ocultar formulario y mostrar botón
+          editFormContainer.style.display = 'none';
+          editBtn.style.display = 'block';
+          alert('¡Perfil actualizado correctamente!');
+        } else {
+          alert('Error al actualizar el perfil: ' + (data.error || 'Error desconocido.'));
+        }
+      } catch (err) {
+        alert('Error de conexión al actualizar el perfil.');
+      }
+    };
+  });
 }
