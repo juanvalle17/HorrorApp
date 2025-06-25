@@ -1,0 +1,55 @@
+---
+TAREAS DEL PROYECTO HORRORAPP (según historial de Git)
+Equipo de 5 integrantes
+---
+
+Integrante 1: juanvalle17
+-------------------------
+- Inicialización del proyecto y estructura base
+- Instalación y configuración de Tailwind CSS
+- Maquetación y rediseño de home, login y perfil
+- Implementación de componentes visuales y grid layout
+- Integración de avatar y descripción en el perfil
+- Conexión entre home y perfil
+- Mejoras visuales y de experiencia de usuario
+- Coordinación de merges principales
+
+Integrante 2: benjaluduena
+-------------------------
+- Creación de la conexión a la base de datos y métodos POST
+- Implementación de métodos GET y POST para login y usuarios
+- Flujo de inicio de sesión y registro
+- Implementación de página y estilos de bienvenida
+- Implementación de comentarios y vista de perfiles
+- Funcionalidad para modificar el perfil
+- Creación y mantenimiento del README.md
+
+Integrante 3: CrettinoCristian
+-----------------------------
+- Integración y merge de la conexión a la DB y métodos POST
+- Implementación de creación de posts y adaptación en el home
+- Arreglo de rutas y mejoras en la carga de títulos
+- Funcionalidad de likes y feed de posts
+- Solución de errores y ajustes tras merges
+- Implementación de tendencias y explorador
+- Mejoras en la funcionalidad de cerrar sesión
+
+Integrante 4: RodrigoLeivaCheikAli
+----------------------------------
+- Implementación de métodos GET para publicaciones de perfil
+- Guardado y manejo de ID de usuario
+- Correcciones de código y solución de errores
+- Pruebas de funcionalidad y merges de ramas de perfil y comentarios
+- Ajustes en la visualización de perfil y comentarios
+
+Integrante 5: Elkyat / Augusto Gaite
+------------------------------------
+- Primeros commits y estructura de frontend-login
+- Cambios en home.html y scripts de navegación
+- Rediseño de profile.html y mejoras visuales
+- Implementación del feed y ajustes estéticos
+- Participación en merges y revisiones cruzadas
+
+---
+NOTA: Las tareas reflejan los aportes reales según el historial de Git. El trabajo fue colaborativo, con revisiones y merges frecuentes entre los integrantes.
+--- 
