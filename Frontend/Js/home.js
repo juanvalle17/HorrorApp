@@ -652,10 +652,51 @@ function initHome() {
         });
     }
 
+    // --- Tendencias: mostrar los 3 posts con más likes ---
+    function renderTrendingPosts(posts) {
+        const container = document.getElementById('trending-posts');
+        if (!container) return;
+        if (!posts || posts.length === 0) {
+            container.innerHTML = '<p class="text-gray-400 text-sm">No hay tendencias aún.</p>';
+            return;
+        }
+        container.innerHTML = posts.map(post => `
+            <div class="trending-item flex items-center justify-between py-2 border-b border-gray-700 last:border-b-0">
+                <div>
+                    <span class="trending-hashtag font-semibold">${post.caption ? '#' + post.caption.replace(/\s+/g, '') : '#' + post.content.slice(0, 12).replace(/\s+/g, '')}</span>
+                    <span class="trending-count ml-2">${post.total_likes} likes</span>
+                    <div class="trending-description flex items-center gap-1 mt-1">
+                        <svg class="trending-description-icon w-4 h-4">
+                            <use href="../Assets/Icons/sprite.svg#${getCategoryIcon(post.categoria)}"></use>
+                        </svg>
+                        <span class="trending-description-text text-xs">${post.categoria}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Helper para icono de categoría
+    function getCategoryIcon(cat) {
+        if (!cat) return 'icon-book-text';
+        const c = cat.toLowerCase();
+        if (c.includes('pel')) return 'icon-movie';
+        if (c.includes('serie')) return 'icon-monitor-play';
+        if (c.includes('libro')) return 'icon-book-text';
+        return 'icon-book-text';
+    }
+
+    function loadTrendingPosts() {
+        fetch('../../backend/get_trending_posts.php')
+            .then(res => res.json())
+            .then(posts => renderTrendingPosts(posts));
+    }
+
     // --- Inicialización ---
     updateUserInfo();
     loadPosts();
     loadLeaders(); // <-- Llamar aquí para cargar los líderes al iniciar la home
+    loadTrendingPosts(); // <-- Llamar aquí para cargar los posts de tendencia al iniciar la home
 }
 
 // Llama a la función principal cuando el DOM esté listo.
