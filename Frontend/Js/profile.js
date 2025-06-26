@@ -9,9 +9,6 @@ if (!currentUser || !currentUser.id) {
 
 const idUsuario = currentUser.id;
 
-// Limpiar siempre el profileViewId al entrar al perfil
-localStorage.removeItem('profileViewId');
-
 // Determinar a quién mostrar: usuario logueado o usuario seleccionado
 let profileUserId = localStorage.getItem('profileViewId') || (currentUser && currentUser.id);
 profileUserId = parseInt(profileUserId, 10);
