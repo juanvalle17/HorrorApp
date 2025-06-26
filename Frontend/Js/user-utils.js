@@ -51,4 +51,21 @@ class UserManager {
 }
 
 // Exportar para uso global
-window.UserManager = UserManager; 
+window.UserManager = UserManager;
+
+// Devuelve la URL correcta del avatar de usuario
+function getAvatarUrl(user, defaultUsername = 'U') {
+    if (!user) return `https://via.placeholder.com/40x40/4B5563/FFFFFF?text=${defaultUsername.charAt(0).toUpperCase()}`;
+    const avatar = user.avatar_url || user.avatar;
+    if (!avatar) {
+        return `https://via.placeholder.com/40x40/4B5563/FFFFFF?text=${(user.username || defaultUsername).charAt(0).toUpperCase()}`;
+    }
+    if (avatar.startsWith('http') || avatar.startsWith('data:image')) {
+        return avatar;
+    }
+    const backendBaseUrl = '../../backend';
+    const imagePath = avatar.startsWith('uploads/') ? avatar : `uploads/${avatar}`;
+    return `${backendBaseUrl}/${imagePath}`;
+}
+
+window.getAvatarUrl = getAvatarUrl; 

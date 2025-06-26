@@ -62,14 +62,16 @@ function initHome() {
     // --- Helpers para construir rutas de imágenes ---
     const backendBaseUrl = '../../backend';
 
-    function getAvatarSrc(avatarUrl) {
-        if (!avatarUrl || avatarUrl.endsWith('null')) {
-            return '../Assets/Imagenes/M.jpg'; 
+    function getAvatarUrl(user) {
+        const username = (user && (user.username || user.autor || 'U')).toString();
+        const avatar = user && (user.avatar_url || user.avatar);
+        if (!avatar || avatar.endsWith('null')) {
+            return '../Assets/Imagenes/M.jpg';
         }
-        if (avatarUrl.startsWith('http') || avatarUrl.startsWith('data:image')) {
-            return avatarUrl;
+        if (avatar.startsWith('http') || avatar.startsWith('data:image')) {
+            return avatar;
         }
-        const imagePath = avatarUrl.startsWith('uploads/') ? avatarUrl : `uploads/${avatarUrl}`;
+        const imagePath = avatar.startsWith('uploads/') ? avatar : `uploads/${avatar}`;
         return `${backendBaseUrl}/${imagePath}`;
     }
 
@@ -91,7 +93,7 @@ function initHome() {
         // Actualizar imagen de perfil en el sidebar
         const userImage = document.querySelector('.h-user-image');
         if (userImage) {
-            userImage.src = getAvatarSrc(currentUser.avatar);
+            userImage.src = getAvatarUrl(currentUser);
         }
 
         // Actualizar nombre de usuario en el sidebar
@@ -109,7 +111,7 @@ function initHome() {
         // Actualizar imagen de perfil en el formulario de post
         const profilePostImage = document.querySelector('.profile-post');
         if (profilePostImage) {
-            profilePostImage.src = getAvatarSrc(currentUser.avatar);
+            profilePostImage.src = getAvatarUrl(currentUser);
         }
     }
 
@@ -133,7 +135,7 @@ function initHome() {
         
         feed.innerHTML = posts.map((post, index) => {
             console.log(`📝 Post ${index + 1}:`, post);
-            const avatarFinal = getAvatarSrc(post.avatar_url);
+            const avatarFinal = getAvatarUrl(post);
             const imagenFinal = getPostImageSrc(post.image_url);
 
             return `
@@ -246,7 +248,7 @@ function initHome() {
                 if (Array.isArray(comentarios) && comentarios.length > 0) {
                     commentsList.innerHTML = comentarios.map(c => `
                         <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.7rem;">
-                            <img src="../../backend/${c.avatar_url ?? 'uploads/default-avatar.png'}" alt="avatar" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid #7c3aed;">
+                            <img src="${getAvatarUrl(c)}" alt="avatar" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid #7c3aed;">
                             <span style="font-weight:500;">${c.username}</span>
                             <span style="color:#d1d5db;font-size:0.95em;">${c.content}</span>
                             <span style="color:#aaa;font-size:0.8em;margin-left:auto;">${new Date(c.created_at).toLocaleString()}</span>
@@ -663,7 +665,7 @@ function initHome() {
                 ${leaders.map((u, i) => `
                     <div class="leader-item follow-item" style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.7rem;cursor:pointer;" data-userid="${u.id}" data-username="${u.username}">
                         <span style="font-size:1.2rem;font-weight:bold;width:1.5rem;display:inline-block;text-align:center;">${i+1}</span>
-                        <img src="../../backend/${u.avatar_url ?? 'uploads/default-avatar.png'}" alt="avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #7c3aed;cursor:pointer;">
+                        <img src="${getAvatarUrl(u)}" alt="avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #7c3aed;cursor:pointer;">
                         <span style="font-weight:500;cursor:pointer;">${u.username}</span>
                         <span style="color:#d1d5db;font-size:0.95em;margin-left:auto;">${u.total_posts} posts</span>
                     </div>
@@ -786,6 +788,12 @@ function initHome() {
     loadPosts();
     loadLeaders(); // <-- Llamar aquí para cargar los líderes al iniciar la home
     loadTrendingPosts(); // <-- Llamar aquí para cargar los posts de tendencia al iniciar la home
+
+    // Al cargar currentUser desde localStorage, si solo existe avatar_url o avatar, sincronízalos
+    if (currentUser) {
+        if (currentUser.avatar_url && !currentUser.avatar) currentUser.avatar = currentUser.avatar_url;
+        if (currentUser.avatar && !currentUser.avatar_url) currentUser.avatar_url = currentUser.avatar;
+    }
 }
 
 // Llama a la función principal cuando el DOM esté listo.

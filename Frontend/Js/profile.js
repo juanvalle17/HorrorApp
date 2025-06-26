@@ -22,16 +22,16 @@ const porPagina = 6;
 let comentarios = [];
 
 // Helper para obtener la URL correcta del avatar
-function getAvatarSrc(avatarUrl, username = 'U') {
-    if (!avatarUrl) {
+function getAvatarUrl(user) {
+    const username = (user && (user.username || user.autor || 'U')).toString();
+    const avatar = user && (user.avatar_url || user.avatar);
+    if (!avatar) {
         return `https://via.placeholder.com/40x40/4B5563/FFFFFF?text=${username.charAt(0).toUpperCase()}`;
     }
-    // Si es una URL completa (http/https) o un data-uri, la devuelve directamente.
-    if (avatarUrl.startsWith('http') || avatarUrl.startsWith('data:image')) {
-        return avatarUrl;
+    if (avatar.startsWith('http') || avatar.startsWith('data:image')) {
+        return avatar;
     }
-    // Si no, construye la ruta relativa.
-    const imagePath = avatarUrl.startsWith('uploads/') ? avatarUrl : `uploads/${avatarUrl}`;
+    const imagePath = avatar.startsWith('uploads/') ? avatar : `uploads/${avatar}`;
     return `${backendBaseUrl}/${imagePath}`;
 }
 
@@ -71,13 +71,13 @@ function updateUserProfileInfo() {
     // Actualizar avatar del usuario
     const userAvatarElement = document.querySelector('img.w-24.h-24');
     if (userAvatarElement) {
-        userAvatarElement.src = getAvatarSrc(currentUser.avatar, currentUser.username);
+        userAvatarElement.src = getAvatarUrl(currentUser);
     }
     
     // Actualizar avatar en el formulario de comentarios
     const commentAvatarElement = document.querySelector('img.w-10.h-10');
     if (commentAvatarElement) {
-        commentAvatarElement.src = getAvatarSrc(currentUser.avatar, currentUser.username);
+        commentAvatarElement.src = getAvatarUrl(currentUser);
     }
 }
 
@@ -94,9 +94,9 @@ fetch(`${backendBaseUrl}/get_profile.php?user_id=${profileUserId}`)
     const userDescriptionElement = document.querySelector('p.text-base.text-gray-400');
     if (userDescriptionElement) userDescriptionElement.textContent = profileUser.bio || 'Amante del terror y lo sobrenatural';
     const userAvatarElement = document.querySelector('img.w-24.h-24');
-    if (userAvatarElement) userAvatarElement.src = getAvatarSrc(profileUser.avatar_url, profileUser.username);
+    if (userAvatarElement) userAvatarElement.src = getAvatarUrl(profileUser);
     const commentAvatarElement = document.querySelector('img.w-10.h-10');
-    if (commentAvatarElement) commentAvatarElement.src = getAvatarSrc(profileUser.avatar_url, profileUser.username);
+    if (commentAvatarElement) commentAvatarElement.src = getAvatarUrl(profileUser);
   });
 
 fetch(publicacionesURL)
@@ -127,7 +127,7 @@ function renderizarReviews(data, pagina = 1) {
     return `
     <div class="bg-gray-800 p-5 rounded-xl shadow-md hover:scale-105 transition-transform" data-postid="${r.id}">
       <div class="flex items-center gap-4 mb-2">
-        <img src="${getAvatarSrc(r.avatar_url, r.username)}"
+        <img src="${getAvatarUrl(r)}"
           class="w-10 h-10 rounded-full object-cover" />
         <div>
           <p class="font-semibold">${r.username}</p>
@@ -218,7 +218,7 @@ function renderizarComentarios(pagina = 1) {
   gridComentarios.innerHTML = items.map(c => `
     <div class="bg-gray-800 p-5 rounded-xl shadow-md hover:scale-105 transition-transform">
       <div class="flex items-center mb-3">
-        <img src="../../backend/${c.avatar_url ?? 'uploads/default-avatar.png'}" class="w-10 h-10 rounded-full object-cover mr-3" />
+        <img src="${getAvatarUrl(c)}" class="w-10 h-10 rounded-full object-cover mr-3" />
         <p class="font-semibold">${c.autor || currentUser.username}</p>
         <span class="ml-4 text-xs text-gray-400">${c.created_at ? tiempoTranscurrido(c.created_at) : ''}</span>
       </div>
@@ -293,7 +293,7 @@ if (editBtn && editFormContainer) {
         <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;">
           <label style="font-weight:600;color:#fff;font-size:1rem;align-self:flex-start;">Foto de Perfil</label>
           <div id="editAvatarPreviewContainer" style="display:flex;align-items:center;justify-content:center;width:100px;height:100px;border-radius:50%;border:2px solid #7c3aed;background:#23263a;position:relative;">
-            <img src="${getAvatarSrc(currentUser.avatar_url || currentUser.avatar, currentUser.username)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+            <img src="${getAvatarUrl(currentUser)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
           </div>
           <label for="editAvatarInput" style="margin-top:0.5rem;">
             <input type="file" id="editAvatarInput" accept="image/*" style="display:none;" />
@@ -318,7 +318,7 @@ if (editBtn && editFormContainer) {
         document.getElementById('editBioInput').value = profileUser.bio || '';
         // Previsualizar avatar actual
         const preview = document.getElementById('editAvatarPreviewContainer');
-        preview.innerHTML = `<img src="${getAvatarSrc(profileUser.avatar_url, profileUser.username)}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #7c3aed;" />`;
+        preview.innerHTML = `<img src="${getAvatarUrl(profileUser)}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #7c3aed;" />`;
       });
 
     // Previsualización de nueva imagen
@@ -363,7 +363,7 @@ if (editBtn && editFormContainer) {
           const userDescriptionElement = document.querySelector('p.text-base.text-gray-400');
           if (userDescriptionElement) userDescriptionElement.textContent = bio || 'Amante del terror y lo sobrenatural';
           const userAvatarElement = document.querySelector('img.w-24.h-24');
-          if (userAvatarElement && data.avatar_url) userAvatarElement.src = getAvatarSrc(data.avatar_url, currentUser.username);
+          if (userAvatarElement && data.avatar_url) userAvatarElement.src = getAvatarUrl(currentUser);
           // Actualizar localStorage
           let updatedUser = { ...currentUser, bio };
           if (data.avatar_url) {
