@@ -2,9 +2,9 @@
     display: flex;
     flex-direction: column;
     background-color: var(--color-secondary);
-    border-radius: 10px;
     margin-bottom: 20px;
-    /* border: 1px solid #26292e; */
+    border-radius: 1rem;
+    
 }
 
 .container-follow .follow-item:last-of-type {
@@ -58,16 +58,17 @@
     flex-direction: column;
 }
 
-.follow-name{
+.follow-name {
     font-size: 14px;
     color: white;
     font-weight: 600;
     text-decoration: none;
 }
 
-.follow-name:hover{
+.follow-name:hover {
     text-decoration: underline;
-    text-decoration-color: white /* Rojo */
+    text-decoration-color: white
+        /* Rojo */
 }
 
 .follow-username {

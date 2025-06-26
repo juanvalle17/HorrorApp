@@ -20,7 +20,8 @@
 
         <aside class="sidebar-left">
             <nav class="nav-menu">
-                <button class="button-nav button-nav-active" onclick="document.getElementById('contenido').scrollTo({top: 0, behavior: 'smooth'});">
+                <button class="button-nav button-nav-active"
+                    onclick="document.getElementById('contenido').scrollTo({top: 0, behavior: 'smooth'});">
                     <svg class="button-nav-icon">
                         <use href="../Assets/Icons/sprite.svg#icon-house"></use>
                     </svg>
@@ -67,14 +68,16 @@
                     <img class="profile-post" src="../Assets/Imagenes/M.jpg" alt="">
                     <div class="post-content-container">
                         <div id="title-container" class="title-container">
-                            <input type="text" name="title" id="postTitle" placeholder="Añade un título..." maxlength="100" required>
+                            <input type="text" name="title" id="postTitle" placeholder="Añade un título..."
+                                maxlength="100" required>
+                            <div class="counter-container">
+                                <span id="title-counter" class="counter">0/100</span>
+                            </div>
                         </div>
+                        <textarea name="content" id="contentPost" rows="3" maxlength="280"
+                            placeholder="Desata tus pensamientos..." required></textarea>
                         <div class="counter-container">
-                            <span id="title-counter" class="counter">0/100</span>
-                        </div>
-                        <textarea name="content" id="contentPost" rows="3" maxlength="280" placeholder="Desata tus pensamientos..." required></textarea>
-                        <div class="counter-container">
-                           <span id="content-counter" class="counter">0/280</span>
+                            <span id="content-counter" class="counter">0/280</span>
                         </div>
                     </div>
                     <div id="image-preview-container" class="image-preview-container"></div>
@@ -82,26 +85,29 @@
                     <div class="container-actions">
                         <div class="container-buttons">
                             <div class="image-upload-container">
+                                <p class="image-upload-hint">Es necesario subir al menos una imagen.</p>
                                 <label for="imagesPost" class="image-upload-label" title="Subir imagen">
                                     <svg class="circle-button-icon">
                                         <use href="../Assets/Icons/sprite.svg#icon-camera"></use>
                                     </svg>
                                     <span>Añadir Imagen</span>
                                 </label>
-                                <p class="image-upload-hint">Es necesario subir al menos una imagen.</p>
                             </div>
-                            <input type="file" name="images[]" id="imagesPost" accept="image/*" multiple style="display:none" required>
-                            
+                            <input type="file" name="images[]" id="imagesPost" accept="image/*" multiple
+                                style="display:none" required>
+
                             <div class="category-select-wrapper">
-                                <select name="category_id" id="categoryPost" required>
-                                    <option value="" disabled selected>Categoría</option>
-                                    <option value="1">Películas</option>
-                                    <option value="2">Series</option>
-                                    <option value="3">Libros</option>
-                                </select>
-                                <svg class="category-select-icon">
-                                    <use href="../Assets/Icons/sprite.svg#icon-chevron-down"></use>
-                                </svg>
+                                <label class="image-upload-label" style="margin-bottom:0;">
+                                    <select name="category_id" id="categoryPost" required>
+                                        <option value="" disabled selected>Categoría</option>
+                                        <option value="1">Películas</option>
+                                        <option value="2">Series</option>
+                                        <option value="3">Libros</option>
+                                    </select>
+                                    <svg class="circle-button-icon">
+                                        <use href="../Assets/Icons/sprite.svg#icon-arrow-down"></use>
+                                    </svg>
+                                </label>
                             </div>
                         </div>
                         <div class="container-submit">
@@ -110,9 +116,9 @@
                     </div>
                 </form>
 
-               <div id="post-feed">
+                <div id="post-feed">
                     <!-- Las publicaciones dinámicas se cargarán aquí -->
-               </div>
+                </div>
             </div>
         </main>
 
@@ -128,7 +134,7 @@
 
                 <div id="trending-posts"></div>
 
-                
+
             </div>
 
             <div class="container-follow">
@@ -137,7 +143,7 @@
                     <h2>Usuarios destacados</h2>
                 </div>
 
-                
+
 
 
         </aside>
@@ -178,16 +184,20 @@
     <script src="../Js/components.js"></script>
     <script src="../Js/home.js"></script>
 
-    <div id="explore-search-container" style="display:none; position:absolute; left:0; z-index:100; min-width:320px; background:#181c23; box-shadow:0 4px 16px #000a; border-radius:10px; padding:0.7rem 1rem; margin-top:0.5rem;">
+    <div id="explore-search-container"
+        style="display:none; position:absolute; left:0; z-index:100; min-width:320px; background:#181c23; box-shadow:0 4px 16px #000a; border-radius:10px; padding:0.7rem 1rem; margin-top:0.5rem;">
         <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <input id="explore-search-input" type="text" placeholder="Buscar posts..." style="flex:1; padding: 0.4rem 0.7rem; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;" />
-            <select id="explore-category-select" style="padding: 0.4rem 0.7rem; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;">
+            <input id="explore-search-input" type="text" placeholder="Buscar posts..."
+                style="flex:1; padding: 0.4rem 0.7rem; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;" />
+            <select id="explore-category-select"
+                style="padding: 0.4rem 0.7rem; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; font-size: 1rem;">
                 <option value="todas">Todas</option>
                 <option value="películas">Películas</option>
                 <option value="series">Series</option>
                 <option value="libros">Libros</option>
             </select>
-            <button id="explore-search-btn" style="padding: 0.4rem 1rem; border-radius: 6px; background: #e74c3c; color: #fff; border: none; font-size: 1rem;">Buscar</button>
+            <button id="explore-search-btn"
+                style="padding: 0.4rem 1rem; border-radius: 6px; background: #e74c3c; color: #fff; border: none; font-size: 1rem;">Buscar</button>
         </div>
     </div>
 

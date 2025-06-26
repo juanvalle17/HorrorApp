@@ -1,3 +1,5 @@
+@import '../base/variables.css';
+
 /* Reset básico */
 body, h2, input, button, textarea {
   margin: 0;
@@ -15,10 +17,11 @@ body, h2, input, button, textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #0e001a;
+  background-color: var(--color-primary);
 }
 
 .canvas-bg {
+  background-color: transparent;
   position: fixed;
   top: 0;
   left: 0;
@@ -28,15 +31,17 @@ body, h2, input, button, textarea {
 }
 
 .form-container {
-  background-color: #0e001a;
+  background-color: var(--color-secondary);
   color: white;
   padding: 2.5rem;
   border-radius: 1rem;
-  border: 2px solid #7c3aed;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   width: 90%;
   max-width: 400px;
   min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   z-index: 10;
   transition: all 0.3s ease;
   opacity: 1;
@@ -72,11 +77,16 @@ body, h2, input, button, textarea {
   margin-bottom: 1rem;
   padding: 0.75rem;
   border-radius: 0.375rem;
-  background-color: #111;
+  background-color: var(--color-success);
   color: white;
-  border: 1px solid #ccc;
+  border: 1px solid transparent;
   outline: none;
   transition: border-color 0.3s ease;
+}
+
+.input::placeholder {
+  color: #b7b7d7; /* Cambia este color al que prefieras */
+  opacity: 1;     /* Para asegurar que el color se aplique igual en todos los navegadores */
 }
 
 .input:focus {
@@ -88,14 +98,19 @@ body, h2, input, button, textarea {
   margin-bottom: 0.5rem;
   padding: 0.75rem;
   border-radius: 0.375rem;
-  background-color: #111;
+  background-color: var(--color-success);
   color: white;
-  border: 1px solid #ccc;
+  border: 1px solid transparent;
   outline: none;
   transition: border-color 0.3s ease;
-  resize: vertical;
+  resize: none;
   min-height: 80px;
   font-family: inherit;
+}
+
+.textarea::placeholder {
+  color: #b7b7d7; /* Cambia este color al que prefieras */
+  opacity: 1;     /* Para asegurar que el color se aplique igual en todos los navegadores */
 }
 
 .textarea:focus {
@@ -183,7 +198,7 @@ body, h2, input, button, textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1a1a1a;
+  background-color: var(--color-success);
   overflow: hidden;
   position: relative;
 }
@@ -208,8 +223,8 @@ body, h2, input, button, textarea {
 .upload-btn {
   padding: 0.5rem 1rem;
   background-color: transparent;
-  color: #a78bfa;
-  border: 1px solid #a78bfa;
+  color: #7c3aed;
+  border: 1px solid #7c3aed;
   border-radius: 0.375rem;
   cursor: pointer;
   font-size: 0.875rem;
@@ -217,8 +232,8 @@ body, h2, input, button, textarea {
 }
 
 .upload-btn:hover {
-  background-color: #a78bfa;
-  color: #0e001a;
+  background-color: #7c3aed;
+  color: white;
 }
 
 /* Welcome Screen */

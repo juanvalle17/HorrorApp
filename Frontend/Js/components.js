@@ -52,17 +52,18 @@ class SocialPost extends HTMLElement {
                         }
                         
                         :root {
-                            --color-primary: #2c3e50;
+                            --color-primary: #111827;
                             --color-secondary: #1f2937;
-                            --color-accent: #e74c3c;
+                            --color-success: #293749;
+                            --color-textarea: #1a222e;
                             --color-text: #ecf0f1;
                             --color-text-muted: #95a5a6;
                         }
 
                         .post {
-                            background-color: #1f2937;
+                            background-color: var(--color-secondary);
                             padding: 20px;
-                            border-radius: 10px;
+                            border-radius: 1rem;
                             margin-bottom: 20px;
                             color: #ecf0f1;
                             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

@@ -292,16 +292,23 @@ if (editBtn && editFormContainer) {
   editBtn.addEventListener('click', () => {
     // Mostrar formulario
     editFormContainer.innerHTML = `
-      <form id="profileEditForm" style="display:flex;flex-direction:column;gap:1rem;background:#23263a;padding:1.2rem 1rem;border-radius:12px;box-shadow:0 2px 12px #0003;">
-        <label style="font-weight:500;color:#fff;">Nueva foto de perfil
-          <input type="file" id="editAvatarInput" accept="image/*" style="display:block;margin-top:0.5rem;color:#fff;" />
-        </label>
-        <div id="editAvatarPreviewContainer" style="display:flex;align-items:center;gap:1rem;"></div>
-        <label style="font-weight:500;color:#fff;">Biografía
-          <textarea id="editBioInput" maxlength="200" style="width:100%;margin-top:0.5rem;padding:0.5rem;border-radius:8px;border:1px solid #444;background:#181c23;color:#fff;resize:none;min-height:60px;"></textarea>
-        </label>
-        <button type="submit" style="background:#7c3aed;color:white;border:none;border-radius:8px;padding:0.6rem 1.2rem;font-weight:500;cursor:pointer;">Guardar cambios</button>
-        <button type="button" id="cancelEditProfile" style="background:#23263a;color:#aaa;border:none;border-radius:8px;padding:0.6rem 1.2rem;font-weight:500;cursor:pointer;">Cancelar</button>
+      <form id="profileEditForm" style="display:flex;flex-direction:column;gap:1.5rem;background:#23263a;padding:2rem 1.5rem;border-radius:18px;box-shadow:0 4px 24px #0005;max-width:470px;width:100%;margin:auto;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;">
+          <label style="font-weight:600;color:#fff;font-size:1rem;align-self:flex-start;">Foto de Perfil</label>
+          <div id="editAvatarPreviewContainer" style="display:flex;align-items:center;justify-content:center;width:100px;height:100px;border-radius:50%;border:2px solid #7c3aed;background:#23263a;position:relative;">
+            <img src="${getAvatarSrc(currentUser.avatar_url || currentUser.avatar, currentUser.username)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+          </div>
+          <label for="editAvatarInput" style="margin-top:0.5rem;">
+            <input type="file" id="editAvatarInput" accept="image/*" style="display:none;" />
+            <span style="display:inline-block;padding:0.4rem 1.2rem;border:1.5px solid #7c3aed;color:#7c3aed;background:transparent;border-radius:8px;cursor:pointer;font-weight:500;transition:.2s;">Elige una Foto</span>
+          </label>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <label for="editBioInput" style="font-weight:600;color:#fff;font-size:1rem;">Acerca de ti</label>
+          <textarea id="editBioInput" maxlength="200" placeholder="Cuéntanos un poco sobre ti..." style="width:100%;padding:0.9rem 1rem;border-radius:8px;border:none;background:#2d3146;color:#fff;resize:none;min-height:70px;font-size:1rem;box-shadow:0 1px 4px #0002;outline:none;"></textarea>
+        </div>
+        <button type="submit" style="background:#7c3aed;color:white;border:none;border-radius:8px;padding:0.8rem 0;font-weight:600;font-size:1rem;cursor:pointer;box-shadow:0 2px 8px #7c3aed33;">Guardar Perfil</button>
+        <button type="button" id="cancelEditProfile" style="background:transparent;color:#aaa;border:none;border-radius:8px;padding:0.8rem 0;font-weight:500;font-size:1rem;cursor:pointer;">Cancelar</button>
       </form>
     `;
     editFormContainer.style.display = 'block';

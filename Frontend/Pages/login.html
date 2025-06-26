@@ -11,38 +11,38 @@
 
   <!-- Pantalla de Login/Registro -->
   <div id="loginContainer" class="form-container">
-    <h2 class="form-title">Log In</h2>
+    <h2 class="form-title">Iniciar Sesión</h2>
 
     <div id="emailField" class="email-field hidden">
       <label for="email" class="label">Email</label>
-      <input type="email" id="email" placeholder="Enter your email" class="input" />
+      <input type="email" id="email" placeholder="Ingresa tu email" class="input" />
     </div>
 
-    <label for="username" class="label">Username</label>
-    <input type="text" id="username" placeholder="Enter your username" class="input" />
+    <label for="username" class="label">Usuario</label>
+    <input type="text" id="username" placeholder="Ingresa tu nombre de usuario" class="input" />
 
-    <label for="password" class="label">Password</label>
-    <input type="password" id="password" placeholder="Enter your password" class="input" />
+    <label for="password" class="label">Contraseña</label>
+    <input type="password" id="password" placeholder="Ingresa tu contraseña" class="input" />
 
     <div class="options">
-      <label class="remember"><input type="checkbox" class="checkbox" /> Keep me logged in</label>
-      <a href="#" class="link">Forgot password?</a>
+      <label class="remember"><input type="checkbox" class="checkbox" />Mantenme conectado</label>
+      <a href="#" class="link">Has olvidado tu contraseña?</a>
     </div>
 
-    <button id="submitBtn" class="submit-btn">Next</button>
+    <button id="submitBtn" class="submit-btn">Ingresar</button>
 
     <div class="footer-text">
-      <span>Become part of our community </span>
-      <a href="#" id="toggleMode" class="link bold">Join HorrorApp</a>
+      <span>Forma parte de nuestra comunidad </span>
+      <a href="#" id="toggleMode" class="link bold">Únete a HorrorApp</a>
     </div>
   </div>
 
   <!-- Pantalla de Configuración de Perfil -->
   <div id="profileContainer" class="form-container hidden">
-    <h2 class="form-title">Setup Your Profile</h2>
+    <h2 class="form-title">Configura tú Perfil</h2>
     
     <div class="avatar-section">
-      <label class="label">Profile Picture</label>
+      <label class="label">Foto de Perfil</label>
       <div class="avatar-upload">
         <div id="avatarPreview" class="avatar-preview">
           <svg class="avatar-placeholder" viewBox="0 0 24 24" fill="currentColor">
@@ -51,14 +51,14 @@
           <img id="avatarImg" class="avatar-img hidden" alt="Avatar preview" />
         </div>
         <input type="file" id="avatarInput" accept="image/*" class="file-input hidden" />
-        <button id="uploadBtn" class="upload-btn">Choose Photo</button>
+        <button id="uploadBtn" class="upload-btn">Elige una Foto</button>
       </div>
     </div>
 
-    <label for="description" class="label">About You</label>
+    <label for="description" class="label">Acerca de ti</label>
     <textarea 
       id="description" 
-      placeholder="Tell us a bit about yourself..." 
+      placeholder="Cuéntanos un poco sobre ti..." 
       class="textarea"
       maxlength="200"
     ></textarea>
@@ -66,10 +66,10 @@
       <span id="charCount">0</span>/200
     </div>
 
-    <button id="saveProfileBtn" class="submit-btn">Save Profile</button>
+    <button id="saveProfileBtn" class="submit-btn">Guardar Perfil</button>
     
     <div class="footer-text">
-      <a href="#" id="skipProfile" class="link">Skip for now</a>
+      <a href="#" id="skipProfile" class="link">Omitir</a>
     </div>
   </div>
 

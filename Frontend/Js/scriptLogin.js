@@ -36,9 +36,9 @@ toggleLink.addEventListener('click', (e) => {
 
   if (isRegistering) {
     emailField.classList.remove('hidden');
-    submitBtn.textContent = 'Create Account';
-    toggleLink.textContent = 'I have an account';
-    formTitle.textContent = 'Create Account';
+    submitBtn.textContent = 'Crear Cuenta';
+    toggleLink.textContent = 'Ya tengo cuenta';
+    formTitle.textContent = 'Crea una cuenta';
   } else {
     emailField.classList.add('hidden');
     submitBtn.textContent = 'Next';
@@ -294,8 +294,6 @@ const ctx = canvas.getContext('2d');
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  ctx.fillStyle = '#0e001a';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 window.addEventListener('resize', resizeCanvas);

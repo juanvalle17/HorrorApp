@@ -2,9 +2,8 @@
     display: flex;
     flex-direction: column;
     background-color: var(--color-secondary);
-    border-radius: 10px;
     margin-bottom: 20px;
-    /* border: 1px solid #26292e; */
+    border-radius: 1rem;
 }
 
 .trending-title {
@@ -32,8 +31,8 @@
 }
 
 .trending-item:last-child {
-    border-bottom-left-radius: inherit;
-    border-bottom-right-radius: inherit;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 }
 
 .trending-item:hover {

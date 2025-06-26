@@ -750,7 +750,7 @@ function initHome() {
             return;
         }
         container.innerHTML = posts.map(post => `
-            <div class="trending-item flex items-center justify-between py-2 border-b border-gray-700 last:border-b-0">
+            <div class="trending-item flex items-center justify-between py-2 pd-4 border-b border-gray-700 last:border-b-0">
                 <div>
                     <span class="trending-hashtag font-semibold">${post.caption ? '#' + post.caption.replace(/\s+/g, '') : '#' + post.content.slice(0, 12).replace(/\s+/g, '')}</span>
                     <span class="trending-count ml-2">${post.total_likes} likes</span>

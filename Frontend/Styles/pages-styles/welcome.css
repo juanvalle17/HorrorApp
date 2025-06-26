@@ -2,7 +2,7 @@
 
 .welcome-body {
   min-height: 100vh;
-  background: #0e001a;
+  background: var(--color-primary);
   color: white;
   display: flex;
   justify-content: center;
@@ -11,8 +11,8 @@
 }
 
 .welcome-container {
-  background: #0e001a;
-  border: 2px solid #7c3aed;
+  background: var(--color-secondary);
+  
   border-radius: 1.5rem;
   box-shadow: 0 4px 24px rgba(0,0,0,0.7);
   padding: 2.5rem 2rem 2rem 2rem;

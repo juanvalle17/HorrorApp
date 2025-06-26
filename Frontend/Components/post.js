@@ -52,7 +52,7 @@ class SocialPost extends HTMLElement {
                         }
 
                         .post {
-                            background-color: #1f2937;
+                            background-color: #0e001a;;
                             padding: 20px;
                             border-radius: 10px;
                             margin-bottom: 20px;

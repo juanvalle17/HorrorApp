@@ -6,16 +6,16 @@
     gap: 10px;
     background-color: var(--color-secondary);
     padding: 20px;
-    border-radius: 10px;
     transition: background 0.3s ease;
-    /* border: 1px solid #26292e; */
+    border-radius: 1rem;
+    
 }
 
-.h-container-user:hover{
+.h-container-user:hover {
     background-color: var(--color-success);
 }
 
-.h-user{
+.h-user {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -26,7 +26,7 @@
     border-radius: 50%;
 }
 
-.h-user-info{
+.h-user-info {
     display: flex;
     flex-direction: column;
 }
@@ -42,7 +42,25 @@
     color: #9ca3af;
 }
 
-.h-user-button-more-icon{
+.h-user-button-more {
+    border-radius: 50%;
+    max-width: 30px;
+    max-height: 30px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    transition: background 0.2s;
+}
+
+.h-user-button-more:hover {
+    background-color: var(--color-button-circle-hover);
+
+}
+
+.h-user-button-more-icon {
     max-width: 20px;
     max-height: 20px;
     fill: none;

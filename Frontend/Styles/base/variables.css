@@ -20,14 +20,14 @@
     /*Colores botones*/
     --color-button-circle: #1f2937;
     /* Color del botón circular */
-    --color-button-circle-hover: #293749;
+    --color-button-circle-hover: #35465c;
     /* Color del botón circular al pasar el mouse */
 
     --color-accent: #e74c3c;
     --color-text: #ecf0f1;
     --color-text-muted: #95a5a6;
 
-    --color-scrollbar:#293749;
+    --color-scrollbar: #293749;
 
     --color-button-edit-profile: rgb(220, 2, 2);
     --color-button-edit-profile-hover: rgb(255, 0, 0);
